@@ -1,5 +1,7 @@
-const express = require('express');
+require('./config/config');
 
+const express = require('express');
+const {mongoose} = require('./db/mongoose');
 const app = express();
 
 const PORT = process.env.PORT || 3000;
