@@ -13,12 +13,20 @@ const PORT = process.env.PORT || 3000;
 // MODELS
 const {Event} = require('./models/event');
 
-const event = new Event({
-  name: 'sad',
-  description: 'sadasd'
-});
+//VIEWS
+app.set('view engine', 'hbs');
 
-console.log(event);
+//
+// const event = new Event({
+//   name: 'sad',
+//   description: 'sadasd'
+// });
+//
+// console.log(event);
+
+app.get('/', (req, res) => {
+    res.render(__dirname + './views/home')
+});
 
 app.listen(PORT, () => {
   console.log('Server is running on PORT', PORT);
