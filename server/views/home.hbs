@@ -21,14 +21,15 @@
 
 
     <p id="demo"></p>
-    {{#each items}}
+    {{#each events}}
 
-    <p id="as">{{name}}</p>
+    <p>{{name}}</p>
+    <p>{{date}}</p>
     <button id={{_id}} onClick="reply_click(this.id)">Try it</button>
     {{/each}}
 
     <script>
-    
+
     var userId;
 
     OneSignal.push(async function() {
@@ -44,7 +45,7 @@
                 type: "POST",
                 url: "/",
                 timeout: 2000,
-                data: { text: userId, id: eventId},
+                data: { user_id: userId, event_id: eventId},
             });
           }
       }
