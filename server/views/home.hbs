@@ -19,33 +19,35 @@
   </head>
   <body>
 
-    <button id="myBtn">Try it</button>
-    <p id="demo"></p>
 
+    <p id="demo"></p>
+    {{#each items}}
+
+    <p id="as">{{name}}</p>
+    <button id={{_id}} onClick="reply_click(this.id)">Try it</button>
+    {{/each}}
 
     <script>
-      OneSignal.push(async function() {
-        const userId = await OneSignal.getUserId();
-          console.log("OneSignal User ID:", userId);
+    
+    var userId;
 
+    OneSignal.push(async function() {
+       userId = await  OneSignal.getUserId();
 
-          document.getElementById("myBtn").addEventListener("click", function(){
-            postItem();
-          });
+    });
+
+    function reply_click(eventId){
+      if(userId && eventId) postItem();
 
         function postItem() {
-          $.ajax({
-              type: "POST",
-              url: "/",
-              timeout: 2000,
-              data: { text: userId },
-
-          });
-        }
-
-        });
-
-
+            $.ajax({
+                type: "POST",
+                url: "/",
+                timeout: 2000,
+                data: { text: userId, id: eventId},
+            });
+          }
+      }
 
 
     </script>

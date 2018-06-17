@@ -28,15 +28,18 @@ app.use(bodyParser.json());
 // console.log(event);
 var items = {
   item1: {
-    name: 'asdad'
+    _id: 1,
+    name: 'EVENT1'
   },
   item2: {
-    name: 'rahul'
+    _id: 2,
+    name: 'EVENT2'
   }
 }
 
 app.get('/', (req, res) => {
     res.render(__dirname + '/views/home', {
+      items
     });
 });
 
