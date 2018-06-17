@@ -30,10 +30,10 @@ const _ = require('lodash');
 app.get('/', async (req, res) => {
   try {
     let events = await Event.find({});
-      res.send(JSON.stringify(events, undefined, 2));
-      // res.render(__dirname + '/views/home', {
-     //   events
-     // });
+      // res.send(JSON.stringify(events, undefined, 2));
+      res.render(__dirname + '/views/home', {
+       events
+     });
   } catch(e) {
     res.status(400).send(e);
   };
@@ -49,10 +49,14 @@ app.post('/', async (req, res) => {
     _id: id
   });
 
+  var EventDate = new Date(event.date);
+
+  var NotiDate = new Date( EventDate.getTime() - 20000 * 60 );
+
   var message = {
     app_id: "d3d99984-794f-4c25-bedb-5cb810d8ed86",
-    contents: {"en": `Your event ${event.name} is about to start`},
-    send_after: event.date,
+    contents: {"en": `Your event ${event.name} is going to start in 20 minutes`},
+    send_after: NotiDate,
     include_player_ids: [req.body.user_id]
   };
   sendNotification(message);
