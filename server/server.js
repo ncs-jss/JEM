@@ -1,6 +1,6 @@
 require('./config/config');
 
-// SERVER
+// SERVER MODULES
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
@@ -59,7 +59,14 @@ app.post('/', async (req, res) => {
     send_after: NotiDate,
     include_player_ids: [req.body.user_id]
   };
-  sendNotification(message);
+
+   sendNotification(message, (err, result) => {
+       event.notification_id.push(result.id);
+         var x = event;
+         x.save();
+      
+   });
+
 });
 
 // CREATE EVENT
@@ -146,7 +153,7 @@ app.patch('/events/:id', async (req, res) => {
   }
 });
 
-
+// SERVER CONNECTION
 app.listen(PORT, () => {
   console.log('Server is running on PORT', PORT);
 });
