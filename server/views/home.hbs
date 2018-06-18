@@ -3,15 +3,54 @@
   <head>
     <meta charset="utf-8">
     <title>EM</title>
+    <head>
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+      <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(function() {
+          OneSignal.init({
+            appId: "d3d99984-794f-4c25-bedb-5cb810d8ed86",
+          });
+        });
+
+      </script>
+
   </head>
   <body>
-    <button id="myBtn">Try it</button>
-    <script>
-      document.getElementById("myBtn").addEventListener("click", displayDate);
 
-      function displayDate() {
-          document.getElementById("demo").innerHTML = Date();
+
+    <p id="demo"></p>
+    {{#each events}}
+
+    <p>{{name}}</p>
+    <p>{{date}}</p>
+    <button id={{_id}} onClick="reply_click(this.id)">Try it</button>
+    {{/each}}
+
+    <script>
+
+    var userId;
+
+    OneSignal.push(async function() {
+       userId = await  OneSignal.getUserId();
+
+    });
+
+    function reply_click(eventId){
+      if(userId && eventId) postItem();
+
+        function postItem() {
+            $.ajax({
+                type: "POST",
+                url: "/",
+                timeout: 2000,
+                data: { user_id: userId, event_id: eventId},
+            });
+          }
       }
+
+
     </script>
   </body>
 </html>
