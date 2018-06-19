@@ -20,6 +20,8 @@ app.set('view engine', 'hbs');
 
 // ONESIGNAL
 const {sendNotification} = require('./onesignal/create');
+const {deleteNotification} = require('./onesignal/cancel');
+
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
@@ -49,6 +51,7 @@ app.post('/', async (req, res) => {
     _id: id
   });
 
+
   var EventDate = new Date(event.date);
 
   var NotiDate = new Date( EventDate.getTime() - 20000 * 60 );
@@ -64,7 +67,7 @@ app.post('/', async (req, res) => {
        event.notification_id.push(result.id);
          var x = event;
          x.save();
-      
+
    });
 
 });
@@ -118,7 +121,19 @@ app.delete('/events/:id', async (req, res) => {
   }
 
   try {
+
+    let event1 = await Event.findById({
+      _id: id
+    });
+    for (var i = 0, len = event1.notification_id.length; i < len; i++) {
+
+      if (event1.notification_id[i]!==null){
+
+      deleteNotification(event1.notification_id[i]);
+      }
+    }
     const event = await Event.findByIdAndRemove(id);
+
 
     if(!event){
       return res.status(404).send();
