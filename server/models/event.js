@@ -15,6 +15,9 @@ var EventSchema = new mongoose.Schema({
     },
     notification_id: [{
       type: String,
+    }],
+    player_id: [{
+      type: String,
     }]
   });
 

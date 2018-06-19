@@ -65,6 +65,7 @@ app.post('/', async (req, res) => {
 
    sendNotification(message, (err, result) => {
        event.notification_id.push(result.id);
+       event.player_id.push(req.body.user_id);
          var x = event;
          x.save();
 
@@ -146,6 +147,7 @@ app.delete('/events/:id', async (req, res) => {
 });
 
 // UPDATE EVENT WITH GIVEN EVENT ID
+
 app.patch('/events/:id', async (req, res) => {
 
 
@@ -159,6 +161,37 @@ app.patch('/events/:id', async (req, res) => {
   body.name = req.body.name;
   body.description = req.body.description;
   body.date = req.body.date;
+
+  let event1 = await Event.findById({
+    _id: id
+  });
+
+
+
+  if(event1.date !== req.body.date){
+    for (var i = 0, len = event1.notification_id.length; i < len; i++) {
+
+      if (event1.notification_id[i]!==null){
+
+      deleteNotification(event1.notification_id[i]);
+      }
+    }
+
+    var EventDate = new Date(req.body.date);
+
+    var NotiDate = new Date( EventDate.getTime() - 20000 * 60 );
+
+    var message = {
+      app_id: "d3d99984-794f-4c25-bedb-5cb810d8ed86",
+      contents: {"en": `Your event ${body.name} is going to start in 20 minutes`},
+      send_after: NotiDate,
+      include_player_ids: event1.player_id
+    };
+
+     sendNotification(message, (err, result) => {
+        console.log('updated and sent');
+     });
+  }
 
   try {
   const event = await Event.findByIdAndUpdate(id, {$set: body}, {new: true});
