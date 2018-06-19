@@ -18,7 +18,11 @@ var EventSchema = new mongoose.Schema({
     }],
     player_id: [{
       type: String,
-    }]
+    }],
+    creator : {
+      type: String,
+      required: true
+    }
   });
 
   var Event = mongoose.model('Event', EventSchema);
