@@ -45,31 +45,39 @@ app.get('/', async (req, res) => {
 
 // RESPONSE FROM HOME PAGE, INCLUDE PLAYER ID AND EVENT ID
 app.post('/', async (req, res) => {
-  console.log(req.body);
+
   let id = req.body.event_id;
   let event = await Event.findById({
     _id: id
   });
 
 
-  var EventDate = new Date(event.date);
+    if(event.player_id.length==0 || event.player_id.indexOf(req.body.user_id)<0){
 
-  var NotiDate = new Date( EventDate.getTime() - 20000 * 60 );
+    var EventDate = new Date(event.date);
 
-  var message = {
-    app_id: "d3d99984-794f-4c25-bedb-5cb810d8ed86",
-    contents: {"en": `Your event ${event.name} is going to start in 20 minutes`},
-    send_after: NotiDate,
-    include_player_ids: [req.body.user_id]
-  };
+    var NotiDate = new Date( EventDate.getTime() - 20000 * 60 );
 
-   sendNotification(message, (err, result) => {
-       event.notification_id.push(result.id);
-       event.player_id.push(req.body.user_id);
-         var x = event;
-         x.save();
+    var message = {
+      app_id: "d3d99984-794f-4c25-bedb-5cb810d8ed86",
+      contents: {"en": `Your event ${event.name} is going to start in 20 minutes`},
+      send_after: NotiDate,
+      include_player_ids: [req.body.user_id]
+    };
 
-   });
+     sendNotification(message, (err, result) => {
+         event.notification_id.push(result.id);
+         event.player_id.push(req.body.user_id);
+           var x = event;
+           x.save();
+
+     });
+
+
+  } else {
+    console.log('IT EXIST');
+  }
+
 
 });
 
