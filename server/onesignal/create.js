@@ -1,4 +1,4 @@
-var sendNotification = function(data) {
+var sendNotification = function(data, callback) {
 
   var headers = {
     "Content-Type": "application/json; charset=utf-8",
@@ -17,8 +17,8 @@ var sendNotification = function(data) {
   var https = require('https');
   var req = https.request(options, function(res) {
     res.on('data', function(data) {
-      console.log("Response:");
-      console.log(JSON.parse(data));
+
+      callback(null, JSON.parse(data));
     });
   });
 
