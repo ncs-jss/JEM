@@ -11,19 +11,32 @@ module.exports = app => {
 
       app.get('/', async (req, res) => {
 
-        var all_events = await Event.find({});
+     try {    var all_events = await Event.find({});
         var fut_events = [];
         var past_events = [];
+        var today_events = [];
+        var tommorow = [];
         for(var i=0; i < all_events.length; i++){
-          var dat = new Date(all_events[i].date);
+          var event_date = new Date(all_events[i].date);
           var today = new Date();
-          if(dat.getDate()>=today.getDate() && dat.getMonth()>=today.getMonth()){
+          if(event_date.getDate()===today.getDate() && event_date.getMonth()===today.getMonth()){
+            today_events.push(all_events[i]);
+          }
+          else if(event_date.getDate()===today.getDate()+1 && event_date.getMonth()===today.getMonth()){
+            tommorow.push(all_events[i]);
+          }
+          else if(event_date.getDate()>=today.getDate()+1 && event_date.getMonth()>=today.getMonth()){
             fut_events.push(all_events[i]);
           } else {
-              past_events.push(all_events[i]);
+
           }
+
         }
-          res.send(fut_events);
+        today_events = today_events.concat(tommorow, fut_events);
+          res.send(today_events);
+        } catch(e) {
+          res.status(400).send(e);
+        }
 
            //  res.render(__dirname + '/views/home', {
            //   events
