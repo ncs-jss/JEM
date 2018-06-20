@@ -10,15 +10,25 @@ module.exports = app => {
 
 
       app.get('/', async (req, res) => {
-        try {
-          let events = await Event.find({});
-            res.send(JSON.stringify(events, undefined, 2));
+
+        var all_events = await Event.find({});
+        var fut_events = [];
+        var past_events = [];
+        for(var i=0; i < all_events.length; i++){
+          var dat = new Date(all_events[i].date);
+          var today = new Date();
+          if(dat.getDate()>=today.getDate() && dat.getMonth()>=today.getMonth()){
+            fut_events.push(all_events[i]);
+          } else {
+              past_events.push(all_events[i]);
+          }
+        }
+          res.send(fut_events);
+
            //  res.render(__dirname + '/views/home', {
            //   events
            // });
-        } catch(e) {
-          res.status(400).send(e);
-        };
+
 
       });
 
@@ -104,7 +114,7 @@ module.exports = app => {
             } catch(e) {
               res.status(400).send(e);
             }
-            
+
       });
 
       // DELETE EVENT ROUTE
