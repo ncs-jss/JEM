@@ -8,43 +8,31 @@ const {deleteNotification} = require('./onesignal/cancel');
 
 module.exports = app => {
 
-
       app.get('/', async (req, res) => {
 
-     try {    var all_events = await Event.find({});
-        var fut_events = [];
-        var past_events = [];
-        var today_events = [];
-        var tommorow = [];
-        for(var i=0; i < all_events.length; i++){
-          var event_date = new Date(all_events[i].date);
-          var today = new Date();
-          if(event_date.getDate()===today.getDate() && event_date.getMonth()===today.getMonth()){
-            today_events.push(all_events[i]);
-          }
-          else if(event_date.getDate()===today.getDate()+1 && event_date.getMonth()===today.getMonth()){
-            tommorow.push(all_events[i]);
-          }
-          else if(event_date.getDate()>=today.getDate()+1 && event_date.getMonth()>=today.getMonth()){
-            fut_events.push(all_events[i]);
-          } else {
+      try {
 
-          }
+            var all_events = await Event.find({});
+            var upcoming_events = [];
 
-        }
-        today_events = today_events.concat(tommorow, fut_events);
-          res.send(today_events);
-        } catch(e) {
+            for(var i = 0; i < all_events.length; i++){
+                if(new Date(all_events[i].date).getTime() >= new Date().getTime()){
+                  upcoming_events.push(all_events[i]);
+                }
+            }
+            upcoming_events.sort(function(a,b) {
+                return new Date(a.date).getTime() - new Date(b.date).getTime()
+            });
+
+            res.send(upcoming_events);
+
+      } catch(e) {
           res.status(400).send(e);
-        }
-
+      }
            //  res.render(__dirname + '/views/home', {
            //   events
            // });
-
-
       });
-
 
 
       app.post('/', async (req, res) => {
@@ -53,7 +41,6 @@ module.exports = app => {
           let event = await Event.findById({
             _id: id
           });
-
 
           if(event.player_id.length==0 || event.player_id.indexOf(req.body.user_id)<0){
 
