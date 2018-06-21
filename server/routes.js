@@ -8,20 +8,31 @@ const {deleteNotification} = require('./onesignal/cancel');
 
 module.exports = app => {
 
-
       app.get('/', async (req, res) => {
-        try {
-          let events = await Event.find({});
-            res.send(JSON.stringify(events, undefined, 2));
+
+      try {
+
+            var all_events = await Event.find({});
+            var upcoming_events = [];
+
+            for(var i = 0; i < all_events.length; i++){
+                if(new Date(all_events[i].date).getTime() >= new Date().getTime()){
+                  upcoming_events.push(all_events[i]);
+                }
+            }
+            upcoming_events.sort(function(a,b) {
+                return new Date(a.date).getTime() - new Date(b.date).getTime()
+            });
+
+            res.send(upcoming_events);
+
+      } catch(e) {
+          res.status(400).send(e);
+      }
            //  res.render(__dirname + '/views/home', {
            //   events
            // });
-        } catch(e) {
-          res.status(400).send(e);
-        };
-
       });
-
 
 
       app.post('/', async (req, res) => {
@@ -30,7 +41,6 @@ module.exports = app => {
           let event = await Event.findById({
             _id: id
           });
-
 
           if(event.player_id.length==0 || event.player_id.indexOf(req.body.user_id)<0){
 
@@ -104,7 +114,7 @@ module.exports = app => {
             } catch(e) {
               res.status(400).send(e);
             }
-            
+
       });
 
       // DELETE EVENT ROUTE
