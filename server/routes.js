@@ -8,20 +8,20 @@ const {deleteNotification} = require('./onesignal/cancel');
 
 module.exports = app => {
 
-
       app.get('/', async (req, res) => {
+
         try {
           let events = await Event.find({}).sort({ isodate : 'asc'});
             res.send(events);
+
+      } catch(e) {
+          res.status(400).send(e);
+      }
+
            //  res.render(__dirname + '/views/home', {
            //   events
            // });
-        } catch(e) {
-          res.status(400).send(e);
-        };
-
       });
-
 
 
       app.post('/', async (req, res) => {
@@ -30,7 +30,6 @@ module.exports = app => {
           let event = await Event.findById({
             _id: id
           });
-
 
           if(event.player_id.length==0 || event.player_id.indexOf(req.body.user_id)<0){
 
