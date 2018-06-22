@@ -104,7 +104,7 @@ module.exports = app => {
             } catch(e) {
               res.status(400).send(e);
             }
-            
+
       });
 
       // DELETE EVENT ROUTE
@@ -238,7 +238,8 @@ module.exports = app => {
               if (!error && response.statusCode == 200) {
                    sess = req.session;
                     sess.username = body.username;
-                    res.end('done');
+                    var login_res = _.pick(body, ['username', 'first_name']);
+                    res.send(login_res);
               }
               else {
                 res.status(400).send();
