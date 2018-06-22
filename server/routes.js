@@ -167,10 +167,6 @@ module.exports = app => {
                   return res.status(400).send();
                 }
 
-                body.name = req.body.name;
-                body.description = req.body.description;
-                body.date = req.body.date;
-
                 let event1 = await Event.findById({
                   _id: id
                 });
