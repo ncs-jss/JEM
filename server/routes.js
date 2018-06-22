@@ -1,6 +1,6 @@
 const {mongoose} = require('./db/mongoose');
 const {Event} = require('./models/event');
-const _ = require('lodash');
+const _pick = require('lodash/pick');
 const request = require('request');
 const {ObjectId} = require('mongodb');
 const {sendNotification} = require('./onesignal/create');
@@ -10,25 +10,14 @@ module.exports = app => {
 
       app.get('/', async (req, res) => {
 
-      try {
-
-            var all_events = await Event.find({});
-            var upcoming_events = [];
-
-            for(var i = 0; i < all_events.length; i++){
-                if(new Date(all_events[i].date).getTime() >= new Date().getTime()){
-                  upcoming_events.push(all_events[i]);
-                }
-            }
-            upcoming_events.sort(function(a,b) {
-                return new Date(a.date).getTime() - new Date(b.date).getTime()
-            });
-
-            res.send(upcoming_events);
+        try {
+          let events = await Event.find({}).sort({ isodate : 'asc'});
+            res.send(events);
 
       } catch(e) {
           res.status(400).send(e);
       }
+
            //  res.render(__dirname + '/views/home', {
            //   events
            // });
@@ -171,15 +160,11 @@ module.exports = app => {
         sess = req.session;
         if(sess.username) {
                 const id = req.params.id;
-                const body = _.pick(req.body, ['name', 'description', 'date']);
+                const body = _pick(req.body, ['name', 'description', 'date']);
 
                 if(!ObjectId.isValid(id)){
                   return res.status(400).send();
                 }
-
-                body.name = req.body.name;
-                body.description = req.body.description;
-                body.date = req.body.date;
 
                 let event1 = await Event.findById({
                   _id: id
@@ -248,7 +233,8 @@ module.exports = app => {
               if (!error && response.statusCode == 200) {
                    sess = req.session;
                     sess.username = body.username;
-                    res.end('done');
+                    var login_res = _pick(body, ['username', 'first_name']);
+                    res.send(login_res);
               }
               else {
                 res.status(400).send();

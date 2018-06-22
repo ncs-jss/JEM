@@ -11,7 +11,10 @@ var EventSchema = new mongoose.Schema({
     },
     date: {
       type: String,
-      default: new Date()
+      required: true
+    },
+    isodate: {
+      type: Date,
     },
     notification_id: [{
       type: String,
@@ -24,6 +27,18 @@ var EventSchema = new mongoose.Schema({
       required: true
     }
   });
+
+  EventSchema.pre('save', function (next)  {
+  var event = this;
+  if(event.isModified('date')){
+    event.isodate = event.date;
+    next();
+  } else {
+    next();
+  }
+
+});
+
 
   var Event = mongoose.model('Event', EventSchema);
 
