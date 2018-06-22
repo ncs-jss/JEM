@@ -11,8 +11,8 @@ module.exports = app => {
 
       app.get('/', async (req, res) => {
         try {
-          let events = await Event.find({});
-            res.send(JSON.stringify(events, undefined, 2));
+          let events = await Event.find({}).sort({ isodate : 'asc'});
+            res.send(events);
            //  res.render(__dirname + '/views/home', {
            //   events
            // });
