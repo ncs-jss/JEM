@@ -1,6 +1,6 @@
 const {mongoose} = require('./db/mongoose');
 const {Event} = require('./models/event');
-const _ = require('lodash');
+const _pick = require('lodash/pick');
 const request = require('request');
 const {ObjectId} = require('mongodb');
 const {sendNotification} = require('./onesignal/create');
@@ -161,7 +161,7 @@ module.exports = app => {
         sess = req.session;
         if(sess.username) {
                 const id = req.params.id;
-                const body = _.pick(req.body, ['name', 'description', 'date']);
+                const body = _pick(req.body, ['name', 'description', 'date']);
 
                 if(!ObjectId.isValid(id)){
                   return res.status(400).send();
@@ -234,7 +234,7 @@ module.exports = app => {
               if (!error && response.statusCode == 200) {
                    sess = req.session;
                     sess.username = body.username;
-                    var login_res = _.pick(body, ['username', 'first_name']);
+                    var login_res = _pick(body, ['username', 'first_name']);
                     res.send(login_res);
               }
               else {
