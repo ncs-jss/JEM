@@ -2,7 +2,7 @@ var sendNotification = function(data, callback) {
 
   var headers = {
     "Content-Type": "application/json; charset=utf-8",
-    "Authorization": `Basic ${process.env.RESTAPI}`
+    "Authorization": `Basic ${process.env.ONESIGNAL_REST_API}`
   };
 
 
