@@ -2,8 +2,9 @@
   "name": "projectex1",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
+    "start": "node server/server.js",
     "lint": "eslint --ignore-pattern dist ./"
   },
   "repository": {
