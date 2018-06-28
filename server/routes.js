@@ -11,15 +11,24 @@ var sess
 module.exports = app => {
   app.get('/', async (req, res) => {
     try {
+      let upcoming_events = []
       let events = await Event.find({}).sort({isodate: 'asc'})
-      res.send(events)
+
+      for (var i = 0; i < events.length; i++){
+        if (new Date(events[i].date) >= new Date()){
+          upcoming_events.push(events[i])
+        }
+      }
+      
+      // res.send(events)
+       res.render(__dirname + '/views/home', {
+        upcoming_events
+      });
     } catch (e) {
       res.status(400).send(e)
     }
 
-    //  res.render(__dirname + '/views/home', {
-    //   events
-    // });
+
   })
 
   app.post('/', async (req, res) => {
@@ -34,7 +43,7 @@ module.exports = app => {
       var NotiDate = new Date(EventDate.getTime() - 20000 * 60)
 
       var message = {
-        app_id: 'd3d99984-794f-4c25-bedb-5cb810d8ed86',
+        app_id: `${process.env.ONESIGNAL_REST_API}`,
         contents: {'en': `Your event ${event.name} is going to start in 20 minutes`},
         send_after: NotiDate,
         include_player_ids: [req.body.user_id]
@@ -166,7 +175,7 @@ module.exports = app => {
           var NotiDate = new Date(EventDate.getTime() - 20000 * 60)
 
           var message = {
-            app_id: 'd3d99984-794f-4c25-bedb-5cb810d8ed86',
+            app_id: `${process.env.ONESIGNAL_REST_API}`,
             contents: {'en': `Your event ${body.name} is going to start in 20 minutes`},
             send_after: NotiDate,
             include_player_ids: event1.player_id

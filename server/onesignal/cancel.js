@@ -2,12 +2,12 @@ var request = require('request')
 
 var deleteNotification = function (data) {
   var headers = {
-    'Authorization': `Basic ${process.env.RESTAPI}`
+    'Authorization': `Basic ${process.env.ONESIGNAL_REST_API}`
   }
 
   var options = {
     method: 'DELETE',
-    url: `https://onesignal.com/api/v1/notifications/${data}?app_id=d3d99984-794f-4c25-bedb-5cb810d8ed86`,
+    url: `https://onesignal.com/api/v1/notifications/${data}?app_id=${process.env.ONESIGNAL_APP_ID}`,
     headers: headers
   }
 
