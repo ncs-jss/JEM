@@ -19,7 +19,7 @@ module.exports = app => {
           upcoming_events.push(events[i])
         }
       }
-      
+
       // res.send(events)
        res.render(__dirname + '/views/home', {
         upcoming_events
@@ -43,7 +43,7 @@ module.exports = app => {
       var NotiDate = new Date(EventDate.getTime() - 20000 * 60)
 
       var message = {
-        app_id: `${process.env.ONESIGNAL_REST_API}`,
+        app_id: `${process.env.ONESIGNAL_APP_ID}`,
         contents: {'en': `Your event ${event.name} is going to start in 20 minutes`},
         send_after: NotiDate,
         include_player_ids: [req.body.user_id]
@@ -175,7 +175,7 @@ module.exports = app => {
           var NotiDate = new Date(EventDate.getTime() - 20000 * 60)
 
           var message = {
-            app_id: `${process.env.ONESIGNAL_REST_API}`,
+            app_id: `${process.env.ONESIGNAL_APP_ID}`,
             contents: {'en': `Your event ${body.name} is going to start in 20 minutes`},
             send_after: NotiDate,
             include_player_ids: event1.player_id
