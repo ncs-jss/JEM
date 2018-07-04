@@ -12,8 +12,11 @@ class SideBar extends Component {
           </div>
           <ul className="list-unstyled components">
             <p>Dummy Heading</p>
-          <li className="active">
-          <NavLink to="/login">kunal</NavLink>
+          <li>
+          <NavLink to="/login">Login</NavLink>
+        </li>
+        <li>
+          <NavLink to="/create">Create</NavLink>
         </li>
       </ul>
     </nav>
