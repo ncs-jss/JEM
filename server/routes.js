@@ -1,34 +1,30 @@
 require('./db/mongoose')
 const {Event} = require('./models/event')
 const _pick = require('lodash/pick')
-const request = require('request')
+require('request')
 const {ObjectId} = require('mongodb')
 const {sendNotification} = require('./onesignal/create')
 const {deleteNotification} = require('./onesignal/cancel')
-
-var sess
+const {User} = require('./models/user')
+const {authenticate} = require('./middleware/authenticate')
+const {authenticateLogout} = require('./middleware/authenticate-logout')
 
 module.exports = app => {
   app.get('/', async (req, res) => {
     try {
-      let upcoming_events = []
+      let UpcomingEvents = []
       let events = await Event.find({}).sort({isodate: 'asc'})
 
-      for (var i = 0; i < events.length; i++){
-        if (new Date(events[i].date) >= new Date()){
-          upcoming_events.push(events[i])
+      for (var i = 0; i < events.length; i++) {
+        if (new Date(events[i].date) >= new Date()) {
+          UpcomingEvents.push(events[i])
         }
       }
 
-      // res.send(events)
-       res.render(__dirname + '/views/home', {
-        upcoming_events
-      });
+      res.send(UpcomingEvents)
     } catch (e) {
       res.status(400).send(e)
     }
-
-
   })
 
   app.post('/', async (req, res) => {
@@ -64,25 +60,20 @@ module.exports = app => {
   })
 
   // CREATE EVENT
-  app.post('/events', async (req, res) => {
-    sess = req.session
-    if (sess.username) {
-      const event = new Event({
-        name: req.body.name,
-        description: req.body.description,
-        date: req.body.date,
-        creator: sess.username
-      })
+  app.post('/events', authenticate, async (req, res) => {
+    const event = new Event({
+      name: req.body.name,
+      description: req.body.description,
+      date: req.body.date,
+      creator: req.user.username
+    })
 
-      try {
-        const doc = await event.save()
-        res.send(doc)
-      } catch (e) {
-        res.status(400).send(e)
-      };
-    } else {
-      res.status(401).send()
-    }
+    try {
+      const doc = await event.save()
+      res.send(doc)
+    } catch (e) {
+      res.status(400).send(e)
+    };
   })
 
   // SHOW EVENT WITH ID
@@ -108,95 +99,85 @@ module.exports = app => {
 
   // DELETE EVENT ROUTE
 
-  app.delete('/events/:id', async (req, res) => {
-    sess = req.session
-    if (sess.username) {
-      const id = req.params.id
+  app.delete('/events/:id', authenticate, async (req, res) => {
+    const id = req.params.id
 
-      if (!ObjectId.isValid(id)) {
-        return res.status(404).send()
-      }
-
-      try {
-        let event1 = await Event.findById({
-          _id: id
-        })
-
-        if (event1.creator === sess.username) {
-          for (var i = 0, len = event1.notification_id.length; i < len; i++) {
-            if (event1.notification_id[i] !== null) {
-              deleteNotification(event1.notification_id[i])
-            }
-          }
-          const event = await Event.findByIdAndRemove(id)
-
-          if (!event) {
-            return res.status(404).send()
-          }
-
-          res.send({event})
-        } else {
-          res.status(401).send()
-        }
-      } catch (e) {
-        res.status(400).send()
-      };
-    } else {
-      res.status(401).send()
+    if (!ObjectId.isValid(id)) {
+      return res.status(404).send()
     }
-  })
 
-  // UPDATE EVENT WITH GIVEN EVENT ID
-
-  app.patch('/events/:id', async (req, res) => {
-    sess = req.session
-    if (sess.username) {
-      const id = req.params.id
-      const body = _pick(req.body, ['name', 'description', 'date'])
-
-      if (!ObjectId.isValid(id)) {
-        return res.status(400).send()
-      }
-
+    try {
       let event1 = await Event.findById({
         _id: id
       })
 
-      if (sess.username === event1.creator) {
-        if (event1.date !== req.body.date) {
-          for (var i = 0, len = event1.notification_id.length; i < len; i++) {
-            if (event1.notification_id[i] !== null) {
-              deleteNotification(event1.notification_id[i])
-            }
+      if (event1.creator === req.user.username) {
+        for (var i = 0, len = event1.notification_id.length; i < len; i++) {
+          if (event1.notification_id[i] !== null) {
+            deleteNotification(event1.notification_id[i])
           }
+        }
+        const event = await Event.findByIdAndRemove(id)
 
-          var EventDate = new Date(req.body.date)
-
-          var NotiDate = new Date(EventDate.getTime() - 20000 * 60)
-
-          var message = {
-            app_id: `${process.env.ONESIGNAL_APP_ID}`,
-            contents: {'en': `Your event ${body.name} is going to start in 20 minutes`},
-            send_after: NotiDate,
-            include_player_ids: event1.player_id
-          }
-
-          sendNotification(message, (err, result) => {
-            if (err) {
-              res.status(400).send(err)
-            }
-            console.log('updated and sent')
-          })
+        if (!event) {
+          return res.status(404).send()
         }
 
-        try {
-          const event = await Event.findByIdAndUpdate(id, {$set: body}, {new: true})
-          res.status(200).send(event)
-        } catch (e) {
-          res.status(400).send()
-        }
+        res.send({event})
       } else {
         res.status(401).send()
+      }
+    } catch (e) {
+      res.status(400).send()
+    };
+  })
+
+  // UPDATE EVENT WITH GIVEN EVENT ID
+
+  app.patch('/events/:id', authenticate, async (req, res) => {
+    const id = req.params.id
+    const body = _pick(req.body, ['name', 'description', 'date'])
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send()
+    }
+
+    let event1 = await Event.findById({
+      _id: id
+    })
+
+    if (req.user.username === event1.creator) {
+      if (event1.date !== req.body.date) {
+        for (var i = 0, len = event1.notification_id.length; i < len; i++) {
+          if (event1.notification_id[i] !== null) {
+            deleteNotification(event1.notification_id[i])
+          }
+        }
+
+        var EventDate = new Date(req.body.date)
+
+        var NotiDate = new Date(EventDate.getTime() - 20000 * 60)
+
+        var message = {
+          app_id: `${process.env.ONESIGNAL_APP_ID}`,
+          contents: {'en': `Your event ${body.name} is going to start in 20 minutes`},
+          send_after: NotiDate,
+          include_player_ids: event1.player_id
+        }
+
+        sendNotification(message, (err, result) => {
+          if (err) {
+            res.status(400).send(err)
+          }
+          console.log('updated and sent')
+        })
+      }
+
+      try {
+        const event = await Event.findByIdAndUpdate(id, {$set: body}, {new: true})
+        res.status(200).send(event)
+      } catch (e) {
+        res.status(400).send()
       }
     } else {
       res.status(401).send()
@@ -210,41 +191,41 @@ module.exports = app => {
       password: `${req.body.password}`
     }
 
-    var options = {
-      method: 'POST',
-      url: `http://yashasingh.tech:8085/api/profiles/login/`,
-      json: true,
-      body: values
-    }
+    var request = require('request')
 
-    function callback (error, response, body) {
-      if (!error && response.statusCode === 200) {
-        sess = req.session
-        sess.username = body.username
-        var loginResp = _pick(body, ['username', 'first_name'])
-        res.send(loginResp)
-      } else {
-        res.status(400).send()
+    request.post(
+      'http://yashasingh.tech:8085/api/profiles/login/',
+      { json: true,
+        body: values },
+      function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+          var data = _pick(body, ['username', 'group'])
+
+          User.findOne({username: data.username}).then((user) => {
+            if (!user) {
+              var newuser = new User(data)
+              newuser.save().then(() => {
+                newuser.generateAuthToken().then((token) => {
+                  res.header('x-auth', token).send({user: newuser.username})
+                })
+              })
+            } else {
+              user.generateAuthToken().then((token) => {
+                res.header('x-auth', token).send({user: user.username})
+              })
+            }
+          })
+        }
       }
-    }
-
-    request(options, callback)
+    )
   })
 
-  app.get('/logout', async (req, res) => {
-    req.session.destroy(function (err) {
-      if (err) {
-        console.log(err)
-      } else {
-        res.redirect('/')
-      }
-    })
-  })
-
-  app.get('/dashboard', (req, res) => {
-    sess = req.session
-    if (sess.username) {
-      res.send('this is your dashboard')
+  app.delete('/logout', authenticateLogout, async (req, res) => {
+    try {
+      await req.user.removeToken(req.token)
+      res.status(200).send()
+    } catch (e) {
+      res.status(400).send()
     }
   })
 }
