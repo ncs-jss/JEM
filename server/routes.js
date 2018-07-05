@@ -9,6 +9,8 @@ const {deleteNotification} = require('./onesignal/cancel')
 const {User} = require('./models/user')
 const {authenticate} = require('./middleware/authenticate')
 const {authenticateLogout} = require('./middleware/authenticate-logout')
+const Json2csvParser = require('json2csv').Parser
+var fs = require('fs')
 
 module.exports = app => {
   app.get('/', async (req, res) => {
@@ -98,7 +100,6 @@ module.exports = app => {
     }
   })
 
-
   app.post('/events/:id/register', async (req, res) => {
     const id = req.params.id
 
@@ -108,11 +109,10 @@ module.exports = app => {
 
     const body = _pick(req.body, ['name', 'email', 'number', 'admno', 'branch', 'applyfor'])
 
-
     let event1 = await Event.findById({
       _id: id
     })
-    if(event1){
+    if (event1) {
       body.eventId = event1._id
       var register = new Registration(body)
       register.save()
@@ -120,7 +120,34 @@ module.exports = app => {
     } else {
       res.status(400).send()
     }
+  })
 
+  app.get('/events/:id/csv', async (req, res) => {
+    const id = req.params.id
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send()
+    }
+
+    // var register = await Registration.find({eventId: id})
+    // console.log(register);
+
+    // if (req.user.username === event1.creator) {
+    Registration.find({eventId: id}, function (err, data) {
+      if (err) { res.json(err) } else {
+        var fields = ['_id', 'name', 'email', 'number', 'admno', 'branch', 'applyfor', 'eventId']
+        const json2csvParser = new Json2csvParser({ fields })
+        const csv = json2csvParser.parse(data)
+        var path = `${__dirname}/public/csv/${id}.csv`
+        fs.writeFile(path, csv, function (err, data) {
+          if (err) { throw err } else {
+            res.download(path) // This is what you need
+          }
+        })
+      }
+    })
+
+    // }
   })
   // DELETE EVENT ROUTE
 

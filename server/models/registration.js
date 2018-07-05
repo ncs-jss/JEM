@@ -29,8 +29,6 @@ var RegistrationSchema = new mongoose.Schema({
   }
 })
 
-
-
 var Registration = mongoose.model('Registration', RegistrationSchema)
 
 module.exports = {Registration}
