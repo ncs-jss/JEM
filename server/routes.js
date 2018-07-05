@@ -1,7 +1,7 @@
 require('./db/mongoose')
 const {Event} = require('./models/event')
 const _pick = require('lodash/pick')
-require('request')
+const request = require('request')
 const {ObjectId} = require('mongodb')
 const {sendNotification} = require('./onesignal/create')
 const {deleteNotification} = require('./onesignal/cancel')
@@ -97,6 +97,35 @@ module.exports = app => {
     }
   })
 
+  app.get('/events/:id/register', async (req, res) => {
+    const id = req.params.id
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send()
+    }
+
+
+  })
+
+  app.post('/events/:id/register', async (req, res) => {
+    const id = req.params.id
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).send()
+    }
+
+    const body = _pick(req.body, ['name', 'email', 'number', 'admno'])
+
+
+    let event1 = await Event.findById({
+      _id: id
+    })
+    if(event1){
+      body.event = event1._id
+    }
+
+
+  })
   // DELETE EVENT ROUTE
 
   app.delete('/events/:id', authenticate, async (req, res) => {
@@ -190,8 +219,6 @@ module.exports = app => {
       username: `${req.body.username}`,
       password: `${req.body.password}`
     }
-
-    var request = require('request')
 
     request.post(
       'http://yashasingh.tech:8085/api/profiles/login/',
