@@ -1,5 +1,6 @@
 require('./db/mongoose')
 const {Event} = require('./models/event')
+const {Registration} = require('./models/registration')
 const _pick = require('lodash/pick')
 const request = require('request')
 const {ObjectId} = require('mongodb')
@@ -97,15 +98,6 @@ module.exports = app => {
     }
   })
 
-  app.get('/events/:id/register', async (req, res) => {
-    const id = req.params.id
-
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).send()
-    }
-
-
-  })
 
   app.post('/events/:id/register', async (req, res) => {
     const id = req.params.id
@@ -114,16 +106,20 @@ module.exports = app => {
       return res.status(400).send()
     }
 
-    const body = _pick(req.body, ['name', 'email', 'number', 'admno'])
+    const body = _pick(req.body, ['name', 'email', 'number', 'admno', 'branch', 'applyfor'])
 
 
     let event1 = await Event.findById({
       _id: id
     })
     if(event1){
-      body.event = event1._id
+      body.eventId = event1._id
+      var register = new Registration(body)
+      register.save()
+      res.status(200).send(register)
+    } else {
+      res.status(400).send()
     }
-
 
   })
   // DELETE EVENT ROUTE
