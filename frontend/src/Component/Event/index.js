@@ -3,6 +3,7 @@ import superagent from 'superagent';
 import SideBar from '../SideBar';
 import './event.css';
 import bell from  '../../bell.png';
+import cross from '../../cross.png';
 class Event extends Component {
   constructor(props) {
     super(props);
@@ -52,7 +53,7 @@ class Event extends Component {
         console.log("error", err);
       });
   }
-  ExpandLess() {
+  ExpandLess = () => {
     this.setState({
       expand: false
     })
@@ -85,9 +86,9 @@ render() {
             return (
               <div key={data._id} className="row">
                 <div className="col-8">
-                  <h3 style={{textTransform: 'capitalize' , marginBottom: '1px'}}>
+                  <h4 style={{textTransform: 'capitalize' , marginBottom: '1px'}}>
                           {data.name}
-                  </h3>
+                  </h4>
                   <p>NIBBLE COMPUTER SOCIETY</p>
                   <button className="btn btn-link"
                   onClick={this.ExpandMore.bind(this, data._id)}
@@ -114,15 +115,33 @@ render() {
       </div>
         ):
         (
-            <div>
-              <h3>{this.state.individualEvent.event.name}</h3>
-              <h3>{this.state.individualEvent.event.description}</h3>
-              <button className="btn btn-default"
-                 onClick={this.ExpandLess.bind(this)}
-                 >
-                 Back
+            <div style={{paddingTop: '0px'}}>
+            <button style={{position: 'absolute' , right:'20px' , top:'20px'}}
+            className="close"
+            onClick={this.ExpandLess}
+            >
+             <img src={cross} width="30px" height="30px" />
               </button>
+            <section className="upper">
+              <h1 className="text-center">{this.state.individualEvent.event.name}</h1>
+              <h3 className="text-center">Nibble Computer Society</h3>
+              <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
+              </section>
+              <section className="lower">
+              <p style={{fontSize: '14px'}}>{this.state.individualEvent.event.description}</p>
+              <br/>
+              <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
+              </section>
+              <div className="nibble">
+                <p className="text-center" style={{fontSize: '14px' , marginBottom: '0px'}}>
+                  Nibble Computer Society
+                </p>
+              </div>
             </div>
+
+
+
+            
           )
         }
     </div>

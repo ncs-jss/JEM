@@ -6,9 +6,11 @@ body {
 .container-fluid {
   padding:0!important;
   color: #fff;
-  @media(max-width: 768px) {
-    padding-top: 10px!important;
-  }
+}
+@media(max-width: 768px) {
+  .container-fluid {
+  padding-top: 70px!important;
+}
 }
 .row:nth-child(odd) {
   background-color: rgb(15, 140, 219)!important;
@@ -19,6 +21,7 @@ body {
 .row:nth-child(n) {
   padding-bottom: 40px!important;
 }
+
 .row {
   padding: 20px;
   padding-right: 0!important;
@@ -48,4 +51,34 @@ body {
   width: 100%;
   padding-left: 0!important;
   padding-top: 5px;
+}
+.upper {
+  background-color: rgb(15, 140, 219);
+  color: #fff;
+  padding: 30px 50px 70px 50px;
+  min-height: 30vh;
+}
+.lower {
+  background-color:rgb(6,115,184);
+  color: #fff;
+  padding: 30px 50px 70px 50px;
+  min-height: 70vh;
+}
+@media(max-width: 768px) {
+  .lower , .upper {
+    padding: 30px 20px 70px 20px;
+  }
+}
+.close {
+  background-color: transparent;
+  outline: 0!important;
+  border: none!important;
+}
+.bell {
+  background-color: transparent;
+  outline: 0!important;
+  border: none!important;
+}
+.bell:hover {
+  transform: scale(1.1)!important;
 }
