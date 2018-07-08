@@ -9,7 +9,10 @@ body {
     padding-left: 17rem;
   }
 }
-
+ .navbar {
+  padding-top: 0.7rem!important;
+  padding-bottom: 0.7rem!important;
+ }
 
 .list-social-icons a .fa-lg {
   font-size: 1.75rem;
@@ -68,14 +71,27 @@ body {
   }
 }
 
-
-
-.bg-primary {
-  background-color:#337ab7 !important;
+.navbar-dark .navbar-toggler-icon {
+  background-image: url(../../toggle.png)!important;
+}
+.navbar-dark:focus .navbar-toggler-icon:focus {
+ border: none!important;
+ outline: 0!important;
+}
+.navbar-dark:target .navbar-toggler-icon:target {
+ border: none!important;
+ outline: 0!important;
+}
+.navbar-dark:active .navbar-toggler-icon:active {
+ border: none!important;
+ outline: 0!important;
+}
+.bg-primary-main {
+  background-color: #fff!important;
 }
 
 .text-primary {
-  color: #BD5D38 !important;
+  color: black !important;
 }
 
 a {

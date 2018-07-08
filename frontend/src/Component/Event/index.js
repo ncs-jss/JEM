@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import superagent from 'superagent'; 
 import SideBar from '../SideBar';
-class Protected extends Component {
+import './event.css';
+import bell from  '../../bell.png';
+class Event extends Component {
   constructor(props) {
     super(props);
     this.state = {
       event: [],
+      expand: false,
+      individualEvent: { }
     }
   }
 
@@ -30,6 +34,32 @@ class Protected extends Component {
          console.log(err)
         );
   }
+  ExpandMore(id)
+  {
+    console.log(id);
+    superagent
+      .get('http://54.157.21.6:8089/events/' + id)
+      .set("Content-Type", "application/json")
+      .then(res => {
+        const event = res.body;
+         this.setState({ 
+          individualEvent: event,
+          expand: true
+           });  
+         console.log(this.state.individualEvent)     
+      })
+      .catch(err => {
+        console.log("error", err);
+      });
+  }
+  ExpandLess() {
+    this.setState({
+      expand: false
+    })
+  }
+  dateChange(kunal) {
+    return 'hi'
+  }
   componentDidMount() {
     superagent
       .get('http://54.157.21.6:8089/')
@@ -44,54 +74,59 @@ class Protected extends Component {
   }
 
 render() {
+   const isExpand = this.state.expand;
   return (
-    <div className="App"> 
-    <SideBar />
-    <h1 style={{textAlign: 'center'}}>Events</h1>
-    <br/>
-      {this.state.event.map(data => {
-        const id= '#' + data._id
-          return (
-              <div key={data._id} className="text-center">
-
-                  <h3 style={{display: 'inline-block'}}>
-                      {this.state.event.indexOf(data)+1})&nbsp;
+    <div> 
+    { !isExpand ? (
+      <div>
+        <div className="container-fluid">
+          <SideBar />
+          {this.state.event.map(data => {
+            return (
+              <div key={data._id} className="row">
+                <div className="col-8">
+                  <h3 style={{textTransform: 'capitalize' , marginBottom: '1px'}}>
+                          {data.name}
                   </h3>
-                  <h3 style={{ textTransform: "upperCase" , display: 'inline-block' }}>
-                          { data.name}
-                  </h3>
-                  <h3>{data.description}</h3>
-                  <p>{data.date}</p>
-                  <button 
-                      className="btn btn-danger"
-                      id={data._id}
-                      onClick={this.handleDelete.bind(this, data._id )}>
-                      Delete
+                  <p>NIBBLE COMPUTER SOCIETY</p>
+                  <button className="btn btn-link"
+                  onClick={this.ExpandMore.bind(this, data._id)}
+                  >
+                  READ MORE</button>
+                </div>
+                <div className="col-4">
+                  <button className="btn btn-warning" style={{float: 'right'}}>
+                  <img src={bell} width="50px" height="50px" alt="notify me"/>
                   </button>
-                  <button 
-                      className="btn btn-primary" 
-                      data-toggle="modal" 
-                      data-target={id}>
-                      Edit
-                  </button>
-                   <div className="modal" id={data._id}>
-                      <div className="modal-dialog">
-                        <div className="modal-content">
-                        <div className="modal-header">
-                          <h4 className="modal-title">Modal Heading</h4>
-                          <button type="button" className="close" data-dismiss="modal">&times;</button>
-                        </div>
-                        <div className="modal-body">
-                            Modal body..
-                          </div> 
-                        </div>
-                      </div>
-                    </div>
+                  <br/><br/><br/>
+                  <p style={{float: 'right', paddingRight: '20px'}}>14 Aug 2018</p>
+                </div>
               </div>
-          );
-        })}
+                )}
+            )
+          }
+        </div>
+        <div className="nibble">
+          <p className="text-center" style={{fontSize: '14px' , marginBottom: '0px'}}>
+            Nibble Computer Society
+          </p>
+         </div>
+      </div>
+        ):
+        (
+            <div>
+              <h3>{this.state.individualEvent.event.name}</h3>
+              <h3>{this.state.individualEvent.event.description}</h3>
+              <button className="btn btn-default"
+                 onClick={this.ExpandLess.bind(this)}
+                 >
+                 Back
+              </button>
+            </div>
+          )
+        }
     </div>
     );
-  }
 }
-export default Protected;
+}
+export default Event;
