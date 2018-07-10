@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import superagent from 'superagent'; 
 import SideBar from '../SideBar';
 import './event.css';
+import Moment from 'react-moment';
 import bell from  '../../bell.png';
+import belltwo from '../../bell2.png'
 import cross from '../../cross.png';
 class Event extends Component {
   constructor(props) {
@@ -10,7 +12,8 @@ class Event extends Component {
     this.state = {
       event: [],
       expand: false,
-      individualEvent: { }
+      individualEvent: { } ,
+      imageSource: belltwo
     }
   }
 
@@ -58,8 +61,19 @@ class Event extends Component {
       expand: false
     })
   }
-  dateChange(kunal) {
-    return 'hi'
+  ImageChange(id) {
+    document.getElementById(id).src=bell
+   let notices = localStorage.getItem('notices')
+   if(notices){
+    notices = notices.split(',');
+    notices.push(id);
+    localStorage.setItem('notices' , notices);
+   }
+   else {
+    notices = new Array();
+    notices.push(id);
+    localStorage.setItem('notices' , notices);
+   }
   }
   componentDidMount() {
     superagent
@@ -83,6 +97,16 @@ render() {
         <div className="container-fluid">
           <SideBar />
           {this.state.event.map(data => {
+            const date = data.date;
+            let notices = localStorage.getItem('notices');
+            let isNotified = false;
+            if(notices){
+              notices=notices.split(',');
+              if(notices.indexOf(data._id)>=0)
+              { 
+                isNotified=true;
+              }
+            }
             return (
               <div key={data._id} className="row">
                 <div className="col-8">
@@ -96,11 +120,23 @@ render() {
                   READ MORE</button>
                 </div>
                 <div className="col-4">
-                  <button className="btn btn-warning" style={{float: 'right'}}>
-                  <img src={bell} width="50px" height="50px" alt="notify me"/>
-                  </button>
+                  <button className="bell"
+                  onClick={this.ImageChange.bind(this, data._id)}
+                   style={{float: 'right'}}>
+                   
+                   { isNotified ? (
+                       <img src={bell} id={data._id} width="50px" height="50px" alt="notified"/> 
+                       ) : (
+                       <img src={belltwo} id={data._id} width="50px" height="50px" alt="notify me"/> 
+                       )
+                     }
+                                    </button>
                   <br/><br/><br/>
-                  <p style={{float: 'right', paddingRight: '20px'}}>14 Aug 2018</p>
+                  <p style={{float: 'right', paddingRight: '20px'}}>
+                    <Moment format="YYYY/MM/DD">
+                {date}
+            </Moment>
+                  </p>
                 </div>
               </div>
                 )}
@@ -120,7 +156,7 @@ render() {
             className="close"
             onClick={this.ExpandLess}
             >
-             <img src={cross} width="30px" height="30px" />
+             <img src={cross} width="30px" height="30px" alt="close" />
               </button>
             <section className="upper">
               <h1 className="text-center">{this.state.individualEvent.event.name}</h1>
@@ -149,3 +185,5 @@ render() {
 }
 }
 export default Event;
+
+
