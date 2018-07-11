@@ -228,4 +228,22 @@ module.exports = app => {
       res.status(400).send()
     }
   })
+
+  app.get('/dashboard', authenticate, async (req, res) => {
+    try {
+      let UpcomingEvents = []
+      const user = req.user
+      let events = await Event.find({ creator: user.username }).sort({isodate: 'asc'})
+
+      for (var i = 0; i < events.length; i++) {
+        if (new Date(events[i].date) >= new Date()) {
+          UpcomingEvents.push(events[i])
+        }
+      }
+
+      res.send(UpcomingEvents)
+    } catch (e) {
+      res.status(400).send()
+    }
+  })
 }
