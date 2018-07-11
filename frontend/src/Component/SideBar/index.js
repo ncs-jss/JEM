@@ -3,6 +3,15 @@ import {NavLink} from 'react-router-dom';
 import './sidebar.css';
 
 class SideBar extends Component {
+  constructor() {
+    super();
+    this.state= {
+      isAuthenticated: false
+    }
+  }
+   getAuthenticationToken() {
+    return localStorage.getItem('token');
+  }
   render() {
     return (
       <div className='App'>
@@ -16,13 +25,13 @@ class SideBar extends Component {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav">
           <li className="nav-item">
-              <NavLink style={{color: '#fff'}} to=""> Events</NavLink>
+              <NavLink style={{color: 'black'}} to=""> Events</NavLink>
           </li>
           <li className="nav-item">
-              <NavLink style={{color: '#fff'}} to="/login"> Login </NavLink>
+              <NavLink style={{color: 'black'}} to="/login"> Login </NavLink>
           </li>
            <li className="nav-item">
-             <NavLink style={{color: '#fff'}} to="/Create">Create</NavLink>
+             <NavLink style={{color: 'black'}} to="/Create">Create</NavLink>
           </li>
         </ul>
       </div>

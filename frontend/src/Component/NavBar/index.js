@@ -42,9 +42,9 @@ class NavbarMain extends Component {
       { !isAlreadyAuthenticated ? <Redirect to={{
         pathname: '/Login'
       }}/> : (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary fixed-top" id="sideNav">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary-main fixed-top" id="sideNav">
       <a className="navbar-brand js-scroll-trigger" href="#page-top">
-        <span className="d-none ">Start Bootstrap</span>
+        <span>Start Bootstrap</span>
       </a>
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
@@ -52,20 +52,19 @@ class NavbarMain extends Component {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <NavLink style={{color: '#fff'}} to=""> Events</NavLink>
+            <NavLink  to=""> Events</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="#">
                 <button
-                className="btn btn-link" 
-                style={{color: '#fff'}}
+                className="btn btn-danger" 
                 onClick={this.handleLogout}>
                 Logout
                 </button>
             </NavLink>
           </li>
           <li className="nav-item">
-             <NavLink style={{color: '#fff'}} to="/dashboard">Dashboard</NavLink>
+             <NavLink to="/dashboard">Dashboard</NavLink>
           </li>
         </ul>
       </div>

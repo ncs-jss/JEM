@@ -18,8 +18,23 @@ body {
 .row:nth-child(even) {
   background-color:rgb(6,115,184)!important;
 }
+.web .row {
+  background-color: transparent!important;
+}
 .row:nth-child(n) {
-  padding-bottom: 40px!important;
+  
+}
+.date {
+ border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  padding: 13px;
+  padding-top: 8px;
+  background: #fff;
+  border: 2px solid #666;
+  color: #666;
+  vertical-align: middle;
+  font: 14px Arial, sans-serif;
 }
 
 .row {
@@ -67,6 +82,9 @@ body {
 @media(max-width: 768px) {
   .lower , .upper {
     padding: 30px 20px 70px 20px;
+  }
+  .nibble {
+    text-align: center;
   }
 }
 .close {
