@@ -10,13 +10,13 @@ class Login extends  Component {
       password: ''
     }
   }
-  handleusernameChanged(event) {
+  handleusernameChanged = (event) => {
     this.setState({username: event.target.value});
   }
-   handlePasswordChanged(event) {
+   handlePasswordChanged = (event) => {
     this.setState({password: event.target.value});
   }
-  submitForm(event) {
+  submitForm = (event) => {
     event.preventDefault();
     const payload = {
       username: this.state.username,
@@ -40,28 +40,34 @@ class Login extends  Component {
     return (
       <div>
       <SideBar />
-        <div className="wrapper">
-          <form 
-            className="form-signin"
-            onSubmit={this.submitForm.bind(this)}
-            >       
-            <h2 className="form-signin-heading">Please login</h2>
-            <input type="username"
+      <form 
+         onSubmit={this.submitForm}
+         >
+        <div className="d-flex justify-content-center align-items-center text-white" id="loginform" style={{height: '100vh' , backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column'}}>
+          <h1 style={{fontSize: '40px'}}>Event Manager</h1>
+          <h3 className="float-right">Login</h3>
+          <br/>
+          <img src="http://via.placeholder.com/125x125" className="rounded-circle" alt="login"/>
+          <br/>
+          <input type="username"
               className="form-control"
-              value={this.state.username}
-              onChange={this.handleusernameChanged.bind(this)}
-              placeholder="username"
-              />
-            <input type="password" 
-              className="form-control" 
-              value={this.state.password} 
-              name="password"
-              placeholder="Password"
-              onChange={this.handlePasswordChanged.bind(this)}
-              />      
-            <button className="btn btn-lg btn-primary btn-block" type="submit">Login</button>   
-          </form>
+               value={this.state.username}
+               onChange={this.handleusernameChanged}
+               placeholder="username"
+               />
+               <br/>
+             <input type="password" 
+               className="form-control" 
+               value={this.state.password} 
+               name="password"
+               placeholder="Password"
+               onChange={this.handlePasswordChanged}
+               />    
+               <br/>
+               <button className="login-button text-center" type="submit">Login</button>
+                
         </div>
+        </form>
       </div>
       );
   }

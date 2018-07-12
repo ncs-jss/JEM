@@ -1,57 +1,48 @@
-.jumbotron {
-  background-color: red;
-  border-radius: 0!important;
-}
-.navbar {
-  margin:0;
-}
-.navbar-default .navbar-nav>li>a {
-  color: red;
-}
-.wrapper {
-  margin-top: 80px;
-  margin-bottom: 80px;
+*:focus {
+    outline: 0 !important;
 }
 
-.form-signin {
-  max-width: 380px;
-  padding: 15px 35px 45px;
-  margin: 0 auto;
+ #loginform .form-control {
+    width: 300px!important;
+    background-color: transparent!important;
+    border: none!important;
+    outline: 0!important;
+    border-bottom: 1px solid #fff!important;
+    border-radius: 0!important;
+ }
+  #loginform .form-control:focus {
+    width: 300px!important;
+    background-color: transparent!important;
+    border: 1px solid #fff;
+    outline: 0!important;
+    border-bottom: 1px solid #fff!important;
+    border-radius: 0!important;
+    color: #fff!important;
+ }
+ ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #fff!important;
+    opacity: 1; /* Firefox */
+}
+ @media(max-width: 768px) {
+    #loginform .formcontrol {
+      width: 200px;
+    }
+ }
+.login-button {
+  border-radius: 3rem;
   background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-}
-.form-signin .form-signin-heading,
-.form-signin .checkbox {
-  margin-bottom: 30px;
-}
-.form-signin .checkbox {
-  font-weight: normal;
-}
-.form-signin .form-control {
-  position: relative;
-  font-size: 16px;
-  height: auto;
+  border: none;
+  color: black;
+  width: 150px;
   padding: 10px;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  outline: none;
 }
-.form-signin .form-control:focus {
-  z-index: 2;
-}
-.form-signin input[type="text"] {
-  margin-bottom: -1px;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.form-signin input[type="password"] {
-  margin-bottom: 20px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-.navbar-default .navbar-nav>li>a:active {
-  color:black;
-}
-.navbar-default .navbar-nav>li>a:target {
-  color:black;
+.login-button: active , .login-button:focus , login-button:target {
+  border-radius: 3rem;
+  background-color: #fff;
+  border: none;
+  color: black;
+  width: 150px;
+  padding: 10px;
+  outline: none!important;
 }
