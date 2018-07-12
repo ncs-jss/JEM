@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import superagent from 'superagent';
 import SideBar from '../SideBar'
 import './login.css'
+import footer from '../../footer.png';
+import footerweb from '../../web_footer.svg';
 class Login extends  Component {
   constructor() {
     super();
@@ -47,13 +49,13 @@ class Login extends  Component {
           <h1 style={{fontSize: '40px'}}>Event Manager</h1>
           <h3 className="float-right">Login</h3>
           <br/>
-          <img src="http://via.placeholder.com/125x125" className="rounded-circle" alt="login"/>
+          <img src="http://via.placeholder.com/125x125" className="rounded-circle d-none d-md-block" alt="login"/>
           <br/>
           <input type="username"
               className="form-control"
                value={this.state.username}
                onChange={this.handleusernameChanged}
-               placeholder="username"
+               placeholder="Username"
                />
                <br/>
              <input type="password" 
@@ -63,11 +65,13 @@ class Login extends  Component {
                placeholder="Password"
                onChange={this.handlePasswordChanged}
                />    
-               <br/>
+               <br/><br/><br/>
                <button className="login-button text-center" type="submit">Login</button>
-                
         </div>
         </form>
+        <img src={footer} className="footerimage d-block d-sm-none" alt="footer"/>
+        <img src={footerweb} className="footerimage d-none d-md-block" alt="footer"/>
+       
       </div>
       );
   }

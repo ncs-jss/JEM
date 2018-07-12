@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import superagent from 'superagent';
 import NavBar from '../NavBar';
+import footer from '../../footer.png';
+import footerweb from '../../web_footer.svg';
+
+
 class Create extends  Component {
   constructor() {
     super();
@@ -59,24 +63,25 @@ class Create extends  Component {
          onSubmit={this.submitForm}
          >
         <div className="d-flex justify-content-center align-items-center text-white create_height" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column'}}>
-          <h1 style={{fontSize: '40px'}}>Event Manager</h1>
-          <h3>Create Event</h3>
+          <h1 style={{fontSize: '28px'}}>Event Manager</h1>
+          <h5>Create Event</h5>
           <br/>
-          <img src="http://via.placeholder.com/125x125" className="rounded-circle" alt="login"/>
-          <br/>
+          <img src="http://via.placeholder.com/125x125" className="rounded-circle d-none d-sm-block" style={{marginBottom: '15px'}} alt="login"/>
+         
           <input type="text"
               className="form-control"
               value={this.state.name}
               onChange={this.handleNameChanged}
               placeholder="Enter Title"
               />
+              <br/>
               <input type="datetime-local"
               className="form-control"
               id="date"
               onChange={this.handleDateChanged}
               placeholder="Enter Date"
               />
-               <br/>
+               <br/><br/>
              <textarea 
               className="textarea"
               value={this.state.description}
@@ -85,14 +90,19 @@ class Create extends  Component {
               style={{height: '100px'}}
               />     
                <br/>
-              <br /><br/>
-               <button className="login-button text-center" type="submit">Login</button>
+             <br/>
+               <button className="login-button text-center" type="submit">CREATE</button>
                <br/>
-                <p>{this.state.submit}</p>
-                <p>{this.state.error}</p>
-
             </div>
         </form>
+        <p>
+        <span style={{color:'red'}}>{this.state.error}</span>
+        <span>{this.state.submit}</span>
+        </p>
+
+        <img src={footer} className="footerimage d-block d-sm-none" alt="footer"/>
+        <img src={footerweb} className="footerimage d-none d-md-block" alt="footer"/>
+
         </div>
       );
   }

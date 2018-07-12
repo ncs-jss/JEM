@@ -59,7 +59,7 @@ class NavbarMain extends Component {
           <li className="nav-item">
             <NavLink to="#">
                 <button
-                className="btn btn-danger" 
+                className="logout" 
                 onClick={this.handleLogout}>
                 Logout
                 </button>

@@ -1,5 +1,15 @@
 *:focus {
     outline: 0 !important;
+    outline-style: none!important;
+    
+}
+*:active {
+    outline: 0 !important;
+    
+}
+*:target{
+    outline: 0 !important;
+   
 }
 
  #loginform .form-control {
@@ -9,13 +19,14 @@
     outline: 0!important;
     border-bottom: 1px solid #fff!important;
     border-radius: 0!important;
+    color: #fff!important;
  }
   #loginform .form-control:focus {
     width: 300px!important;
     background-color: transparent!important;
-    border: 1px solid #fff;
+    
     outline: 0!important;
-    border-bottom: 1px solid #fff!important;
+    border: 1px solid #fff!important;
     border-radius: 0!important;
     color: #fff!important;
  }
@@ -36,6 +47,8 @@
   width: 150px;
   padding: 10px;
   outline: none;
+  font-weight: 600;
+  z-index: 5;
 }
 .login-button: active , .login-button:focus , login-button:target {
   border-radius: 3rem;
@@ -54,7 +67,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 @media(max-width: 768px) {
   .create_height {
-    height: 120vh!important;
+    height: 100vh!important;
   }
 }
 .textarea {
@@ -76,4 +89,16 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 .textarea::-webkit-scrollbar-thumb {
   background-color: darkgrey;
   outline: 1px solid slategrey;
+}
+.footerimage {
+  bottom: 0;
+  width: 100vw;
+  position: absolute;
+  
+}
+.logout {
+  background-color: transparent;
+  color: black;
+  outline:0!important;
+  border: none!important;
 }

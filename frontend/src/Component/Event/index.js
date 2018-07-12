@@ -6,8 +6,9 @@ import Moment from 'react-moment';
 import bell from  '../../bell.png';
 import belltwo from '../../bell2.png'
 import cross from '../../cross.png';
-
-
+import footer from '../../footer.png';
+import footerweb from '../../web_footer.svg';
+import tune from '../../tune.mp3';
 class Event extends Component {
   constructor(props) {
     super(props);
@@ -40,6 +41,8 @@ class Event extends Component {
     })
   }
   ImageChange(id) {
+    var music = new Audio(tune);
+  music.play();
     const user_id = localStorage.getItem('userId');
     const event_id = id;
     const senddata = {
@@ -95,7 +98,7 @@ class Event extends Component {
       <div> 
         { !isExpand ? (
           <div>
-            <div className="container-fluid">
+            <div className="container-fluid" style={{marginBottom:'60px'}}>
              <SideBar />
              {this.state.event.map(data => {
               const date = data.date;
@@ -113,17 +116,22 @@ class Event extends Component {
                 <div className="col-8">
                   <div className="web">
                     <div className="row">
-                      <div className="col-md-4">
-                        <h5 style={{textTransform: 'capitalize' , marginBottom: '1px'}}>
+                      <div className="col-md-5">
+                        <h6 style={{textTransform: 'capitalize' , marginBottom: '0.35rem' , fontWeight: 'bold'}} className="name">
                           {data.name}
-                         </h5>
+                         </h6>
+                         <button
+                         className="btn btn-link d-none d-md-block"
+                          onClick={this.ExpandMore.bind(this, data._id)}
+                        >
+                        READ MORE</button>
                       </div>
                       <div className="col-md-4">
-                        <p>NIBBLE COMPUTER SOCIETY</p>
+                        <p style={{marginBottom:'0.35rem'}} className="society">NIBBLE COMPUTER SOCIETY</p>
                       </div>
-                      <div className="col-md-4">
+                      <div className="col-md-3">
                         <button
-                         className="btn btn-link"
+                         className="btn btn-link d-block d-md-none"
                           onClick={this.ExpandMore.bind(this, data._id)}
                         >
                         READ MORE</button>
@@ -137,15 +145,17 @@ class Event extends Component {
                     onClick={this.ImageChange.bind(this, data._id)}
                     style={{float: 'right'}}>
                     { isNotified ? (
-                       <img src={bell} id={data._id} width="50px" height="50px" alt="notified"/> 
+                       <img src={bell} id={data._id} style={{marginTop: '10px'}} width="40px" height="40px" alt="notified"/> 
                        ) : (
-                       <img src={belltwo} id={data._id} width="50px" height="50px" alt="notify me"/> 
+                       <img src={belltwo} id={data._id} width="40px" style={{marginTop: '10px'}} height="40px" alt="notify me"/> 
                        )
                     }
                   </button>
-                  <br/><br/><br/>
-                  <p style={{float: 'right', paddingRight: '20px'}}>
-                    <Moment format="YYYY/MM/DD">
+                  <div className="d-block d-md-none">
+                 <br/><br/>
+                 </div>
+                  <p className="eventdate">
+                    <Moment format="DD MMM YYYY">
                       {date}
                     </Moment>
                   </p>
@@ -154,11 +164,6 @@ class Event extends Component {
             )}
           )
         }
-      </div>
-      <div className="nibble">
-        <p  style={{fontSize: '14px' , marginBottom: '0px'}}>
-          Nibble Computer Society
-        </p>
       </div>
     </div>
         ):
@@ -192,6 +197,8 @@ class Event extends Component {
           </div>  
         )
       }
+      <img src={footer} className="d-block d-sm-none" style={{position:'fixed' , bottom: '0' , width: '100vw' , paddingTop:'30px'}} alt="footer"/>
+      <img src={footerweb} className="d-none d-md-block" style={{width: '100vw'}} alt="footer"/>
     </div>
     );
   }
