@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import superagent from 'superagent';
-import NavBar from '../NavBar'
+import NavBar from '../NavBar';
 class Create extends  Component {
   constructor() {
     super();
     this.state = {
       name: '' ,
       description: '' ,
-      date: ''
+      date: '',
+      submit: '',
+      error: ''
     }
   }
    getAuthenticationToken() {
@@ -23,18 +25,15 @@ class Create extends  Component {
       description: event.target.value
     })
   }
-    handleDateChanged = (event) => {
-    this.setState({
-      date: event.target.value
-    })
-  }
-  submit = (event) => {
+
+  submitForm = (event) => {
     event.preventDefault();
+    const value = document.getElementById('date').value
+    const date= new Date(value)
     const payload = {
       name: this.state.name,
       description: this.state.description,
-      date: this.state.date
-
+      date: date
     }
 
     superagent
@@ -42,49 +41,58 @@ class Create extends  Component {
       .set('x-auth' , this.getAuthenticationToken())
       .send(payload)
       .then(res => {
-        console.log(res.body._id);
-    //     const newTodo = {
-    //   text: this.state.text , 
-    //   _id: res.body._id
-    // } 
-    //   this.props.addTodo(newTodo)    
+       this.setState({
+        submit: 'Submit Successfully'
+       })   
       })
       .catch(err => {
-        console.log(err);
+        this.setState({
+          error: 'Failed'
+        })
       });
   }
   render() {
     return (
       <div>
       <NavBar />
-        <div className="wrapper">
-          <form 
-            className="form-signin"
-            onSubmit={this.submit}
-            >       
-            <h2 className="form-signin-heading text-center">Create Event</h2>
-           <input type="text"
+        <form 
+         onSubmit={this.submitForm}
+         >
+        <div className="d-flex justify-content-center align-items-center text-white create_height" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column'}}>
+          <h1 style={{fontSize: '40px'}}>Event Manager</h1>
+          <h3>Create Event</h3>
+          <br/>
+          <img src="http://via.placeholder.com/125x125" className="rounded-circle" alt="login"/>
+          <br/>
+          <input type="text"
               className="form-control"
               value={this.state.name}
               onChange={this.handleNameChanged}
               placeholder="Enter Title"
               />
-              <input type="text"
+              <input type="datetime-local"
               className="form-control"
+              id="date"
+              onChange={this.handleDateChanged}
+              placeholder="Enter Date"
+              />
+               <br/>
+             <textarea 
+              className="textarea"
               value={this.state.description}
               onChange={this.handleDescriptionChanged}
               placeholder="Enter Description"
-              /> 
-              <input type="text"
-              className="form-control"
-              value={this.state.date}
-              onChange={this.handleDateChanged}
-              placeholder="Enter Date"
-              />  
-              <br/>
-            <button className="btn btn-lg btn-primary btn-block" type="submit">Create</button>   
-          </form>
-        </div>
+              style={{height: '100px'}}
+              />     
+               <br/>
+              <br /><br/>
+               <button className="login-button text-center" type="submit">Login</button>
+               <br/>
+                <p>{this.state.submit}</p>
+                <p>{this.state.error}</p>
+
+            </div>
+        </form>
         </div>
       );
   }
