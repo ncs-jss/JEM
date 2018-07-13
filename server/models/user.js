@@ -12,6 +12,10 @@ var UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  name: {
+    type: String,
+    default: 'User'
+  },
   tokens: [{
     access: {
       type: String,
