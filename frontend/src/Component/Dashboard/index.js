@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import superagent from 'superagent'; 
 import SideBar from '../SideBar';
 import Moment from 'react-moment';
-import bell from  '../../bell.png';
-import belltwo from '../../bell2.png'
-import cross from '../../cross.png';
 import footer from '../../footer.png';
 import footerweb from '../../web_footer.svg';
 class Event extends Component {
@@ -13,7 +10,10 @@ class Event extends Component {
       this.state = {
         event: [],
         expand: false,
-        individualEvent: { } 
+        name: '',
+        date: '',
+        description: '',
+        id: ''
       }
     }
  getAuthenticationToken() {
@@ -25,20 +25,55 @@ class Event extends Component {
       .get('http://54.157.21.6:8089/events/' + id)
       .set("Content-Type", "application/json")
       .then(res => {
-        const event = res.body;
+        const name = res.body.event.name;
+        const date = res.body.event.date;
+        const description = res.body.event.description;
+        const id = res.body.event._id;
+        console.log(id)
         this.setState({ 
-        individualEvent: event,
-        expand: true
+        expand: true,
+        name: name,
+        date: date,
+        description: description,
+        id: id
         });    
       })
       .catch(err => {
         console.log("error", err);
       });
   }
-  ExpandLess = () => {
+  handlename = (event) => {
     this.setState({
+      name: event.target.value
+    })
+  }
+    handledescription = (event) => {
+    this.setState({
+      description: event.target.value
+    })
+  }
+  
+  handleData(e,id) {
+    e.preventDefault();
+    const value = document.getElementById('date').value
+    const date= new Date(value)
+    const payload = {
+      name: this.state.name,
+      description: this.state.description,
+      date: date
+    }
+    superagent
+    .patch("http://54.157.21.6:8089/events/" + id)
+      .set('x-auth' , this.getAuthenticationToken())
+      .send(payload)
+      .then(res => {
+       this.setState({
       expand: false
     })
+      })
+      .catch(err => {
+        console.log(err)
+      });
   }
   handleDelete(id) {
     console.log(id)
@@ -73,6 +108,7 @@ class Event extends Component {
 
   render() {
    const isExpand = this.state.expand;
+   const id = this.state.id;
     return (
       <div> 
         { !isExpand ? (
@@ -81,15 +117,6 @@ class Event extends Component {
              <SideBar />
              {this.state.event.map(data => {
               const date = data.date;
-              let notices = localStorage.getItem('notices');
-              let isNotified = false;
-              if(notices){
-                notices=notices.split(',');
-                if(notices.indexOf(data._id)>=0)
-                { 
-                isNotified=true;
-                }
-              }
             return (
               <div key={data._id} className="row">
                 <div className="col-8">
@@ -103,17 +130,17 @@ class Event extends Component {
                          className="btn btn-link d-none d-md-block"
                           onClick={this.ExpandMore.bind(this, data._id)}
                         >
-                        READ MORE</button>
+                        EDIT</button>
                       </div>
                       <div className="col-md-4">
-                        <p style={{marginBottom:'0.35rem'}} className="society">NIBBLE COMPUTER SOCIETY</p>
+                        <p style={{marginBottom:'0.35rem'}} className="society">{data.creator}</p>
                       </div>
                       <div className="col-md-3">
                         <button
                          className="btn btn-link d-block d-md-none"
                         onClick={this.ExpandMore.bind(this, data._id)}
                         >
-                        READ MORE</button>
+                        EDIT</button>
                       </div>
                     </div>
                   </div>
@@ -142,34 +169,54 @@ class Event extends Component {
       </div>
     </div>
         ):
-        (
-          <div style={{paddingTop: '0px'}}>
-            <button 
-              style={{position: 'absolute' , right:'20px' , top:'20px'}}
-              className="close"
-              onClick={this.ExpandLess}
-            >
-              <img src={cross} width="30px" height="30px" alt="close" />
-            </button>
-            <section className="upper">
-              <h1 className="text-center">{this.state.individualEvent.event.name}</h1>
-              <h3 className="text-center">Nibble Computer Society</h3>
-              <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
-            </section>
-            <section className="lower">
-              <p 
-              style={{fontSize: '14px'}}>
-                {this.state.individualEvent.event.description}
-              </p>
+        ( 
+        <div>
+        <form
+        
+        >
+          <div className="d-flex justify-content-center align-items-center text-white create_height" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column'}}>
+            <h1 style={{fontSize: '28px'}}>Event Manager</h1>
+            <h5>Create Event</h5>
+            <br/>
+            <img src="http://via.placeholder.com/125x125" className="rounded-circle d-none d-sm-block" style={{marginBottom: '15px'}} alt="login"/>
+            <input type="text"
+              className="form-control"
+              placeholder="Enter Title"
+              onChange={this.handlename}
+              value={this.state.name}
+              id="name"
+              />
               <br/>
-              <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
-            </section>
-            <div className="nibble">
-              <p className="text-center" style={{fontSize: '14px' , marginBottom: '0px'}}>
-                Nibble Computer Society
-              </p>
+              <input type="datetime-local"
+              className="form-control"
+              id="date"
+              placeholder="Enter Date"
+              />
+               <br/><br/>
+             <textarea 
+              className="textarea"
+              placeholder="Enter Description"
+              value={this.state.description}
+              onChange={this.handledescription}
+              style={{height: '100px'}}
+              id="description"
+              />     
+               <br/>
+             <br/>
+               <button className="login-button text-center" type="submit"
+               onClick={(e) => this.handleData(e, id)}
+               >EDIT</button>
+               <br/>
             </div>
-          </div>  
+        </form>
+        <p>
+        <span style={{color:'red'}}>{this.state.error}</span>
+        <span>{this.state.submit}</span>
+        </p>
+
+        <img src={footer} className="footerimage d-block d-sm-none" alt="footer"/>
+        <img src={footerweb} className="footerimage d-none d-md-block" alt="footer"/>
+        </div> 
         )
       }
       <img src={footer} className="d-block d-sm-none" style={{position:'fixed' , bottom: '0' , width: '100vw' , paddingTop:'30px'}} alt="footer"/>

@@ -15,7 +15,7 @@ class Event extends Component {
       this.state = {
         event: [],
         expand: false,
-        individualEvent: { } 
+        individualEvent: { }
       }
     }
 
@@ -85,7 +85,8 @@ class Event extends Component {
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;
-         this.setState({ event: event });       
+         this.setState({ event: event });
+         console.log(res.body)   
       })
       .catch(err => {
         console.log("error", err);
@@ -112,7 +113,7 @@ class Event extends Component {
                 }
               }
             return (
-              <div key={data._id} className="row">
+              <div key={data._id} className="row" style={{backgroundColor: 'rgb(15, 140, 219)!important'}}>
                 <div className="col-8">
                   <div className="web">
                     <div className="row">
@@ -127,7 +128,7 @@ class Event extends Component {
                         READ MORE</button>
                       </div>
                       <div className="col-md-4">
-                        <p style={{marginBottom:'0.35rem'}} className="society">NIBBLE COMPUTER SOCIETY</p>
+                        <p style={{marginBottom:'0.35rem'}} className="society">{data.creatorname}</p>
                       </div>
                       <div className="col-md-3">
                         <button
@@ -178,7 +179,7 @@ class Event extends Component {
             </button>
             <section className="upper">
               <h1 className="text-center">{this.state.individualEvent.event.name}</h1>
-              <h3 className="text-center">Nibble Computer Society</h3>
+              <h3 className="text-center">{this.state.individualEvent.event.creatorname}</h3>
               <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
             </section>
             <section className="lower">
@@ -189,11 +190,6 @@ class Event extends Component {
               <br/>
               <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
             </section>
-            <div className="nibble">
-              <p className="text-center" style={{fontSize: '14px' , marginBottom: '0px'}}>
-                Nibble Computer Society
-              </p>
-            </div>
           </div>  
         )
       }

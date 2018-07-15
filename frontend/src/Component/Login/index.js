@@ -29,8 +29,9 @@ class Login extends  Component {
       .set("Content-Type", "application/json")
       .send(payload)
       .then(res => {
-        console.log(res.headers);        
+        console.log(res.headers);
         localStorage.setItem("token", res.headers["x-auth"]);
+        localStorage.setItem("name", res.body.name); 
         this.props.onSuccessfulLogin();
       })
       .catch(err => {

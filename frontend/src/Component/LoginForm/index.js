@@ -19,7 +19,7 @@ class Loginform extends  Component {
     return (
       <div>
       { isAlreadyAuthenticated ? <Redirect to={{
-        pathname: '/create'
+        pathname: '/username'
       }}/> : (
       <Login onSuccessfulLogin={this.handleSuccessfulLogin}/>
       )

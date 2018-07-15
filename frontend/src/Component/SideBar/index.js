@@ -15,7 +15,7 @@ class SideBar extends Component {
   render() {
     return (
       <div className='App'>
-       <nav className="navbar navbar-expand-lg navbar-dark bg-primary-main fixed-top" id="sideNav">
+       <nav className="navbar navbar-expand-lg navbar-dark bg-primary-main fixed-top" id="sideNav" style={{backgroundColor: '#fff!important'}}>
       <a className="navbar-brand js-scroll-trigger" href="#page-top">
         <span className="eventmanager" style={{color: 'black'}}>Event Manager</span>
 

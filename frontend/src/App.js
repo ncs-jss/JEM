@@ -4,6 +4,7 @@ import Event from './Component/Event';
 import Create from './Component/Create';
 import Error from './Component/Error';
 import Dashboard from './Component/Dashboard';
+import Username from './Component/Username';
 import LoginForm from './Component/LoginForm';
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
           <Route path='/login' component={ LoginForm } exact></Route>
           <Route path='/Create' component={ Create } ></Route>
           <Route path='/dashboard' component={ Dashboard } ></Route>
+          <Route path='/username' component={ Username } ></Route>
           <Route component={Error}></Route>
         </Switch>
       </React.Fragment>

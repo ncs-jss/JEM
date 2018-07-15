@@ -19,6 +19,7 @@ class NavbarMain extends Component {
       .set('x-auth' , this.getAuthenticationToken())
       .then(res => {
          localStorage.removeItem('token');
+         localStorage.removeItem('name');
         this.setState({
           Authenticated: 'no'
         })
@@ -42,7 +43,7 @@ class NavbarMain extends Component {
       { !isAlreadyAuthenticated ? <Redirect to={{
         pathname: '/Login'
       }}/> : (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary-main fixed-top" id="sideNav">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary-main fixed-top" id="sideNav" style={{backgroundColor: '#fff!important'}}>
       <a className="navbar-brand js-scroll-trigger" href="#page-top">
         <span className="eventmanager" style={{color: 'black'}}>Event Manager</span>
 
