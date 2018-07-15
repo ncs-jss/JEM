@@ -24,6 +24,10 @@ var EventSchema = new mongoose.Schema({
   creator: {
     type: String,
     required: true
+  },
+  creatorname: {
+    type: String,
+    required: true
   }
 })
 

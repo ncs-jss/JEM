@@ -66,7 +66,8 @@ module.exports = app => {
         name: req.body.name,
         description: req.body.description,
         date: req.body.date,
-        creator: req.user.username
+        creator: req.user.username,
+        creatorname: req.user.name
       })
 
       try {
