@@ -64,8 +64,6 @@ class Event extends Component {
         console.log("error", err);
       });
     }
-
-
     document.getElementById(id).src=bell
     let notices = localStorage.getItem('notices')
     if(notices){

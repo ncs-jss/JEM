@@ -17,7 +17,7 @@ class Create extends  Component {
   componentDidMount() {
     const name=localStorage.getItem('name');
     console.log(name);
-    if(name!='User')
+    if(name!=='User')
     {
      this.setState({
       redirect: true

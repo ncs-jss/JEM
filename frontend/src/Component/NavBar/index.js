@@ -28,9 +28,7 @@ class NavbarMain extends Component {
         })
        .catch(err =>
           console.log(err)
-         );
-           
-      
+         );  
   }
   isAuthenticated() {
     const token = localStorage.getItem('token');
@@ -55,7 +53,13 @@ class NavbarMain extends Component {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <NavLink  to=""> Events</NavLink>
+            <NavLink  to="/"> Events</NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink  to="/create"> Create</NavLink>
+          </li>
+          <li className="nav-item">
+             <NavLink to="/dashboard">Dashboard</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="#">
@@ -65,9 +69,6 @@ class NavbarMain extends Component {
                 Logout
                 </button>
             </NavLink>
-          </li>
-          <li className="nav-item">
-             <NavLink to="/dashboard">Dashboard</NavLink>
           </li>
         </ul>
       </div>

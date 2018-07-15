@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import superagent from 'superagent'; 
-import SideBar from '../SideBar';
+import NavBar from '../NavBar';
 import Moment from 'react-moment';
 import footer from '../../footer.png';
 import footerweb from '../../web_footer.svg';
@@ -114,7 +114,7 @@ class Event extends Component {
         { !isExpand ? (
           <div>
             <div className="container-fluid" style={{marginBottom:'60px'}}>
-             <SideBar />
+             <NavBar />
              {this.state.event.map(data => {
               const date = data.date;
             return (
