@@ -61,19 +61,23 @@ module.exports = app => {
 
   // CREATE EVENT
   app.post('/events', authenticate, async (req, res) => {
-    const event = new Event({
-      name: req.body.name,
-      description: req.body.description,
-      date: req.body.date,
-      creator: req.user.username
-    })
+    if (req.user.name !== 'User') {
+      const event = new Event({
+        name: req.body.name,
+        description: req.body.description,
+        date: req.body.date,
+        creator: req.user.username
+      })
 
-    try {
-      const doc = await event.save()
-      res.send(doc)
-    } catch (e) {
-      res.status(400).send(e)
-    };
+      try {
+        const doc = await event.save()
+        res.send(doc)
+      } catch (e) {
+        res.status(400).send(e)
+      };
+    } else {
+      res.status(400).send('Change Name before creating an event.')
+    }
   })
 
   // SHOW EVENT WITH ID
