@@ -61,19 +61,24 @@ module.exports = app => {
 
   // CREATE EVENT
   app.post('/events', authenticate, async (req, res) => {
-    const event = new Event({
-      name: req.body.name,
-      description: req.body.description,
-      date: req.body.date,
-      creator: req.user.username
-    })
+    if (req.user.name !== 'User') {
+      const event = new Event({
+        name: req.body.name,
+        description: req.body.description,
+        date: req.body.date,
+        creator: req.user.username,
+        creatorname: req.user.name
+      })
 
-    try {
-      const doc = await event.save()
-      res.send(doc)
-    } catch (e) {
-      res.status(400).send(e)
-    };
+      try {
+        const doc = await event.save()
+        res.send(doc)
+      } catch (e) {
+        res.status(400).send(e)
+      };
+    } else {
+      res.status(400).send('Change Name before creating an event.')
+    }
   })
 
   // SHOW EVENT WITH ID
@@ -206,12 +211,12 @@ module.exports = app => {
               var newuser = new User(data)
               newuser.save().then(() => {
                 newuser.generateAuthToken().then((token) => {
-                  res.header('x-auth', token).send({user: newuser.username})
+                  res.header('x-auth', token).send({username: newuser.username, name: newuser.name})
                 })
               })
             } else {
               user.generateAuthToken().then((token) => {
-                res.header('x-auth', token).send({user: user.username})
+                res.header('x-auth', token).send({username: user.username, name: user.name})
               })
             }
           })
@@ -242,6 +247,17 @@ module.exports = app => {
       }
 
       res.send(UpcomingEvents)
+    } catch (e) {
+      res.status(400).send()
+    }
+  })
+
+  app.post('/user', authenticate, async (req, res) => {
+    let body = _pick(req.body, ['name'])
+
+    try {
+      const user = await User.findByIdAndUpdate({_id: req.user.id}, {$set: body}, {new: true})
+      res.status(200).send(user)
     } catch (e) {
       res.status(400).send()
     }
