@@ -136,3 +136,9 @@ body {
     padding-left: 10px!important;
   }
 }
+:disabled {
+    opacity: 0.4!important;
+}
+.active {
+  color: blue!important;
+}

@@ -9,7 +9,8 @@ class Login extends  Component {
     super();
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      error:''
     }
   }
   handleusernameChanged = (event) => {
@@ -29,13 +30,15 @@ class Login extends  Component {
       .set("Content-Type", "application/json")
       .send(payload)
       .then(res => {
-        console.log(res.headers);
         localStorage.setItem("token", res.headers["x-auth"]);
         localStorage.setItem("name", res.body.name); 
         this.props.onSuccessfulLogin();
       })
       .catch(err => {
-        console.log("err", err);
+        console.log(err)
+       this.setState({
+        error: 'Unauthorized'
+       })
       });
   }
 
@@ -68,6 +71,8 @@ class Login extends  Component {
                />    
                <br/><br/><br/>
                <button className="login-button text-center" type="submit">Login</button>
+               <br/>
+               <p>{this.state.error}</p>
         </div>
         </form>
         <img src={footer} className="footerimage d-block d-sm-none" alt="footer"/>

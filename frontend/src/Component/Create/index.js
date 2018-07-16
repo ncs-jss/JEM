@@ -12,6 +12,8 @@ class Create extends  Component {
       date: '',
       submit: '',
       error: '',
+      disabled: false,
+      text: 'Create'
     }
   }
    getAuthenticationToken() {
@@ -30,8 +32,13 @@ class Create extends  Component {
 
   submitForm = (event) => {
     event.preventDefault();
+    this.setState({ 
+      disabled: true,
+      text:' creating'
+       });
     const value = document.getElementById('date').value
     const date= new Date(value)
+    console.log(date)
     const payload = {
       name: this.state.name,
       description: this.state.description,
@@ -44,7 +51,9 @@ class Create extends  Component {
       .send(payload)
       .then(res => {
        this.setState({
-        submit: 'Submit Successfully'
+        submit: 'Submit Successfully',
+        disabled: false,
+        text: 'created'
        })   
       })
       .catch(err => {
@@ -52,8 +61,10 @@ class Create extends  Component {
           error: 'Failed'
         })
       });
+     setTimeout(() => this.setState({ text: "create" }), 3500);
   }
   render() {
+    let date=new Date();
     return (
       <div>
       <NavBar />
@@ -71,25 +82,27 @@ class Create extends  Component {
               value={this.state.name}
               onChange={this.handleNameChanged}
               placeholder="Enter Title"
+              required
               />
               <br/>
               <input type="datetime-local"
               className="form-control"
               id="date"
-              onChange={this.handleDateChanged}
-              placeholder="Enter Date"
+              required
               />
                <br/><br/>
              <textarea 
               className="textarea"
-              value={this.state.description}
               onChange={this.handleDescriptionChanged}
               placeholder="Enter Description"
               style={{height: '100px'}}
+              required
               />     
                <br/>
              <br/>
-               <button className="login-button text-center" type="submit">CREATE</button>
+               <button 
+               disabled={this.state.disabled}
+               className="login-button text-center" type="submit">{this.state.text}</button>
                <br/>
                 <p className="text-center" style={{color: '#fff'}}>{this.state.submit}</p>
                 <p className="text-center" style={{color: '#fff'}}>{this.state.error}</p>

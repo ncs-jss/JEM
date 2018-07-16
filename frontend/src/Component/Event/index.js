@@ -120,8 +120,9 @@ class Event extends Component {
                           {data.name}
                          </h6>
                          <button
+                         disabled={this.state.disabled}
                          className="btn btn-link d-none d-md-block"
-                          onClick={this.ExpandMore.bind(this, data._id)}
+                        onClick={this.ExpandMore.bind(this, data._id)}
                         >
                         READ MORE</button>
                       </div>

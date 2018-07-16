@@ -53,13 +53,13 @@ class NavbarMain extends Component {
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <NavLink  to="/"> Events</NavLink>
+            <NavLink style={{color: 'black'}}   to="/"> Events</NavLink>
           </li>
           <li className="nav-item">
-            <NavLink  to="/create"> Create</NavLink>
+            <NavLink style={{color: 'black'}} activeClassName="active"  to="/create"> Create</NavLink>
           </li>
           <li className="nav-item">
-             <NavLink to="/dashboard">Dashboard</NavLink>
+             <NavLink style={{color: 'black'}} activeClassName="active" to="/dashboard">Dashboard</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="#">
