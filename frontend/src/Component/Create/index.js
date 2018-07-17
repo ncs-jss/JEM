@@ -65,7 +65,7 @@ class Create extends  Component {
     console.log(date)
     const payload = {
       name: this.state.name,
-      description: this.state.content,
+      description: `<html><head></head><body>${this.state.content}</body></html>`,
       date: date
     }
 

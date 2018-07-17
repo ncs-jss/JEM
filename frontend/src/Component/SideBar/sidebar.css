@@ -41,6 +41,12 @@ body {
     width: 17rem;
     height: 100vh;
     z-index: 5;
+    background-image: url(../../jss.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: multiply;
+    background-color: #222!important;
   }
   #sideNav .navbar-brand {
     display: flex;
@@ -101,13 +107,25 @@ a {
 
 a:hover, a:focus, a:active {
   color: #824027;
+  text-decoration: none!important;
+  transform: scale(1.1)!important;
 }
 .eventmanager {
   font-size: 30px;
   font-weight: 600;
+  color: #fff!important;
 }
 @media(max-width: 768px) {
   .eventmanager {
     font-size: 24px;
+    color: black!important;
+  }
+}
+.navlink {
+  color: #fff!important
+}
+@media(max-width: 768px) {
+  .navlink {
+    color: black!important;
   }
 }

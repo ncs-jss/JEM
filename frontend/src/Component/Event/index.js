@@ -9,6 +9,7 @@ import cross from '../../cross.png';
 import footer from '../../footer.png';
 import footerweb from '../../web_footer.svg';
 import tune from '../../tune.mp3';
+import DOMPurify from 'dompurify';
 class Event extends Component {
   constructor(props) {
     super(props);
@@ -127,7 +128,6 @@ class Event extends Component {
                           {data.name}
                          </h6>
                          <button
-                         disabled={this.state.disabled}
                          className="btn btn-link d-none d-md-block"
                         onClick={this.ExpandMore.bind(this, data._id)}
                         >
@@ -183,16 +183,16 @@ class Event extends Component {
             >
               <img src={cross} width="30px" height="30px" alt="close" />
             </button>
+            <br/>
             <section className="upper">
-              <h1 className="text-center">{this.state.individualEvent.event.name}</h1>
+              <h1 className="text-center" style={{textTransform: 'capitalize'}}>{this.state.individualEvent.event.name}</h1>
               <h3 className="text-center">{this.state.individualEvent.event.creatorname}</h3>
               <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
             </section>
             <section className="lower">
-              <p 
-              style={{fontSize: '14px'}}>
-                {this.state.individualEvent.event.description}
-              </p>
+            <form>
+              <div className="content" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(this.state.individualEvent.event.description)}}></div>
+              </form>
               <br/>
               <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
             </section>

@@ -43,23 +43,23 @@ class NavbarMain extends Component {
       }}/> : (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary-main fixed-top" id="sideNav" style={{backgroundColor: '#fff!important'}}>
       <a className="navbar-brand js-scroll-trigger" href="#page-top">
-        <span className="eventmanager" style={{color: 'black'}}>Event Manager</span>
+        <span className="eventmanager">Event Manager</span>
 
       </a>
-      <hr className="d-none d-sm-block" width="70%" style={{borderBottom: '2px solid black'}} />
+      <hr className="d-none d-sm-block" width="70%" style={{borderBottom: '2px solid #fff'}} />
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <NavLink style={{color: 'black'}}   to="/"> Events</NavLink>
+            <NavLink className="navlink"   to="/"> Events</NavLink>
           </li>
           <li className="nav-item">
-            <NavLink style={{color: 'black'}} activeClassName="active"  to="/create"> Create</NavLink>
+            <NavLink className="navlink" activeClassName="active"  to="/create"> Create</NavLink>
           </li>
           <li className="nav-item">
-             <NavLink style={{color: 'black'}} activeClassName="active" to="/dashboard">Dashboard</NavLink>
+             <NavLink className="navlink" activeClassName="active" to="/dashboard">Dashboard</NavLink>
           </li>
           <li className="nav-item">
             <NavLink to="#">

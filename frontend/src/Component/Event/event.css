@@ -142,3 +142,6 @@ body {
 .active {
   color: blue!important;
 }
+.lower a {
+  color: red!important;
+}
