@@ -15,7 +15,8 @@ class Event extends Component {
       this.state = {
         event: [],
         expand: false,
-        individualEvent: { }
+        individualEvent: { },
+        loading: true
       }
     }
 
@@ -78,6 +79,7 @@ class Event extends Component {
    }
   }
   componentDidMount() {
+    setTimeout(() => this.setState({ loading: false }), 2000); 
     superagent
       .get('http://54.157.21.6:8089/')
       .set("Content-Type", "application/json")
@@ -93,6 +95,11 @@ class Event extends Component {
 
   render() {
    const isExpand = this.state.expand;
+    const { loading } = this.state;
+    
+    if(loading) { // if your component doesn't have to wait for an async action, remove this block 
+      return null; // render null when app is not ready
+    }
     return (
       <div> 
         { !isExpand ? (

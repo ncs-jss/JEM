@@ -10,7 +10,7 @@ class Login extends  Component {
     this.state = {
       username: '',
       password: '',
-      error:''
+      error:'',
     }
   }
   handleusernameChanged = (event) => {

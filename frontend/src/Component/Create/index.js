@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import superagent from 'superagent';
 import NavBar from '../NavBar';
 import footer from '../../footer.png';
+import CKEditor from "react-ckeditor-component";
 import footerweb from '../../web_footer.svg';
 class Create extends  Component {
   constructor() {
@@ -13,9 +14,35 @@ class Create extends  Component {
       submit: '',
       error: '',
       disabled: false,
-      text: 'Create'
+      text: 'Create',
+      content: "content",
+      loading: true
     }
   }
+  updateContent = (newContent) => {
+    this.setState({
+      content: newContent
+    });
+    console.log(this.state.content)
+  }
+
+  onChange = (evt) => {
+    
+    var newContent = evt.editor.getData();
+    this.setState({
+      content: newContent
+    });
+    console.log(this.state.content)
+  }
+
+  onBlur = (evt) => {
+    console.log("onBlur event called with event info: ", evt);
+  }
+
+  afterPaste = (evt) => {
+    console.log("afterPaste event called with event info: ", evt);
+  }
+
    getAuthenticationToken() {
     return localStorage.getItem('token');
   }
@@ -24,12 +51,9 @@ class Create extends  Component {
       name: event.target.value
     })
   }
-    handleDescriptionChanged = (event) => {
-    this.setState({
-      description: event.target.value
-    })
+  componentDidMount() {
+    setTimeout(() => this.setState({ loading: false }), 1500); 
   }
-
   submitForm = (event) => {
     event.preventDefault();
     this.setState({ 
@@ -41,7 +65,7 @@ class Create extends  Component {
     console.log(date)
     const payload = {
       name: this.state.name,
-      description: this.state.description,
+      description: this.state.content,
       date: date
     }
 
@@ -64,7 +88,10 @@ class Create extends  Component {
      setTimeout(() => this.setState({ text: "create" }), 3500);
   }
   render() {
-    let date=new Date();
+    const { loading } = this.state;
+    if(loading) { // if your component doesn't have to wait for an async action, remove this block 
+      return null; // render null when app is not ready
+    }
     return (
       <div>
       <NavBar />
@@ -75,7 +102,7 @@ class Create extends  Component {
           <h1 style={{fontSize: '28px'}}>Event Manager</h1>
           <h5>Create Event</h5>
           <br/>
-          <img src="http://via.placeholder.com/125x125" className="rounded-circle d-none d-sm-block" style={{marginBottom: '15px'}} alt="login"/>
+         
          
           <input type="text"
               className="form-control"
@@ -91,13 +118,15 @@ class Create extends  Component {
               required
               />
                <br/><br/>
-             <textarea 
-              className="textarea"
-              onChange={this.handleDescriptionChanged}
-              placeholder="Enter Description"
-              style={{height: '100px'}}
-              required
-              />     
+             <CKEditor
+        activeClass="p10"
+        content={this.state.content}
+        events={{
+          blur: this.onBlur,
+          afterPaste: this.afterPaste,
+          change: this.onChange
+        }}
+      />    
                <br/>
              <br/>
                <button 
@@ -110,8 +139,8 @@ class Create extends  Component {
             </div>
         </form>
        
-        <img src={footer} className="footerimage d-block d-sm-none" alt="footer"/>
-        <img src={footerweb} className="footerimage d-none d-md-block" alt="footer"/>
+        <img src={footer} className="d-block d-sm-none" style={{width: '100vw'}} alt="footer"/>
+        <img src={footerweb} className=" d-none d-md-block" alt="footer"/>
 
         </div>
       );
