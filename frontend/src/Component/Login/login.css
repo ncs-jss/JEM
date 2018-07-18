@@ -98,7 +98,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 .logout {
   background-color: transparent;
-  color: #fff;
+  color:black;
   outline:0!important;
   border: none!important;
 }

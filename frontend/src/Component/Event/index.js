@@ -185,8 +185,13 @@ class Event extends Component {
             </button>
             <br/>
             <section className="upper">
-              <h1 className="text-center" style={{textTransform: 'capitalize'}}>{this.state.individualEvent.event.name}</h1>
+              <h2 className="text-center" style={{textTransform: 'capitalize'}}>{this.state.individualEvent.event.name}</h2>
               <h3 className="text-center">{this.state.individualEvent.event.creatorname}</h3>
+              <h2 className="text-center">Time- 
+              <Moment format="HH:MM A">
+                      {this.state.individualEvent.event.date}
+                    </Moment>
+              </h2>
               <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
             </section>
             <section className="lower">

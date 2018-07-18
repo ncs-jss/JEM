@@ -38,15 +38,10 @@ body {
     left: 0;
     display: flex;
     flex-direction: column;
+    text-align: left!important;
     width: 17rem;
     height: 100vh;
     z-index: 5;
-    background-image: url(../../jss.jpg);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-blend-mode: multiply;
-    background-color: #222!important;
   }
   #sideNav .navbar-brand {
     display: flex;
@@ -63,7 +58,7 @@ body {
     align-items: flex-start;
     flex-grow: 0;
     width: 100%;
-    margin-top: 250px;
+    margin-top: 50px;
     margin-bottom: auto;
   }
   #sideNav .navbar-collapse .navbar-nav {
@@ -113,7 +108,7 @@ a:hover, a:focus, a:active {
 .eventmanager {
   font-size: 30px;
   font-weight: 600;
-  color: #fff!important;
+  color: black!important;
 }
 @media(max-width: 768px) {
   .eventmanager {
@@ -122,10 +117,23 @@ a:hover, a:focus, a:active {
   }
 }
 .navlink {
-  color: #fff!important
+  color: black!important;
+}
+.icon {
+  margin-left: 2rem;
+}
+.logo {
+
 }
 @media(max-width: 768px) {
   .navlink {
     color: black!important;
   }
+  .icon {
+    margin-left: 0.25rem;
+  }
+  .logo {
+    width: 40px;
+  }
 }
+

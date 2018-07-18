@@ -3,7 +3,9 @@ import superagent from 'superagent';
 import NavBar from '../NavBar';
 import Moment from 'react-moment';
 import footer from '../../footer.png';
-import footerweb from '../../web_footer.svg';
+import CKEditor from "react-ckeditor-component";
+import cross from '../../cross.png';
+
 class Event extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +16,9 @@ class Event extends Component {
         date: '',
         description: '',
         id: '',
-        loading: true
+        loading: true,
+        content: '',
+        edit: "Edit"
       }
     }
  getAuthenticationToken() {
@@ -35,7 +39,7 @@ class Event extends Component {
         expand: true,
         name: name,
         date: date,
-        description: description,
+        content: description,
         id: id
         });    
       })
@@ -43,24 +47,45 @@ class Event extends Component {
         console.log("error", err);
       });
   }
+   updateContent = (newContent) => {
+    this.setState({
+      content: newContent
+    });
+    console.log(this.state.content)
+  }
+
+  onChange = (evt) => {
+    
+    var newContent = evt.editor.getData();
+    this.setState({
+      content: newContent
+    });
+    console.log(this.state.content)
+  }
+
+  onBlur = (evt) => {
+    console.log("onBlur event called with event info: ", evt);
+  }
+
+  afterPaste = (evt) => {
+    console.log("afterPaste event called with event info: ", evt);
+  }
   handlename = (event) => {
     this.setState({
       name: event.target.value
     })
   }
-    handledescription = (event) => {
-    this.setState({
-      description: event.target.value
-    })
-  }
   
   handleData(e,id) {
     e.preventDefault();
+    this.setState({
+      edit: 'Editing'
+    })
     const value = document.getElementById('date').value
     const date= new Date(value)
     const payload = {
       name: this.state.name,
-      description: this.state.description,
+      description: this.state.content,
       date: date
     }
     superagent
@@ -75,6 +100,11 @@ class Event extends Component {
       .catch(err => {
         console.log(err)
       });
+  }
+   ExpandLess = () => {
+    this.setState({
+      expand: false
+    })
   }
   handleDelete(id) {
     console.log(id)
@@ -123,13 +153,13 @@ class Event extends Component {
             <div className="container-fluid" style={{marginBottom:'60px'}}>
              <NavBar />
              {this.state.event.map(data => {
-              const date = data.date;
+              const date = data.date6
             return (
               <div key={data._id} className="row">
                 <div className="col-8">
                   <div className="web">
                     <div className="row">
-                      <div className="col-md-5">
+                      <div className="col-md-6">
                         <h6 style={{textTransform: 'capitalize' , marginBottom: '0.35rem' , fontWeight: 'bold'}} className="name">
                           {data.name}
                          </h6>
@@ -142,7 +172,7 @@ class Event extends Component {
                       <div className="col-md-4">
                         <p style={{marginBottom:'0.35rem'}} className="society">{data.creator}</p>
                       </div>
-                      <div className="col-md-3">
+                      <div className="col-md-2">
                         <button
                          className="btn btn-link d-block d-md-none"
                         onClick={this.ExpandMore.bind(this, data._id)}
@@ -160,9 +190,7 @@ class Event extends Component {
                   >
                   Delete
                   </button>
-                  <div className="d-block d-md-none">
-                 <br/><br/>
-                 </div>
+                  
                   <p className="eventdate">
                     <Moment format="DD MMM YYYY">
                       {date}
@@ -178,56 +206,58 @@ class Event extends Component {
         ):
         ( 
         <div>
+         <button 
+              style={{position: 'absolute' , right:'20px' , top:'20px'}}
+              className="close"
+              onClick={this.ExpandLess}
+            ><img src={cross} width="30px" height="30px" alt="close" />
+            </button>
         <form
-        
         >
+
           <div className="d-flex justify-content-center align-items-center text-white create_height" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column'}}>
             <h1 style={{fontSize: '28px'}}>Event Manager</h1>
             <h5>Create Event</h5>
             <br/>
-            <img src="http://via.placeholder.com/125x125" className="rounded-circle d-none d-sm-block" style={{marginBottom: '15px'}} alt="login"/>
             <input type="text"
               className="form-control"
               placeholder="Enter Title"
               onChange={this.handlename}
               value={this.state.name}
               id="name"
+              required
               />
               <br/>
               <input type="datetime-local"
               className="form-control"
               id="date"
-              placeholder="Enter Date"
+              required
               />
                <br/><br/>
-             <textarea 
-              className="textarea"
-              placeholder="Enter Description"
-              value={this.state.description}
-              onChange={this.handledescription}
-              style={{height: '100px'}}
-              id="description"
-              />     
+            <CKEditor
+        activeClass="p10"
+        content={this.state.content}
+        events={{
+          blur: this.onBlur,
+          afterPaste: this.afterPaste,
+          change: this.onChange
+        }}
+      />     
                <br/>
              <br/>
                <button className="login-button text-center" type="submit"
                onClick={(e) => this.handleData(e, id)}
-               >EDIT</button>
+               >{this.state.edit}</button>
                <br/>
             </div>
         </form>
         <p>
         <span style={{color:'red'}}>{this.state.error}</span>
-        <span>{this.state.submit}</span>
         </p>
-
-        <img src={footer} className="footerimage d-block d-sm-none" alt="footer"/>
-        <img src={footerweb} className="footerimage d-none d-md-block" alt="footer"/>
         </div> 
         )
       }
       <img src={footer} className="d-block d-sm-none" style={{position:'fixed' , bottom: '0' , width: '100vw' , paddingTop:'30px'}} alt="footer"/>
-      <img src={footerweb} className="d-none d-md-block" style={{width: '100vw'}} alt="footer"/>
     </div>
     );
   }

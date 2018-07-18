@@ -59,7 +59,7 @@ class Create extends  Component {
     return (
       <div>
       { redirect ? <Redirect to={{
-        pathname: '/create'
+        pathname: '/'
       }}/> : (
         <div>
       <NavBar />
