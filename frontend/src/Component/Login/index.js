@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import superagent from 'superagent';
 import SideBar from '../SideBar'
-import './login.css'
 import footer from '../../footer.png';
 import footerweb from '../../web_footer.svg';
+import '../../App.css';
 class Login extends  Component {
   constructor() {
     super();

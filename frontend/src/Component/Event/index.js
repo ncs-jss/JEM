@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import superagent from 'superagent'; 
 import SideBar from '../SideBar';
-import './event.css';
 import Moment from 'react-moment';
+import '../../App.css';
 import bell from  '../../bell.png';
 import belltwo from '../../bell2.png'
 import cross from '../../cross.png';

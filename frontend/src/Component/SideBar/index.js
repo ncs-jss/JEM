@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
-import './sidebar.css';
 import superagent from 'superagent';
 import event from '../../event.png';
 import create from '../../create.png';
 import dashboard from '../../dashboard.png';
 import log from '../../log.png';
 import logo from '../../logo.png';
+import '../../App.css';
 
 class SideBar extends Component {
   constructor() {

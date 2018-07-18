@@ -5,7 +5,7 @@ import Moment from 'react-moment';
 import footer from '../../footer.png';
 import CKEditor from "react-ckeditor-component";
 import cross from '../../cross.png';
-
+import '../../App.css';
 class Event extends Component {
   constructor(props) {
     super(props);

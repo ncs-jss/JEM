@@ -4,6 +4,7 @@ import NavBar from '../NavBar';
 import footer from '../../footer.png';
 import footerweb from '../../web_footer.svg';
 import { Redirect } from 'react-router-dom';
+import '../../App.css';
 class Create extends  Component {
   constructor() {
     super();
