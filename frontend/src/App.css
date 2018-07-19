@@ -1,16 +1,19 @@
-.App {
-  text-align: center;
-}
+
 body {
   overflow-x: hidden;
   box-sizing: border-box;
   margin: 0;
-  background-color: rgb(15, 140, 219)!important;
+  background-color:rgb(6,115,184)!important;
   font-family: 'Montserrat', sans-serif!important;
+}
+.bodyLeft {
+  padding: 0;
 }
 @media (min-width: 992px) {
   body {
     padding-top: 0;
+  }
+  .bodyleft {
     padding-left: 17rem;
   }
 }
@@ -36,18 +39,6 @@ body {
 }
 .web .row {
   background-color: transparent!important;
-}
-.date {
- border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  padding: 13px;
-  padding-top: 8px;
-  background: #fff;
-  border: 2px solid #666;
-  color: #666;
-  vertical-align: middle;
-  font: 14px Arial, sans-serif;
 }
 .row {
   padding: 20px;
@@ -121,7 +112,7 @@ body {
 }
 .eventdate {
   font-size: 17px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 @media(max-width: 768px) {
   .name {
@@ -131,10 +122,7 @@ body {
     font-size: 12px;
     margin-top: 0;
   }
-  .eventdate {
-    font-size: 16px;
-    margin-top: 10px
-  }
+ 
   .bell{
     margin-top: 0;
   }
@@ -241,7 +229,7 @@ a:hover, a:focus, a:active {
   transform: scale(1.1)!important;
 }
 .eventmanager {
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 600;
   color: black!important;
 }
@@ -258,8 +246,9 @@ a:hover, a:focus, a:active {
   margin-left: 2rem;
 }
 .logo {
-  width: 100%;
+  width: 60%;
 }
+
 @media(max-width: 768px) {
   .navlink {
     color: black!important;
@@ -281,6 +270,7 @@ a:hover, a:focus, a:active {
 *:target{
     outline: 0 !important;
 }
+
  #loginform .form-control {
     width: 300px!important;
     background-color: transparent!important;
@@ -298,9 +288,9 @@ a:hover, a:focus, a:active {
     border-radius: 0!important;
     color: #fff!important;
  }
- ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+ ::placeholder { 
     color: rgba(255,255,255,0.5)!important;
-    opacity: 1; /* Firefox */
+    opacity: 1; 
 }
  @media(max-width: 768px) {
     #loginform .formcontrol {
@@ -318,7 +308,7 @@ a:hover, a:focus, a:active {
   font-weight: 600;
   z-index: 5;
 }
-.login-button: active , .login-button:focus , login-button:target {
+.login-button:active , .login-button:focus , .login-button:target {
   border-radius: 3rem;
   background-color: #fff;
   border: none;
@@ -338,6 +328,9 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     min-height: 120vh!important;
   }
 }
+
+
+
 .textarea {
   background-color: transparent!important;
   color: black!important;
@@ -360,7 +353,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 .footerimage {
   bottom: 0;
   width: 100vw;
-  position: absolute;
+  position: fixed;
 }
 .logout {
   background-color: transparent;

@@ -12,7 +12,7 @@ class NavbarMain extends Component {
   constructor() {
     super();
     this.state = {
-      Authenticated: ''
+      Authenticated: true
     }
   }
  getAuthenticationToken() {
@@ -27,7 +27,7 @@ class NavbarMain extends Component {
          localStorage.removeItem('token');
          localStorage.removeItem('name');
         this.setState({
-          Authenticated: 'no'
+          Authenticated: false
         })
        
         console.log(res)
@@ -57,6 +57,7 @@ class NavbarMain extends Component {
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <hr className="d-block d-md-none" width="80%" style={{borderBottom: '1px solid black'}} />
         <ul className="navbar-nav">
           <li className="nav-item">
            <img src={event} className="icon" width="35px" alt="event" />

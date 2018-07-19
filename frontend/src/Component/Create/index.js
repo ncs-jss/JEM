@@ -23,7 +23,6 @@ class Create extends  Component {
     this.setState({
       content: newContent
     });
-    console.log(this.state.content)
   }
 
   onChange = (evt) => {
@@ -32,7 +31,6 @@ class Create extends  Component {
     this.setState({
       content: newContent
     });
-    console.log(this.state.content)
   }
 
   onBlur = (evt) => {
@@ -65,7 +63,7 @@ class Create extends  Component {
     console.log(date)
     const payload = {
       name: this.state.name,
-      description: `<html><head></head><body>${this.state.content}</body></html>`,
+      description: this.state.content,
       date: date
     }
 
@@ -93,14 +91,14 @@ class Create extends  Component {
       return null; // render null when app is not ready
     }
     return (
-      <div>
+      <div className="bodyleft">
       <NavBar />
         <form 
          onSubmit={this.submitForm}
          >
-        <div className="d-flex justify-content-center align-items-center text-white create_height" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column'}}>
-          <h1 style={{fontSize: '28px'}}>Event Manager</h1>
-          <h5>Create Event</h5>
+        <div className="d-flex align-items-center" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)', flexDirection: 'column' , paddingTop: '20vh'}}>
+          <h1 style={{fontSize: '28px' , color: '#fff'}}>Event Manager</h1>
+          <h5 className="text-white">Create Event</h5>
           <br/>
          
          

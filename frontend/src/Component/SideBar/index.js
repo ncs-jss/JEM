@@ -12,8 +12,7 @@ class SideBar extends Component {
   constructor() {
     super();
     this.state= {
-      isAuthenticated: false,
-      Authenticated: ''
+      isAuthenticated: false
     }
   }
    getAuthenticationToken() {
@@ -25,9 +24,6 @@ class SideBar extends Component {
      .del('http://54.157.21.6:8089/logout')
       .set('x-auth' , this.getAuthenticationToken())
       .then(res => {
-         this.setState({
-          Authenticated: 'no'
-        })
          localStorage.removeItem('token');
          localStorage.removeItem('name');
         console.log(res)
@@ -46,15 +42,15 @@ class SideBar extends Component {
       <div className='App'>
        <nav className="navbar navbar-expand-lg navbar-dark bg-primary-main fixed-top" id="sideNav" style={{backgroundColor: '#fff!important'}}>
        <img className="logo" src={logo} alt="logo"/>
-      <a className="navbar-brand js-scroll-trigger" href="#page-top">
+      <a className="navbar-brand js-scroll-trigger" href="#">
         <span className="eventmanager">Event Manager</span>
       </a>
-      <hr className="d-none d-md-block" width="90%" style={{borderBottom: '2px solid black'}} />
-   
+      <hr className="d-none d-md-block" width="90%" style={{borderBottom: '2px solid black'}} />   
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
       <div className="collapse navbar-collapse" id="navbarSupportedContent">
+      <hr className="d-block d-md-none" width="80%" style={{borderBottom: '1px solid black'}} />
         <ul className="navbar-nav">
           <li className="nav-item">
           <img src={event} className="icon" width="35px" alt="event" />
@@ -92,7 +88,6 @@ class SideBar extends Component {
         </ul>
       </div>
     </nav>
-    <p>{this.state.Authenticated}</p>
 
  </div>
 

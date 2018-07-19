@@ -44,12 +44,12 @@ class Login extends  Component {
 
   render() {
     return (
-      <div>
+      <div className="bodyleft">
       <SideBar />
       <form 
          onSubmit={this.submitForm}
          >
-        <div className="d-flex justify-content-center align-items-center text-white" id="loginform" style={{height: '100vh' , backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column'}}>
+        <div className="d-flex  align-items-center text-white" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column' , paddingTop: '15vh'}}>
           <h1 style={{fontSize: '40px'}}>Event Manager</h1>
           <h3 className="float-right">Login</h3>
           <br/>

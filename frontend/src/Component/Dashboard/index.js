@@ -107,9 +107,7 @@ class Event extends Component {
     })
   }
   handleDelete(id) {
-    console.log(id)
     const remainingEvents = this.state.event.filter(event => event._id !== id)
-    console.log({remainingEvents});
     this.setState({
      event: remainingEvents
     })
@@ -149,7 +147,7 @@ class Event extends Component {
     return (
       <div> 
         { !isExpand ? (
-          <div>
+          <div className="bodyleft">
             <div className="container-fluid" style={{marginBottom:'60px'}}>
              <NavBar />
              {this.state.event.map(data => {
@@ -205,19 +203,18 @@ class Event extends Component {
     </div>
         ):
         ( 
-        <div>
+        <div style={{width: '100vw'}}>
          <button 
               style={{position: 'absolute' , right:'20px' , top:'20px'}}
               className="close"
               onClick={this.ExpandLess}
             ><img src={cross} width="30px" height="30px" alt="close" />
             </button>
-        <form
+        <form style={{paddingTop: '5vh'}}
         >
-
-          <div className="d-flex justify-content-center align-items-center text-white create_height" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column'}}>
+          <div className="d-flex align-items-center text-white" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column'}}>
             <h1 style={{fontSize: '28px'}}>Event Manager</h1>
-            <h5>Create Event</h5>
+            <h5>Edit Event</h5>
             <br/>
             <input type="text"
               className="form-control"
@@ -258,6 +255,7 @@ class Event extends Component {
         )
       }
       <img src={footer} className="d-block d-sm-none" style={{position:'fixed' , bottom: '0' , width: '100vw' , paddingTop:'30px'}} alt="footer"/>
+
     </div>
     );
   }

@@ -44,7 +44,6 @@ class Event extends Component {
   }
   ImageChange(id) {
     var music = new Audio(tune);
-  music.play();
     const user_id = localStorage.getItem('userId');
     const event_id = id;
     const senddata = {
@@ -53,31 +52,32 @@ class Event extends Component {
     }
     console.log(senddata)
     console.log(user_id);
-    if( user_id && event_id)
+    if( user_id!=="null" && event_id)
     {
       superagent 
         .post('http://54.157.21.6:8089/')
         .set("Content-Type", "application/json")
           .send(senddata)
           .then(res => {
-           console.log("onesignal" ,res);      
-      })
+           music.play();  
+           document.getElementById(id).src=bell 
+           let notices = localStorage.getItem('notices')
+            if(notices){
+              notices = notices.split(',');
+              notices.push(id);
+              localStorage.setItem('notices' , notices);
+            }
+            else {
+              notices = new Array();
+              notices.push(id);
+              localStorage.setItem('notices' , notices);
+          }   
+              })
       .catch(err => {
         console.log("error", err);
       });
     }
-    document.getElementById(id).src=bell
-    let notices = localStorage.getItem('notices')
-    if(notices){
-      notices = notices.split(',');
-      notices.push(id);
-      localStorage.setItem('notices' , notices);
-    }
-    else {
-      notices = new Array();
-      notices.push(id);
-      localStorage.setItem('notices' , notices);
-   }
+    
   }
   componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 2000); 
@@ -86,8 +86,7 @@ class Event extends Component {
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;
-         this.setState({ event: event });
-         console.log(res.body)   
+         this.setState({ event: event });  
       })
       .catch(err => {
         console.log("error", err);
@@ -104,8 +103,8 @@ class Event extends Component {
     return (
       <div> 
         { !isExpand ? (
-          <div>
-            <div className="container-fluid" style={{marginBottom:'60px'}}>
+          <div className="bodyleft" style={{paddingBottom: '150px'}}>
+            <div className="container-fluid" style={{PaddingBottom:'60px'}}>
              <SideBar />
              {this.state.event.map(data => {
               const date = data.date;
@@ -120,7 +119,7 @@ class Event extends Component {
               }
             return (
               <div key={data._id} className="row" style={{backgroundColor: 'rgb(15, 140, 219)!important'}}>
-                <div className="col-8">
+                <div className="col-9">
                   <div className="web">
                     <div className="row">
                       <div className="col-md-5">
@@ -133,10 +132,15 @@ class Event extends Component {
                         >
                         READ MORE</button>
                       </div>
-                      <div className="col-md-4">
+                      <div className="col-md-3">
                         <p style={{marginBottom:'0.35rem'}} className="society">{data.creatorname}</p>
                       </div>
-                      <div className="col-md-3">
+                      <div className="col-md-3 text-center">
+                      <p className="eventdate d-none d-md-block">
+                    <Moment format="DD MMM YYYY">
+                      {date}
+                    </Moment>
+                  </p>
                         <button
                          className="btn btn-link d-block d-md-none"
                           onClick={this.ExpandMore.bind(this, data._id)}
@@ -146,7 +150,7 @@ class Event extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="col-4">
+                <div className="col-3">
                   <button 
                     className="bell"
                     onClick={this.ImageChange.bind(this, data._id)}
@@ -161,8 +165,8 @@ class Event extends Component {
                   <div className="d-block d-md-none">
                  <br/><br/>
                  </div>
-                  <p className="eventdate">
-                    <Moment format="DD MMM YYYY">
+                  <p className="eventdate d-block d-md-none" style={{textAlign: 'right'}}>
+                    <Moment format="DD MMM">
                       {date}
                     </Moment>
                   </p>
@@ -175,7 +179,7 @@ class Event extends Component {
     </div>
         ):
         (
-          <div style={{paddingTop: '0px'}}>
+          <div style={{paddingTop: '0px' , width: '100vw'}}>
             <button 
               style={{position: 'absolute' , right:'20px' , top:'20px'}}
               className="close"
@@ -186,17 +190,17 @@ class Event extends Component {
             <br/>
             <section className="upper">
               <h2 className="text-center" style={{textTransform: 'capitalize'}}>{this.state.individualEvent.event.name}</h2>
-              <h3 className="text-center">{this.state.individualEvent.event.creatorname}</h3>
-              <h2 className="text-center">Time- 
-              <Moment format="HH:MM A">
+              <h4 className="text-center">{this.state.individualEvent.event.creatorname}</h4>
+              <h5 className="text-center">Time- 
+              <Moment format="HH:mm A">
                       {this.state.individualEvent.event.date}
                     </Moment>
-              </h2>
+              </h5>
               <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
             </section>
             <section className="lower">
             <form>
-              <div className="content" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(this.state.individualEvent.event.description)}}></div>
+              <div className="text-center" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(this.state.individualEvent.event.description)}}></div>
               </form>
               <br/>
               <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
@@ -205,7 +209,7 @@ class Event extends Component {
         )
       }
       <img src={footer} className="d-block d-sm-none" style={{position:'fixed' , bottom: '0' , width: '100vw' , paddingTop:'30px'}} alt="footer"/>
-      <img src={footerweb} className="d-none d-md-block" style={{width: '100vw'}} alt="footer"/>
+      <img src={footerweb} className="d-none d-md-block" style={{position:'fixed' , bottom: '0' , width: '100vw'}} alt="footer"/>
     </div>
     );
   }
