@@ -49,6 +49,11 @@ body {
   color: #fff!important;
   font-size: 11px!important;
 }
+.btn-link:hover {
+  color: black!important;
+  background-color: #fff!important;
+  text-decoration: none!important;
+}
 .btn-warning {
   background-color: transparent!important;
   border: none!important;
@@ -72,7 +77,7 @@ body {
 .upper {
   background-color: rgb(15, 140, 219);
   color: #fff;
-  padding: 30px 50px 70px 50px;
+  padding: 60px 50px 70px 50px;
   min-height: 30vh;
 }
 .lower {
@@ -83,7 +88,7 @@ body {
 }
 @media(max-width: 768px) {
   .lower , .upper {
-    padding: 30px 20px 70px 20px;
+    padding: 60px 20px 70px 20px;
   }
   .nibble {
     text-align: center;
@@ -160,6 +165,7 @@ body {
 @media (min-width: 992px) {
   #sideNav {
     text-align: center;
+    padding-top: 50px!important;
     position: fixed;
     top: 0;
     left: 0;
@@ -241,12 +247,15 @@ a:hover, a:focus, a:active {
 }
 .navlink {
   color: black!important;
+  margin-left: 0.3rem;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 .icon {
   margin-left: 2rem;
 }
 .logo {
-  width: 60%;
+  width: 50%;
 }
 
 @media(max-width: 768px) {
@@ -386,3 +395,11 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   }
 }
 
+.scroll {
+  overflow-x: hidden;
+}
+@media(max-width: 768px) {
+  .scroll {
+    overflow-x: scroll!important;
+  }
+ }

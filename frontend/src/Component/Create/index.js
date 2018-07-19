@@ -96,7 +96,7 @@ class Create extends  Component {
         <form 
          onSubmit={this.submitForm}
          >
-        <div className="d-flex align-items-center" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)', flexDirection: 'column' , paddingTop: '20vh'}}>
+        <div className="d-flex align-items-center" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)', flexDirection: 'column' , paddingTop: '15vh'}}>
           <h1 style={{fontSize: '28px' , color: '#fff'}}>Event Manager</h1>
           <h5 className="text-white">Create Event</h5>
           <br/>

@@ -50,8 +50,6 @@ class Event extends Component {
       user_id: user_id,
       event_id: event_id
     }
-    console.log(senddata)
-    console.log(user_id);
     if( user_id!=="null" && event_id)
     {
       superagent 
@@ -73,11 +71,10 @@ class Event extends Component {
               localStorage.setItem('notices' , notices);
           }   
               })
-      .catch(err => {
-        console.log("error", err);
-      });
-    }
-    
+        .catch(err => {
+          alert(err);
+          });
+        }
   }
   componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 2000); 
@@ -179,7 +176,7 @@ class Event extends Component {
     </div>
         ):
         (
-          <div style={{paddingTop: '0px' , width: '100vw'}}>
+          <div style={{paddingTop: '0px'  , width: '100vw'}}>
             <button 
               style={{position: 'absolute' , right:'20px' , top:'20px'}}
               className="close"
@@ -187,7 +184,6 @@ class Event extends Component {
             >
               <img src={cross} width="30px" height="30px" alt="close" />
             </button>
-            <br/>
             <section className="upper">
               <h2 className="text-center" style={{textTransform: 'capitalize'}}>{this.state.individualEvent.event.name}</h2>
               <h4 className="text-center">{this.state.individualEvent.event.creatorname}</h4>
@@ -199,7 +195,7 @@ class Event extends Component {
               <hr style={{borderBottom: '2px solid rgba(255,255,255,0.8)'}} />
             </section>
             <section className="lower">
-            <form>
+            <form className="scroll">
               <div className="text-center" dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(this.state.individualEvent.event.description)}}></div>
               </form>
               <br/>

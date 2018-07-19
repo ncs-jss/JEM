@@ -4,6 +4,7 @@ import SideBar from '../SideBar'
 import footer from '../../footer.png';
 import footerweb from '../../web_footer.svg';
 import '../../App.css';
+import login from '../../login.gif';
 class Login extends  Component {
   constructor() {
     super();
@@ -11,6 +12,7 @@ class Login extends  Component {
       username: '',
       password: '',
       error:'',
+      disabled: false
     }
   }
   handleusernameChanged = (event) => {
@@ -21,6 +23,9 @@ class Login extends  Component {
   }
   submitForm = (event) => {
     event.preventDefault();
+    this.setState({
+      disabled: true
+    })
     const payload = {
       username: this.state.username,
       password: this.state.password
@@ -37,7 +42,8 @@ class Login extends  Component {
       .catch(err => {
         console.log(err)
        this.setState({
-        error: 'Unauthorized'
+        error: 'Unauthorized',
+        disabled: false
        })
       });
   }
@@ -52,9 +58,7 @@ class Login extends  Component {
         <div className="d-flex  align-items-center text-white" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column' , paddingTop: '15vh'}}>
           <h1 style={{fontSize: '40px'}}>Event Manager</h1>
           <h3 className="float-right">Login</h3>
-          <br/>
-          <img src="http://via.placeholder.com/125x125" className="rounded-circle d-none d-md-block" alt="login"/>
-          <br/>
+          <img src={login} width="150px" className="d-none d-md-block" alt="login"/>
           <input type="username"
               className="form-control"
                value={this.state.username}
@@ -70,12 +74,12 @@ class Login extends  Component {
                onChange={this.handlePasswordChanged}
                />    
                <br/><br/><br/>
-               <button className="login-button text-center" type="submit">Login</button>
+               <button disabled={this.state.disabled} className="login-button text-center" type="submit">Login</button>
                <br/>
                <p>{this.state.error}</p>
         </div>
         </form>
-        <img src={footer} className="footerimage d-block d-sm-none" alt="footer"/>
+        <img src={footer} style={{width: '100vw' , bottom: '0' , position: 'absolute'}} className="d-block d-sm-none" alt="footer"/>
         <img src={footerweb} className="footerimage d-none d-md-block" alt="footer"/>
        
       </div>

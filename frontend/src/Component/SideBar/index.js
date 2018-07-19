@@ -79,7 +79,7 @@ class SideBar extends Component {
                     </div> 
             ) : (
           <li className="nav-item">
-          <img src={log} className="icon" width="30px" alt= 'login'/>
+          <img src={log} className="icon" width="35px" alt= 'login'/>
               <NavLink className="navlink" to="/login"> Login </NavLink>
           </li>
 

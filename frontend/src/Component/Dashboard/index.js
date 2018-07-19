@@ -151,7 +151,7 @@ class Event extends Component {
             <div className="container-fluid" style={{marginBottom:'60px'}}>
              <NavBar />
              {this.state.event.map(data => {
-              const date = data.date6
+              const date = data.date
             return (
               <div key={data._id} className="row">
                 <div className="col-8">
