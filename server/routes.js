@@ -255,16 +255,19 @@ module.exports = app => {
   app.get('/dashboard', authenticate, async (req, res) => {
     try {
       let UpcomingEvents = []
+      let PastEvents = []
       const user = req.user
       let events = await Event.find({ creator: user.username }).sort({isodate: 'asc'})
 
       for (var i = 0; i < events.length; i++) {
         if (new Date(events[i].date) >= new Date()) {
           UpcomingEvents.push(events[i])
+        } else {
+          PastEvents.push(events[i])
         }
       }
-
-      res.send(UpcomingEvents)
+      PastEvents = PastEvents.reverse()
+      res.send({UpcomingEvents, PastEvents})
     } catch (e) {
       res.status(400).send()
     }
