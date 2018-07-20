@@ -102,6 +102,24 @@ module.exports = app => {
     }
   })
 
+  // PAST EVENTS LIST
+
+  app.get('/past/events', async (req, res) => {
+    try {
+      let PastEvents = []
+      let events = await Event.find({}).sort({isodate: 'desc'})
+
+      for (var i = 0; i < events.length; i++) {
+        if (new Date(events[i].date) < new Date()) {
+          PastEvents.push(events[i])
+        }
+      }
+
+      res.send(PastEvents)
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  })
   // DELETE EVENT ROUTE
 
   app.delete('/events/:id', authenticate, async (req, res) => {
