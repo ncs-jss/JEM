@@ -12,7 +12,8 @@ class Login extends  Component {
       username: '',
       password: '',
       error:'',
-      disabled: false
+      disabled: false,
+      head: 'LOGIN'
     }
   }
   handleusernameChanged = (event) => {
@@ -51,14 +52,13 @@ class Login extends  Component {
   render() {
     return (
       <div className="bodyleft">
-      <SideBar />
+      <SideBar head={this.state.head} />
       <form 
          onSubmit={this.submitForm}
          >
         <div className="d-flex  align-items-center text-white" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)' , flexDirection: 'column' , paddingTop: '15vh'}}>
-          <h1 style={{fontSize: '40px'}}>Event Manager</h1>
-          <h3 className="float-right">Login</h3>
-          <img src={login} width="150px" className="d-none d-md-block" alt="login"/>
+          <h1 className="float-right d-none d-md-block">Login</h1>
+          <img src={login} width="150px" alt="login"/>
           <input type="username"
               className="form-control"
                value={this.state.username}

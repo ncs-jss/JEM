@@ -12,7 +12,8 @@ class Create extends  Component {
       username: '',
       submit: '',
       error: '',
-      redirect: false
+      redirect: false,
+      head: 'USERNAME'
     }
   }
   componentDidMount() {
@@ -63,7 +64,7 @@ class Create extends  Component {
         pathname: '/'
       }}/> : (
         <div>
-      <NavBar />
+      <NavBar head={this.state.head} />
         <form 
          onSubmit={this.submitForm}
          >

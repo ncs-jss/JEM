@@ -7,7 +7,6 @@ import dashboard from '../../dashboard.png';
 import log from '../../log.png';
 import logo from '../../logo.png';
 import '../../App.css';
-
 class SideBar extends Component {
   constructor() {
     super();
@@ -42,9 +41,12 @@ class SideBar extends Component {
       <div className='App'>
        <nav className="navbar navbar-expand-lg navbar-dark bg-primary-main fixed-top" id="sideNav" style={{backgroundColor: '#fff!important'}}>
        <img className="logo" src={logo} alt="logo"/>
-      <a className="navbar-brand js-scroll-trigger" href="#">
-        <span className="eventmanager">Event Manager</span>
-      </a>
+     <NavLink to="/" className="navbar-brand d-block d-md-none">
+        <span className="eventmanager">{this.props.head}</span>
+      </NavLink>
+      <NavLink to="/" className="navbar-brand d-none d-md-block">
+        <span className="eventmanager">EVENT MANAGER</span>
+      </NavLink>
       <hr className="d-none d-md-block" width="90%" style={{borderBottom: '2px solid black'}} />   
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
@@ -54,7 +56,11 @@ class SideBar extends Component {
         <ul className="navbar-nav">
           <li className="nav-item">
           <img src={event} className="icon" width="35px" alt="event" />
-              <NavLink className="navlink"  to="/">Events</NavLink>
+              <NavLink className="navlink"  to="/">Home</NavLink>
+          </li>
+          <li className="nav-item">
+          <img src={event} className="icon" width="35px" alt="event" />
+              <NavLink className="navlink"  to="/past"> PastEvents</NavLink>
           </li>
           { isAlreadyAuthenticated ? (
             <div>

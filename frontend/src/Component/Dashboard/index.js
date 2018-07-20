@@ -6,9 +6,13 @@ import footer from '../../footer.png';
 import CKEditor from "react-ckeditor-component";
 import cross from '../../cross.png';
 import '../../App.css';
+import {NavLink} from 'react-router-dom';
+import {DatetimePickerTrigger} from 'rc-datetime-picker';
+import moment from 'moment';
+import 'rc-datetime-picker/dist/picker.min.css';
 class Event extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
       this.state = {
         event: [],
         expand: false,
@@ -18,7 +22,11 @@ class Event extends Component {
         id: '',
         loading: true,
         content: '',
-        edit: "Edit"
+        edit: "Edit",
+        none: false,
+        moment: moment(),
+        current: moment(),
+        head: 'DASHBOARD'
       }
     }
  getAuthenticationToken() {
@@ -38,7 +46,7 @@ class Event extends Component {
         this.setState({ 
         expand: true,
         name: name,
-        date: date,
+        moment: moment(date),
         content: description,
         id: id
         });    
@@ -75,18 +83,23 @@ class Event extends Component {
       name: event.target.value
     })
   }
-  
+  handleChange = (moment) => {
+    this.setState({
+      moment
+    });
+  }
   handleData(e,id) {
     e.preventDefault();
     this.setState({
       edit: 'Editing'
     })
-    const value = document.getElementById('date').value
+    const value = this.state.moment
     const date= new Date(value)
+    const new_date = date.toString();
     const payload = {
       name: this.state.name,
       description: this.state.content,
-      date: date
+      date: new_date
     }
     superagent
     .patch("http://54.157.21.6:8089/events/" + id)
@@ -118,7 +131,7 @@ class Event extends Component {
         console.log(res);
       })
       .catch(err =>
-         console.log(err)
+         alert(err)
         );
   }
   componentDidMount() {
@@ -128,8 +141,14 @@ class Event extends Component {
       .set('x-auth' , this.getAuthenticationToken())
       .set("Content-Type", "application/json")
       .then(res => {
-        const event = res.body;
-         this.setState({ event: event });       
+        const event = res.body.UpcomingEvents;
+        this.setState({ event: event }); 
+        const array = res.body.length;
+        if(array===0){
+          this.setState({
+            none: true
+          })
+        }   
       })
       .catch(err => {
         console.log("error", err);
@@ -137,23 +156,61 @@ class Event extends Component {
   }
 
   render() {
+     const shortcuts = {
+      'Clear': ''
+    };
    const isExpand = this.state.expand;
    const id = this.state.id;
+   const isNone = this.state.none;
    const { loading } = this.state;
     
     if(loading) { // if your component doesn't have to wait for an async action, remove this block 
       return null; // render null when app is not ready
     }
     return (
-      <div> 
+      <div>
+      { isNone ? (
+        <div className="bodyleft">
+        <NavBar head={this.state.head} />
+      <div className="d-flex align-items-center justify-content-center" style={{height: '100vh' , flexDirection: 'column'}}>
+      <h1 className="text-white">No Events </h1>
+        <NavLink to='/create'>
+        <button className="btn btn-success">Create</button>
+        </NavLink>
+      </div>
+      </div>
+      )
+      :(
+      <div>
         { !isExpand ? (
           <div className="bodyleft">
             <div className="container-fluid" style={{marginBottom:'60px'}}>
-             <NavBar />
+             <NavBar head={this.state.head} />
              {this.state.event.map(data => {
               const date = data.date
+              const id= `#${data._id}`
             return (
               <div key={data._id} className="row">
+              <div className="modal" id={data._id}>
+                <div className="modal-dialog">
+                  <div className="modal-content">
+                    <div className="modal-body">
+                     <button type="button" className="close" data-dismiss="modal">&times;</button>
+                      <h4 className="text-center" style={{color: 'black'}}>Sure to Delete?</h4>
+                    </div>
+                    <div className="modal-footer">
+                    <button 
+                  className="btn btn-danger"
+                  style={{marginTop: '10px'}}
+                  data-dismiss="modal"
+                  onClick={this.handleDelete.bind(this, data._id )}
+                  >
+                  Delete
+                  </button>
+                    </div>
+                  </div>
+                </div>
+              </div> 
                 <div className="col-8">
                   <div className="web">
                     <div className="row">
@@ -181,14 +238,9 @@ class Event extends Component {
                   </div>
                 </div>
                 <div className="col-4">
-                  <button 
-                  className="btn btn-danger"
-                  style={{marginTop: '10px'}}
-                  onClick={this.handleDelete.bind(this, data._id )}
-                  >
-                  Delete
+                 <button type="button" className="btn btn-danger" data-toggle="modal" data-target={id}>
+                    Delete
                   </button>
-                  
                   <p className="eventdate">
                     <Moment format="DD MMM YYYY">
                       {date}
@@ -225,11 +277,14 @@ class Event extends Component {
               required
               />
               <br/>
-              <input type="datetime-local"
-              className="form-control"
-              id="date"
-              required
-              />
+              <DatetimePickerTrigger
+        shortcuts={shortcuts} 
+        moment={this.state.moment}
+                minDate={this.state.current}
+
+        onChange={this.handleChange}>
+        <input type="text" className="form-control" value={this.state.moment.format('YYYY-MM-DD HH:mm')} readOnly />
+      </DatetimePickerTrigger>
                <br/><br/>
             <CKEditor
         activeClass="p10"
@@ -256,6 +311,8 @@ class Event extends Component {
       }
       <img src={footer} className="d-block d-sm-none" style={{position:'fixed' , bottom: '0' , width: '100vw' , paddingTop:'30px'}} alt="footer"/>
 
+    </div>
+    ) }
     </div>
     );
   }

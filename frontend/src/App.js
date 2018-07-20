@@ -6,6 +6,7 @@ import Error from './Component/Error';
 import Dashboard from './Component/Dashboard';
 import Username from './Component/Username';
 import LoginForm from './Component/LoginForm';
+import Past from './Component/Past';
 class App extends Component {
   render() {
     return (
@@ -13,6 +14,7 @@ class App extends Component {
         <React.Fragment>
         <Switch>
           <Route path='/' component={ Event } exact></Route>
+          <Route path='/past' component={ Past } exact></Route>
           <Route path='/login' component={ LoginForm } exact></Route>
           <Route path='/Create' component={ Create } ></Route>
           <Route path='/dashboard' component={ Dashboard } ></Route>

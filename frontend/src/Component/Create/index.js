@@ -4,6 +4,9 @@ import NavBar from '../NavBar';
 import footer from '../../footer.png';
 import CKEditor from "react-ckeditor-component";
 import footerweb from '../../web_footer.svg';
+import {DatetimePickerTrigger} from 'rc-datetime-picker';
+import moment from 'moment';
+import 'rc-datetime-picker/dist/picker.min.css';
 class Create extends  Component {
   constructor() {
     super();
@@ -16,7 +19,10 @@ class Create extends  Component {
       disabled: false,
       text: 'Create',
       content: "content",
-      loading: true
+      loading: true,
+      moment: moment(),
+      current: moment(),
+      head: "CREATE"
     }
   }
   updateContent = (newContent) => {
@@ -40,7 +46,11 @@ class Create extends  Component {
   afterPaste = (evt) => {
     console.log("afterPaste event called with event info: ", evt);
   }
-
+   handleChange = (moment) => {
+    this.setState({
+      moment
+    });
+  }
    getAuthenticationToken() {
     return localStorage.getItem('token');
   }
@@ -58,15 +68,14 @@ class Create extends  Component {
       disabled: true,
       text:' creating'
        });
-    const value = document.getElementById('date').value
+    const value = this.state.moment
     const date= new Date(value)
-    console.log(date)
+    const new_date = date.toString()
     const payload = {
       name: this.state.name,
       description: this.state.content,
-      date: date
+      date: new_date
     }
-
     superagent
     .post("http://54.157.21.6:8089/events")
       .set('x-auth' , this.getAuthenticationToken())
@@ -75,12 +84,17 @@ class Create extends  Component {
        this.setState({
         submit: 'Submit Successfully',
         disabled: false,
-        text: 'created'
+        text: 'created',
+        moment: moment(),
+        content: 'content',
+        name: ''
        })   
       })
       .catch(err => {
+        console.log(err)
         this.setState({
-          error: 'Failed'
+          error: 'Failed',
+          disabled: false
         })
       });
      setTimeout(() => this.setState({ text: "create" }), 3500);
@@ -90,18 +104,18 @@ class Create extends  Component {
     if(loading) { // if your component doesn't have to wait for an async action, remove this block 
       return null; // render null when app is not ready
     }
+    const shortcuts = {
+      'Clear': ''
+    };
     return (
       <div className="bodyleft">
-      <NavBar />
+      <NavBar head={this.state.head} />
         <form 
          onSubmit={this.submitForm}
          >
         <div className="d-flex align-items-center" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)', flexDirection: 'column' , paddingTop: '15vh'}}>
-          <h1 style={{fontSize: '28px' , color: '#fff'}}>Event Manager</h1>
-          <h5 className="text-white">Create Event</h5>
+          <h1 className="d-none d-md-block" style={{color: '#fff'}}>Create Event</h1>
           <br/>
-         
-         
           <input type="text"
               className="form-control"
               value={this.state.name}
@@ -110,11 +124,13 @@ class Create extends  Component {
               required
               />
               <br/>
-              <input type="datetime-local"
-              className="form-control"
-              id="date"
-              required
-              />
+              <DatetimePickerTrigger
+        shortcuts={shortcuts}
+        minDate={this.state.current}
+        moment={this.state.moment}
+        onChange={this.handleChange}>
+        <input type="text" className="form-control" value={this.state.moment.format('YYYY-MM-DD HH:mm')} readOnly />
+      </DatetimePickerTrigger>
                <br/><br/>
              <CKEditor
         activeClass="p10"

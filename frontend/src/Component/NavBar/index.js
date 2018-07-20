@@ -49,8 +49,11 @@ class NavbarMain extends Component {
       }}/> : (
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary-main fixed-top" id="sideNav" style={{backgroundColor: '#fff!important'}}>
        <img className="logo" src={logo} alt="logo"/>
-      <NavLink to="/" className="navbar-brand">
-        <span className="eventmanager">Event Manager</span>
+      <NavLink to="/" className="navbar-brand d-block d-md-none">
+        <span className="eventmanager">{this.props.head}</span>
+      </NavLink>
+      <NavLink to="/" className="navbar-brand d-none d-md-block">
+        <span className="eventmanager">EVENT MANAGER</span>
       </NavLink>
       <hr className="d-none d-sm-block" width="70%" style={{borderBottom: '2px solid black'}} />
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,6 +65,10 @@ class NavbarMain extends Component {
           <li className="nav-item">
            <img src={event} className="icon" width="35px" alt="event" />
             <NavLink className="navlink"   to="/"> Events</NavLink>
+          </li>
+          <li className="nav-item">
+           <img src={event} className="icon" width="35px" alt="event" />
+            <NavLink className="navlink"   to="/past">Past Events</NavLink>
           </li>
            <li className="nav-item">
           <img src={dashboard} className="icon" width="35px" alt="dashboard" />

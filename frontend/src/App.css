@@ -403,3 +403,6 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     overflow-x: scroll!important;
   }
  }
+.delete {
+  margin-top: 10px;
+}
