@@ -31,6 +31,7 @@ module.exports = app => {
 
     if (req.body.user_id === 'null' || req.body.user_id === null || req.body.event_id === null) {
       res.status(400).send('Subscribe to notifications first')
+      console.log('Subscribe to notification first')
     }
 
     let event = await Event.findById({
@@ -39,28 +40,43 @@ module.exports = app => {
 
     if (event.player_id.length === 0 || event.player_id.indexOf(req.body.user_id) < 0) {
       var EventDate = new Date(event.date)
-      var Time = [20, 60]
-
-      for (var i = 0; i < Time.length; i++) {
-        var NotiDate = new Date(EventDate.getTime() - Time[i] * 1000 * 60)
-
-        var message = {
-          app_id: `${process.env.ONESIGNAL_APP_ID}`,
-          contents: {'en': `Your event ${event.name} is going to start in ${Time[i]} minutes`},
-          send_after: NotiDate,
-          include_player_ids: [req.body.user_id]
-        }
-
-        sendNotification(message, (err, result) => {
-          if (err) {
-            res.status(400).send(err)
-          }
-          event.notification_id.push(result.id)
-          event.player_id.push(req.body.user_id)
-          var x = event
-          x.save()
-        })
+      var NotiDate = new Date(EventDate.getTime() - 60 * 60000)
+      var message = {
+        app_id: `${process.env.ONESIGNAL_APP_ID}`,
+        contents: {'en': `Your event ${event.name} is going to start in 1 hour`},
+        send_after: NotiDate,
+        include_player_ids: [req.body.user_id]
       }
+
+      sendNotification(message, (err, result) => {
+        if (err) {
+          res.status(400).send(err)
+        }
+        event.notification_id.push(result.id)
+        event.player_id.push(req.body.user_id)
+        var x = event
+        x.save().then(() => {
+          var NotiDate = new Date(EventDate.getTime() - 30 * 60000)
+          var message = {
+            app_id: `${process.env.ONESIGNAL_APP_ID}`,
+            contents: {'en': `Your event ${event.name} is going to start in 30 minutes`},
+            send_after: NotiDate,
+            include_player_ids: [req.body.user_id]
+          }
+
+          sendNotification(message, (err, result) => {
+            if (err) {
+              res.status(400).send(err)
+            }
+            event.notification_id.push(result.id)
+            var x = event
+            x.save()
+            res.status(200).send()
+          })
+        }).catch((e) => {
+          res.status(400).send()
+        })
+      })
     } else {
       res.status(400).send('Already subscribed for this event.')
     }
