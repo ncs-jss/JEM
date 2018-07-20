@@ -137,7 +137,7 @@ module.exports = app => {
           PastEvents.push(events[i])
         }
       }
-      if (PastEvents.length > 0) {
+      if (PastEvents.length === 0) {
         res.status(200).send('No Past Event')
       } else {
         res.status(200).send(PastEvents)
