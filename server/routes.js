@@ -7,7 +7,6 @@ const {sendNotification} = require('./onesignal/create')
 const {deleteNotification} = require('./onesignal/cancel')
 const {User} = require('./models/user')
 const {authenticate} = require('./middleware/authenticate')
-const {authenticateLogout} = require('./middleware/authenticate-logout')
 
 module.exports = app => {
   app.get('/', async (req, res) => {
@@ -29,33 +28,41 @@ module.exports = app => {
 
   app.post('/', async (req, res) => {
     let id = req.body.event_id
+
+    if (req.body.user_id === 'null' || req.body.user_id === null || req.body.event_id === null) {
+      res.status(400).send('Subscribe to notifications first')
+    }
+
     let event = await Event.findById({
       _id: id
     })
 
     if (event.player_id.length === 0 || event.player_id.indexOf(req.body.user_id) < 0) {
       var EventDate = new Date(event.date)
+      var Time = [20, 60]
 
-      var NotiDate = new Date(EventDate.getTime() - 20000 * 60)
+      for (var i = 0; i < Time.length; i++) {
+        var NotiDate = new Date(EventDate.getTime() - Time[i] * 1000 * 60)
 
-      var message = {
-        app_id: `${process.env.ONESIGNAL_APP_ID}`,
-        contents: {'en': `Your event ${event.name} is going to start in 20 minutes`},
-        send_after: NotiDate,
-        include_player_ids: [req.body.user_id]
-      }
-
-      sendNotification(message, (err, result) => {
-        if (err) {
-          res.status(400).send(err)
+        var message = {
+          app_id: `${process.env.ONESIGNAL_APP_ID}`,
+          contents: {'en': `Your event ${event.name} is going to start in ${Time[i]} minutes`},
+          send_after: NotiDate,
+          include_player_ids: [req.body.user_id]
         }
-        event.notification_id.push(result.id)
-        event.player_id.push(req.body.user_id)
-        var x = event
-        x.save()
-      })
+
+        sendNotification(message, (err, result) => {
+          if (err) {
+            res.status(400).send(err)
+          }
+          event.notification_id.push(result.id)
+          event.player_id.push(req.body.user_id)
+          var x = event
+          x.save()
+        })
+      }
     } else {
-      res.status(406).send()
+      res.status(400).send('Already subscribed for this event.')
     }
   })
 
@@ -74,7 +81,7 @@ module.exports = app => {
         const doc = await event.save()
         res.send(doc)
       } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send('Unable to create an event')
       };
     } else {
       res.status(400).send('Change Name before creating an event.')
@@ -87,13 +94,13 @@ module.exports = app => {
     const id = req.params.id
 
     if (!ObjectId.isValid(id)) {
-      return res.status(400).send()
+      return res.status(400).send('event ID is not valid.')
     }
 
     try {
       const event = await Event.findById(id)
       if (!event) {
-        return res.status(400).send()
+        return res.status(400).send('Event does not exist')
       }
 
       res.status(200).send({event})
@@ -114,8 +121,11 @@ module.exports = app => {
           PastEvents.push(events[i])
         }
       }
-
-      res.send(PastEvents)
+      if (PastEvents.length > 0) {
+        res.status(200).send('No Past Event')
+      } else {
+        res.status(200).send(PastEvents)
+      }
     } catch (e) {
       res.status(400).send(e)
     }
@@ -126,7 +136,7 @@ module.exports = app => {
     const id = req.params.id
 
     if (!ObjectId.isValid(id)) {
-      return res.status(404).send()
+      return res.status(404).send('ID is not valid')
     }
 
     try {
@@ -148,10 +158,10 @@ module.exports = app => {
 
         res.send({event})
       } else {
-        res.status(401).send()
+        res.status(401).send('Unauthorized User, Please login to continue.')
       }
     } catch (e) {
-      res.status(400).send()
+      res.status(400).send('Something went wrong, please try again.')
     };
   })
 
@@ -162,7 +172,7 @@ module.exports = app => {
     const body = _pick(req.body, ['name', 'description', 'date'])
 
     if (!ObjectId.isValid(id)) {
-      return res.status(400).send()
+      return res.status(400).send('Event Id is not valid')
     }
 
     let event1 = await Event.findById({
@@ -200,10 +210,10 @@ module.exports = app => {
         const event = await Event.findByIdAndUpdate(id, {$set: body}, {new: true})
         res.status(200).send(event)
       } catch (e) {
-        res.status(400).send()
+        res.status(400).send('Something went wrong.')
       }
     } else {
-      res.status(401).send()
+      res.status(401).send('Unauthorized User, Please login to continue.')
     }
   })
 
@@ -238,17 +248,19 @@ module.exports = app => {
               })
             }
           })
+        } else {
+          res.status(401).send('Invalid login credentials.')
         }
       }
     )
   })
 
-  app.delete('/logout', authenticateLogout, async (req, res) => {
+  app.delete('/logout', authenticate, async (req, res) => {
     try {
       await req.user.removeToken(req.token)
-      res.status(200).send()
+      res.status(200).send('Logout Successful.')
     } catch (e) {
-      res.status(400).send()
+      res.status(400).send('Something went wrong.')
     }
   })
 
@@ -267,6 +279,19 @@ module.exports = app => {
         }
       }
       PastEvents = PastEvents.reverse()
+
+      if (PastEvents.length > 0) {
+
+      } else {
+        PastEvents = ['No Past Events.']
+      }
+
+      if (UpcomingEvents.length > 0) {
+
+      } else {
+        UpcomingEvents = ['No Upcoming Events.']
+      }
+
       res.send({UpcomingEvents, PastEvents})
     } catch (e) {
       res.status(400).send()
@@ -280,7 +305,7 @@ module.exports = app => {
       const user = await User.findByIdAndUpdate({_id: req.user.id}, {$set: body}, {new: true})
       res.status(200).send(user)
     } catch (e) {
-      res.status(400).send()
+      res.status(400).send('Something went wrong')
     }
   })
 }

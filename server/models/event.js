@@ -32,7 +32,7 @@ var EventSchema = new mongoose.Schema({
   created_at: {
     type: Date,
     default: Date.now
-  },
+  }
 })
 
 EventSchema.pre('save', function (next) {
