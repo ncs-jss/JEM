@@ -233,21 +233,24 @@ module.exports = app => {
       function (error, response, body) {
         if (!error && response.statusCode === 200) {
           var data = _pick(body, ['username', 'group'])
-
-          User.findOne({username: data.username}).then((user) => {
-            if (!user) {
-              var newuser = new User(data)
-              newuser.save().then(() => {
-                newuser.generateAuthToken().then((token) => {
-                  res.header('x-auth', token).send({username: newuser.username, name: newuser.name})
+          if (data.group !== 'student') {
+            User.findOne({username: data.username}).then((user) => {
+              if (!user) {
+                var newuser = new User(data)
+                newuser.save().then(() => {
+                  newuser.generateAuthToken().then((token) => {
+                    res.header('x-auth', token).send({username: newuser.username, name: newuser.name})
+                  })
                 })
-              })
-            } else {
-              user.generateAuthToken().then((token) => {
-                res.header('x-auth', token).send({username: user.username, name: user.name})
-              })
-            }
-          })
+              } else {
+                user.generateAuthToken().then((token) => {
+                  res.header('x-auth', token).send({username: user.username, name: user.name})
+                })
+              }
+            })
+          } else {
+            res.status(401).send('Permission denied.')
+          }
         } else {
           res.status(401).send('Invalid login credentials.')
         }
