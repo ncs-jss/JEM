@@ -1,165 +1,192 @@
-import React, { Component } from 'react';
-import superagent from 'superagent';
-import NavBar from '../NavBar';
-import footer from '../../footer.png';
+import React, { Component } from "react";
+import superagent from "superagent";
+import NavBar from "../NavBar";
+import footer from "../../footer.png";
 import CKEditor from "react-ckeditor-component";
-import footerweb from '../../web_footer.svg';
-import {DatetimePickerTrigger} from 'rc-datetime-picker';
-import moment from 'moment';
-import 'rc-datetime-picker/dist/picker.min.css';
-class Create extends  Component {
+import footerweb from "../../web_footer.svg";
+import { DatetimePickerTrigger } from "rc-datetime-picker";
+import moment from "moment";
+import "rc-datetime-picker/dist/picker.min.css";
+class Create extends Component {
   constructor() {
     super();
     this.state = {
-      name: '' ,
-      description: '' ,
-      date: '',
-      submit: '',
-      error: '',
+      name: "",
+      description: "",
+      date: "",
+      submit: "",
+      error: "",
       disabled: false,
-      text: 'Create',
+      text: "Create",
       content: "content",
       loading: true,
       moment: moment(),
       current: moment(),
       head: "CREATE"
-    }
+    };
   }
-  updateContent = (newContent) => {
+  updateContent = newContent => {
     this.setState({
       content: newContent
     });
-  }
+  };
 
-  onChange = (evt) => {
-    
+  onChange = evt => {
     var newContent = evt.editor.getData();
     this.setState({
       content: newContent
     });
-  }
+  };
 
-  onBlur = (evt) => {
+  onBlur = evt => {
     console.log("onBlur event called with event info: ", evt);
-  }
+  };
 
-  afterPaste = (evt) => {
+  afterPaste = evt => {
     console.log("afterPaste event called with event info: ", evt);
-  }
-   handleChange = (moment) => {
+  };
+  handleChange = moment => {
     this.setState({
       moment
     });
+  };
+  getAuthenticationToken() {
+    return localStorage.getItem("token");
   }
-   getAuthenticationToken() {
-    return localStorage.getItem('token');
-  }
-  handleNameChanged = (event) => {
+  handleNameChanged = event => {
     this.setState({
       name: event.target.value
-    })
-  }
+    });
+  };
   componentDidMount() {
-    setTimeout(() => this.setState({ loading: false }), 1500); 
+    setTimeout(() => this.setState({ loading: false }), 1500);
   }
-  submitForm = (event) => {
+  submitForm = event => {
     event.preventDefault();
-    this.setState({ 
+    this.setState({
       disabled: true,
-      text:' creating'
-       });
-    const value = this.state.moment
-    const date= new Date(value)
-    const new_date = date.toString()
+      text: " creating"
+    });
+    const value = this.state.moment;
+    const date = new Date(value);
+    const new_date = date.toString();
     const payload = {
       name: this.state.name,
       description: this.state.content,
       date: new_date
-    }
+    };
     superagent
-    .post("http://54.157.21.6:8089/events")
-      .set('x-auth' , this.getAuthenticationToken())
+      .post("http://54.157.21.6:8089/events")
+      .set("x-auth", this.getAuthenticationToken())
       .send(payload)
       .then(res => {
-       this.setState({
-        submit: 'Submit Successfully',
-        disabled: false,
-        text: 'created',
-        moment: moment(),
-        content: 'content',
-        name: ''
-       })   
+        this.setState({
+          submit: "Submit Successfully",
+          disabled: false,
+          text: "created",
+          moment: moment(),
+          content: "content",
+          name: ""
+        });
       })
       .catch(err => {
-        console.log(err)
+        console.log(err);
         this.setState({
-          error: 'Failed',
+          error: "Failed",
           disabled: false
-        })
+        });
       });
-     setTimeout(() => this.setState({ text: "create" }), 3500);
-  }
+    setTimeout(() => this.setState({ text: "create" }), 3500);
+  };
   render() {
     const { loading } = this.state;
-    if(loading) { // if your component doesn't have to wait for an async action, remove this block 
+    if (loading) {
+      // if your component doesn't have to wait for an async action, remove this block
       return null; // render null when app is not ready
     }
     const shortcuts = {
-      'Clear': ''
+      Clear: ""
     };
     return (
       <div className="bodyleft">
-      <NavBar head={this.state.head} />
-        <form 
-         onSubmit={this.submitForm}
-         >
-        <div className="d-flex align-items-center" id="loginform" style={{ backgroundColor: 'rgb(6,115,184)', flexDirection: 'column' , paddingTop: '15vh'}}>
-          <h1 className="d-none d-md-block" style={{color: '#fff'}}>Create Event</h1>
-          <br/>
-          <input type="text"
+        <NavBar head={this.state.head} />
+        <form onSubmit={this.submitForm}>
+          <div
+            className="d-flex align-items-center"
+            id="loginform"
+            style={{
+              backgroundColor: "rgb(6,115,184)",
+              flexDirection: "column",
+              paddingTop: "15vh"
+            }}
+          >
+            <h1 className="d-none d-md-block" style={{ color: "#fff" }}>
+              Create Event
+            </h1>
+            <br />
+            <input
+              type="text"
               className="form-control"
               value={this.state.name}
               onChange={this.handleNameChanged}
               placeholder="Enter Title"
               required
+            />
+            <br />
+            <DatetimePickerTrigger
+              shortcuts={shortcuts}
+              minDate={this.state.current}
+              moment={this.state.moment}
+              onChange={this.handleChange}
+            >
+              <input
+                type="text"
+                className="form-control"
+                value={this.state.moment.format("YYYY-MM-DD HH:mm")}
+                readOnly
               />
-              <br/>
-              <DatetimePickerTrigger
-        shortcuts={shortcuts}
-        minDate={this.state.current}
-        moment={this.state.moment}
-        onChange={this.handleChange}>
-        <input type="text" className="form-control" value={this.state.moment.format('YYYY-MM-DD HH:mm')} readOnly />
-      </DatetimePickerTrigger>
-               <br/><br/>
-             <CKEditor
-        activeClass="p10"
-        content={this.state.content}
-        events={{
-          blur: this.onBlur,
-          afterPaste: this.afterPaste,
-          change: this.onChange
-        }}
-      />    
-               <br/>
-             <br/>
-               <button 
-               disabled={this.state.disabled}
-               className="login-button text-center" type="submit">{this.state.text}</button>
-               <br/>
-                <p className="text-center" style={{color: '#fff'}}>{this.state.submit}</p>
-                <p className="text-center" style={{color: '#fff'}}>{this.state.error}</p>
-               <br/>
-            </div>
+            </DatetimePickerTrigger>
+            <br />
+            <br />
+            <CKEditor
+              activeClass="p10"
+              content={this.state.content}
+              events={{
+                blur: this.onBlur,
+                afterPaste: this.afterPaste,
+                change: this.onChange
+              }}
+            />
+            <br />
+            <br />
+            <button
+              disabled={this.state.disabled}
+              className="login-button text-center"
+              type="submit"
+            >
+              {this.state.text}
+            </button>
+            <br />
+            <p className="text-center" style={{ color: "#fff" }}>
+              {this.state.submit}
+            </p>
+            <p className="text-center" style={{ color: "#fff" }}>
+              {this.state.error}
+            </p>
+            <br />
+          </div>
         </form>
-       
-        <img src={footer} className="d-block d-sm-none" style={{width: '100vw'}} alt="footer"/>
-        <img src={footerweb} className=" d-none d-md-block" alt="footer"/>
 
-        </div>
-      );
+        <img
+          src={footer}
+          className="d-block d-sm-none"
+          style={{ width: "100vw" }}
+          alt="footer"
+        />
+        <img src={footerweb} className=" d-none d-md-block" alt="footer" />
+      </div>
+    );
   }
 }
 
 export default Create;
-
