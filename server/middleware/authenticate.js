@@ -4,7 +4,7 @@ var authenticate = (req, res, next) => {
   var token = req.header('x-auth')
 
   User.findByToken(token).then((user) => {
-    if (!user || user.group === 'student') {
+    if (!user) {
       return Promise.reject(new Error('something bad happened'))
     }
 
@@ -12,7 +12,7 @@ var authenticate = (req, res, next) => {
     req.token = token
     next()
   }).catch((e) => {
-    res.status(401).send()
+    res.status(401).send('Unauthorized User, Please login to continue.')
   })
 }
 
