@@ -3,14 +3,17 @@ const mongoose = require('mongoose')
 var EventSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    maxlength: 50
   },
   description: {
-    type: String
+    type: String,
+    maxlength: 1200
   },
   date: {
     type: String,
-    required: true
+    required: true,
+    maxlength: 100
   },
   isodate: {
     type: Date
