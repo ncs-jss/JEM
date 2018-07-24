@@ -5,6 +5,7 @@ import footer from "../../footer.png";
 import footerweb from "../../web_footer.svg";
 import { Redirect } from "react-router-dom";
 import "../../App.css";
+import login from "../../login.gif";
 class Create extends Component {
   constructor() {
     super();
@@ -58,7 +59,7 @@ class Create extends Component {
   render() {
     const redirect = this.state.redirect;
     return (
-      <div>
+      <div className="bodyleft">
         {redirect ? (
           <Redirect
             to={{
@@ -70,19 +71,21 @@ class Create extends Component {
             <NavBar head={this.state.head} />
             <form onSubmit={this.submitForm}>
               <div
-                className="d-flex justify-content-center align-items-center text-white create_height"
+                className="d-flex align-items-center text-white create_height"
                 id="loginform"
                 style={{
                   backgroundColor: "rgb(6,115,184)",
-                  flexDirection: "column"
+                  flexDirection: "column",
+                  minHeight: '100vh',
+                  paddingTop: '15vh'
                 }}
               >
-                <h1 style={{ fontSize: "28px" }}>Event Manager</h1>
-                <h5>Enter Username</h5>
+                <h2>Enter Username</h2>
                 <br />
                 <img
-                  src="http://via.placeholder.com/125x125"
-                  className="rounded-circle d-none d-sm-block"
+                  src={login}
+                  width="150px"
+                  className="rounded-circle"
                   style={{ marginBottom: "15px" }}
                   alt="login"
                 />
