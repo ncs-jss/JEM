@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import superagent from "superagent";
-import SideBar from "../SideBar";
+import NavBar from "../NavBar";
 import Moment from "react-moment";
 import "../../App.css";
 import cross from "../../cross.png";
 import footer from "../../footer.png";
 import footerweb from "../../web_footer.svg";
 import DOMPurify from "dompurify";
+import { NavLink } from "react-router-dom";
 class Event extends Component {
   constructor(props) {
     super(props);
@@ -35,6 +36,9 @@ class Event extends Component {
         console.log("error", err);
       });
   }
+  getAuthenticationToken() {
+    return localStorage.getItem("token");
+  }
   ExpandLess = () => {
     this.setState({
       expand: false
@@ -43,11 +47,12 @@ class Event extends Component {
   componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 2000);
     superagent
-      .get("http://54.157.21.6:8089/past/events")
+      .get("http://54.157.21.6:8089/dashboard")
+      .set("x-auth", this.getAuthenticationToken())
       .set("Content-Type", "application/json")
       .then(res => {
         console.log(res);
-        const event = res.body;
+        const event = res.body.PastEvents;
         if (event == null) {
           this.setState({
             Redirect: true
@@ -89,7 +94,7 @@ class Event extends Component {
                   className="container-fluid"
                   style={{ PaddingBottom: "60px" }}
                 >
-                  <SideBar head={this.state.head} />
+                  <NavBar head={this.state.head} />
                   {this.state.event.map(data => {
                     const date = data.date;
                     return (

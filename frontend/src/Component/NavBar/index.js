@@ -90,7 +90,6 @@ class NavbarMain extends Component {
                 <li className="nav-item">
                   <img src={event} className="icon" width="35px" alt="event" />
                   <NavLink className="navlink" to="/">
-                    {" "}
                     Events
                   </NavLink>
                 </li>
@@ -119,7 +118,7 @@ class NavbarMain extends Component {
                   <img
                     src={create}
                     className="icon"
-                    width="35px"
+                    width="30px"
                     alt="create"
                   />
                   <NavLink

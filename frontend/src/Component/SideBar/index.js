@@ -66,11 +66,7 @@ class SideBar extends Component {
             <span className="navbar-toggler-icon" />
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <hr
-              className="d-block d-md-none"
-              width="80%"
-              style={{ borderBottom: "1px solid black" }}
-            />
+            <hr className="d-block d-md-none" width="100%" />
             <ul className="navbar-nav">
               <li className="nav-item">
                 <img src={event} className="icon" width="35px" alt="event" />
@@ -81,7 +77,6 @@ class SideBar extends Component {
               <li className="nav-item">
                 <img src={event} className="icon" width="35px" alt="event" />
                 <NavLink className="navlink" to="/past">
-                  {" "}
                   PastEvents
                 </NavLink>
               </li>
@@ -99,15 +94,14 @@ class SideBar extends Component {
                       activeClassName="active"
                       to="/dashboard"
                     >
-                      {" "}
-                      Dashboard{" "}
+                      Dashboard
                     </NavLink>
                   </li>
                   <li className="nav-item">
                     <img
                       src={create}
                       className="icon"
-                      width="35px"
+                      width="30px"
                       alt="create"
                     />
                     <NavLink
@@ -131,8 +125,7 @@ class SideBar extends Component {
                 <li className="nav-item">
                   <img src={log} className="icon" width="35px" alt="login" />
                   <NavLink className="navlink" to="/login">
-                    {" "}
-                    Login{" "}
+                    Login
                   </NavLink>
                 </li>
               )}

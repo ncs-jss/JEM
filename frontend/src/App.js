@@ -7,6 +7,7 @@ import Dashboard from "./Component/Dashboard";
 import Username from "./Component/Username";
 import LoginForm from "./Component/LoginForm";
 import Past from "./Component/Past";
+import DashboardPast from "./Component/DashboardPast";
 class App extends Component {
   render() {
     return (
@@ -18,6 +19,7 @@ class App extends Component {
             <Route path="/login" component={LoginForm} exact />
             <Route path="/Create" component={Create} />
             <Route path="/dashboard" component={Dashboard} />
+            <Route path="/pastevents" component={DashboardPast} />
             <Route path="/username" component={Username} />
             <Route component={Error} />
           </Switch>

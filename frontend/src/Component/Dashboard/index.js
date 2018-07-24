@@ -24,9 +24,7 @@ class Event extends Component {
       content: "",
       edit: "Edit",
       none: false,
-      moment: moment(),
-      current: moment(),
-      head: "DASHBOARD"
+      head: "PAST"
     };
   }
   getAuthenticationToken() {
@@ -208,7 +206,7 @@ class Event extends Component {
                                   className="text-center"
                                   style={{ color: "black" }}
                                 >
-                                  Sure to Delete?
+                                  Are you Sure?
                                 </h4>
                               </div>
                               <div className="modal-footer">
@@ -284,6 +282,11 @@ class Event extends Component {
                     );
                   })}
                 </div>
+                <div className="text-center" style={{ marginBottom: "40px" }}>
+                  <NavLink className="btn btn-success" to="/pastevents">
+                    Past Events
+                  </NavLink>
+                </div>
               </div>
             ) : (
               <div style={{ width: "100vw" }}>
@@ -357,17 +360,6 @@ class Event extends Component {
                 </p>
               </div>
             )}
-            <img
-              src={footer}
-              className="d-block d-sm-none"
-              style={{
-                position: "fixed",
-                bottom: "0",
-                width: "100vw",
-                paddingTop: "30px"
-              }}
-              alt="footer"
-            />
           </div>
         )}
       </div>

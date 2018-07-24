@@ -6,6 +6,7 @@
     "babel-polyfill": "^6.26.0",
     "bootstrap": "^4.1.1",
     "dompurify": "^1.0.6",
+    "eslint": "^5.2.0",
     "moment": "^2.22.2",
     "prettier": "^1.13.7",
     "rc-datetime-picker": "^1.6.1",
@@ -15,7 +16,6 @@
     "react-moment": "^0.7.9",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.4",
-    "reactstrap": "^6.2.0",
     "superagent": "^3.8.3",
     "surge": "^0.20.1"
   },
@@ -24,6 +24,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "format" : "prettier --write src/**/**.js"
+    "format": "prettier --write src/**/**.js"
   }
 }

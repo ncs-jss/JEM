@@ -369,6 +369,8 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   color:black;
   outline:0!important;
   border: none!important;
+  font-weight: bold!important;
+  text-transform: uppercase;
 }
 @media(max-width: 768px) {
   .logout {
@@ -406,3 +408,25 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 .delete {
   margin-top: 10px;
 }
+
+#cke_19 , #cke_27 , #cke_37 , #cke_24 , #cke_44{
+  display: none!important;
+}
+
+#cke_editor1  {
+   
+}
+.lower img {
+  width: 600px!important;
+  height: auto!important;
+}
+@media(max-width: 768px) {
+  #cke_editor1  {
+    width: 90vw!important;
+  }
+  .lower img {
+  width: 150px!important;
+  height: auto!important;
+}
+}
+
