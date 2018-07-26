@@ -60,13 +60,8 @@ class Create extends Component {
     const redirect = this.state.redirect;
     return (
       <div className="bodyleft">
-        {redirect ? (
-          <Redirect
-            to={{
-              pathname: "/"
-            }}
-          />
-        ) : (
+  
+     
           <div>
             <NavBar head={this.state.head} />
             <form onSubmit={this.submitForm}>
@@ -123,7 +118,6 @@ class Create extends Component {
               alt="footer"
             />
           </div>
-        )}
       </div>
     );
   }

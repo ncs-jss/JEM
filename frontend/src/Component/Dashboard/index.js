@@ -20,7 +20,6 @@ class Event extends Component {
       date: "",
       description: "",
       id: "",
-      loading: true,
       content: "",
       edit: "Edit",
       none: false,
@@ -129,7 +128,6 @@ class Event extends Component {
       .catch(err => alert(err));
   }
   componentDidMount() {
-    setTimeout(() => this.setState({ loading: false }), 2000);
     superagent
       .get("http://54.157.21.6:8089/dashboard")
       .set("x-auth", this.getAuthenticationToken())
@@ -137,8 +135,9 @@ class Event extends Component {
       .then(res => {
         const event = res.body.UpcomingEvents;
         this.setState({ event: event });
-        const array = res.body.length;
-        if (array === 0) {
+        const array = res.body.UpcomingEvents.length;
+        console.log(array)
+        if (array === 1) {
           this.setState({
             none: true
           });
@@ -157,11 +156,6 @@ class Event extends Component {
     const id = this.state.id;
     const isNone = this.state.none;
     const { loading } = this.state;
-
-    if (loading) {
-      // if your component doesn't have to wait for an async action, remove this block
-      return null; // render null when app is not ready
-    }
     return (
       <div>
         {isNone ? (

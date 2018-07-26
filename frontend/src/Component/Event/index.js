@@ -7,7 +7,7 @@ import bell from "../../bell.png";
 import belltwo from "../../bell2.png";
 import cross from "../../cross.png";
 import footer from "../../footer.png";
-import footerweb from "../../web_footer.svg";
+import footerweb from "../../web_footer_new.svg";
 import tune from "../../tune.mp3";
 import DOMPurify from "dompurify";
 class Event extends Component {

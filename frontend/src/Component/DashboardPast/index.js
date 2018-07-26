@@ -15,7 +15,6 @@ class Event extends Component {
       event: [],
       expand: false,
       individualEvent: {},
-      loading: true,
       Redirect: false,
       head: "PAST EVENTS"
     };
@@ -45,7 +44,6 @@ class Event extends Component {
     });
   };
   componentDidMount() {
-    setTimeout(() => this.setState({ loading: false }), 2000);
     superagent
       .get("http://54.157.21.6:8089/dashboard")
       .set("x-auth", this.getAuthenticationToken())
@@ -53,7 +51,8 @@ class Event extends Component {
       .then(res => {
         console.log(res);
         const event = res.body.PastEvents;
-        if (event == null) {
+        const length = event.length
+        if (length === 1) {
           this.setState({
             Redirect: true
           });
@@ -70,20 +69,17 @@ class Event extends Component {
   render() {
     const isExpand = this.state.expand;
     const { loading } = this.state;
-    const isRedirect = this.state.redirect;
-    if (loading) {
-      // if your component doesn't have to wait for an async action, remove this block
-      return null; // render null when app is not ready
-    }
+    const isRedirect = this.state.Redirect;
     return (
       <div>
         {isRedirect ? (
           <div className="bodyleft">
+          <NavBar head={this.state.head} />
             <div
               className="d-flex justify-content-center align-items-center"
               style={{ height: "100vh" }}
             >
-              <h1>No Past Event </h1>
+              <h1 className="text-white">No Past Event </h1>
             </div>
           </div>
         ) : (

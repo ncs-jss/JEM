@@ -19,7 +19,6 @@ class Create extends Component {
       disabled: false,
       text: "Create",
       content: "content",
-      loading: true,
       moment: moment(),
       current: moment(),
       head: "CREATE"
@@ -58,9 +57,7 @@ class Create extends Component {
       name: event.target.value
     });
   };
-  componentDidMount() {
-    setTimeout(() => this.setState({ loading: false }), 1500);
-  }
+ 
   submitForm = event => {
     event.preventDefault();
     this.setState({
@@ -99,11 +96,6 @@ class Create extends Component {
     setTimeout(() => this.setState({ text: "create" }), 3500);
   };
   render() {
-    const { loading } = this.state;
-    if (loading) {
-      // if your component doesn't have to wait for an async action, remove this block
-      return null; // render null when app is not ready
-    }
     const shortcuts = {
       Clear: ""
     };
