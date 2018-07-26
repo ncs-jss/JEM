@@ -31,7 +31,6 @@ module.exports = app => {
 
     if (req.body.user_id === 'null' || req.body.user_id === null || req.body.event_id === null) {
       res.status(400).send('Subscribe to notifications first')
-      console.log('Subscribe to notification first')
     }
 
     let event = await Event.findById({
@@ -160,10 +159,12 @@ module.exports = app => {
         _id: id
       })
 
-      if (event1.creator === req.user.username) {
-        for (var i = 0, len = event1.notification_id.length; i < len; i++) {
-          if (event1.notification_id[i] !== null) {
-            deleteNotification(event1.notification_id[i])
+      if ((event1.creator === req.user.username) || (req.user === 'admin')) {
+        if (event1.date > new Date()) {
+          for (var i = 0, len = event1.notification_id.length; i < len; i++) {
+            if (event1.notification_id[i] !== null) {
+              deleteNotification(event1.notification_id[i])
+            }
           }
         }
         const event = await Event.findByIdAndRemove(id)
@@ -172,7 +173,7 @@ module.exports = app => {
           return res.status(404).send()
         }
 
-        res.send({event})
+        res.status(200).send({event})
       } else {
         res.status(401).send('Unauthorized User, Please login to continue.')
       }
@@ -218,7 +219,6 @@ module.exports = app => {
           if (err) {
             res.status(400).send(err)
           }
-          console.log('updated and sent')
         })
       }
 
