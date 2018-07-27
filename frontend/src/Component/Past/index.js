@@ -62,7 +62,6 @@ class Event extends Component {
 
   render() {
     const isExpand = this.state.expand;
-    const { loading } = this.state;
     const isRedirect = this.state.Redirect;
    
     return (

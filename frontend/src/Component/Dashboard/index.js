@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import superagent from "superagent";
 import NavBar from "../NavBar";
+import DashboardPast from "../DashboardPast";
 import Moment from "react-moment";
-import footer from "../../footer.png";
 import CKEditor from "react-ckeditor-component";
 import cross from "../../cross.png";
 import "../../App.css";
@@ -133,11 +133,12 @@ class Event extends Component {
       .set("x-auth", this.getAuthenticationToken())
       .set("Content-Type", "application/json")
       .then(res => {
+        console.log(res)
         const event = res.body.UpcomingEvents;
         this.setState({ event: event });
-        const array = res.body.UpcomingEvents.length;
-        console.log(array)
-        if (array === 1) {
+        const array = res.body.UpcomingEvents[0];
+        const check="No Upcoming Events."
+        if (array === check) {
           this.setState({
             none: true
           });
@@ -155,17 +156,16 @@ class Event extends Component {
     const isExpand = this.state.expand;
     const id = this.state.id;
     const isNone = this.state.none;
-    const { loading } = this.state;
     return (
       <div>
         {isNone ? (
-          <div className="bodyleft">
+          <div className="bodyleft" style={{paddingTop: '10vh'}}>
             <NavBar head={this.state.head} />
             <div
               className="d-flex align-items-center justify-content-center"
-              style={{ height: "100vh", flexDirection: "column" }}
+              style={{ height: "20vh", flexDirection: "column" }}
             >
-              <h1 className="text-white">No Events </h1>
+              <h1 className="text-white" style={{paddingBottom: '20px'}}>No Events </h1>
               <NavLink to="/create">
                 <button className="btn btn-success">Create</button>
               </NavLink>
@@ -245,7 +245,7 @@ class Event extends Component {
                                   style={{ marginBottom: "0.35rem" }}
                                   className="society"
                                 >
-                                  {data.creator}
+                                  {data.creatorname}
                                 </p>
                               </div>
                               <div className="col-md-2">
@@ -276,16 +276,14 @@ class Event extends Component {
                     );
                   })}
                 </div>
-                <div className="text-center" style={{ marginBottom: "40px" }}>
-                  <NavLink className="btn btn-success" to="/pastevents">
-                    Past Events
-                  </NavLink>
+                <div>
+                  
                 </div>
               </div>
             ) : (
-              <div style={{ width: "100vw" }}>
+              <div className="bodyleft" style={{ width: "100vw" , paddingTop: '10vh' }}>
                 <button
-                  style={{ position: "absolute", right: "20px", top: "20px" }}
+                  style={{ position: "absolute", right: "20px"}}
                   className="close"
                   onClick={this.ExpandLess}
                 >
@@ -356,6 +354,11 @@ class Event extends Component {
             )}
           </div>
         )}
+        <div className="bodyleft" style={{paddingTop: '5vh'}}>
+         <h1 className="text-white text-center"> Past Events </h1>
+            <hr width="20%" style={{borderBottom: '2px solid #fff'}}/>
+        </div>
+        <DashboardPast />
       </div>
     );
   }

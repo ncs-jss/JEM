@@ -5,6 +5,7 @@ import superagent from "superagent";
 import event from "../../event.png";
 import create from "../../create.png";
 import dashboard from "../../dashboard.png";
+import past from '../../past.png';
 import log from "../../log.png";
 import logo from "../../logo.png";
 import "../../App.css";
@@ -94,7 +95,7 @@ class NavbarMain extends Component {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <img src={event} className="icon" width="35px" alt="event" />
+                  <img src={past} className="icon" width="25px" alt="past" />
                   <NavLink className="navlink" to="/past">
                     Past Events
                   </NavLink>

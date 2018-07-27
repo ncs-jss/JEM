@@ -5,9 +5,8 @@ import Moment from "react-moment";
 import "../../App.css";
 import cross from "../../cross.png";
 import footer from "../../footer.png";
-import footerweb from "../../web_footer.svg";
+import footerweb from "../../web_footer_new.svg";
 import DOMPurify from "dompurify";
-import { NavLink } from "react-router-dom";
 class Event extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +15,7 @@ class Event extends Component {
       expand: false,
       individualEvent: {},
       Redirect: false,
-      head: "PAST EVENTS"
+      head: "DASHBOARD"
     };
   }
 
@@ -51,8 +50,10 @@ class Event extends Component {
       .then(res => {
         console.log(res);
         const event = res.body.PastEvents;
-        const length = event.length
-        if (length === 1) {
+        const array = res.body.PastEvents[0];
+        const check="No Past Events."
+        if (array === check) {
+          console.log(true)
           this.setState({
             Redirect: true
           });
@@ -68,7 +69,6 @@ class Event extends Component {
 
   render() {
     const isExpand = this.state.expand;
-    const { loading } = this.state;
     const isRedirect = this.state.Redirect;
     return (
       <div>
@@ -77,9 +77,9 @@ class Event extends Component {
           <NavBar head={this.state.head} />
             <div
               className="d-flex justify-content-center align-items-center"
-              style={{ height: "100vh" }}
+              style={{ height: "20vh" }}
             >
-              <h1 className="text-white">No Past Event </h1>
+              <h3 className="text-white">No Past Event </h3>
             </div>
           </div>
         ) : (
@@ -158,9 +158,9 @@ class Event extends Component {
                 </div>
               </div>
             ) : (
-              <div style={{ paddingTop: "0px", width: "100vw" }}>
+              <div className="bodyleft" style={{ paddingTop: "20px", width: "100vw" }}>
                 <button
-                  style={{ position: "absolute", right: "20px", top: "20px" }}
+                  style={{ position: "absolute", right: "20px" , paddingTop:'20px' }}
                   className="close"
                   onClick={this.ExpandLess}
                 >

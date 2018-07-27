@@ -109,7 +109,7 @@ class Create extends Component {
             style={{
               backgroundColor: "rgb(6,115,184)",
               flexDirection: "column",
-              paddingTop: "15vh"
+              paddingTop: "10vh"
             }}
           >
             <h1 className="d-none d-md-block" style={{ color: "#fff" }}>

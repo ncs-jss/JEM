@@ -48,6 +48,7 @@ body {
   border-radius: 3rem!important;
   color: #fff!important;
   font-size: 11px!important;
+  font-weight: bold!important;
 }
 .btn-link:hover {
   color: black!important;
@@ -235,7 +236,7 @@ a:hover, a:focus, a:active {
   transform: scale(1.1)!important;
 }
 .eventmanager {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 600;
   color: black!important;
 }
@@ -371,6 +372,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
   border: none!important;
   font-weight: bold!important;
   text-transform: uppercase;
+  cursor: pointer!important;
 }
 @media(max-width: 768px) {
   .logout {
@@ -414,7 +416,7 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 
 #cke_editor1  {
-   
+   width: 90vh!important;
 }
 .lower img {
   width: 600px!important;
@@ -425,8 +427,19 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
     width: 90vw!important;
   }
   .lower img {
-  width: 150px!important;
+  width: 220px!important;
   height: auto!important;
 }
 }
 
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba(255,255,255,0.4);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #fff;
+}
