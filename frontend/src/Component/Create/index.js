@@ -57,7 +57,7 @@ class Create extends Component {
       name: event.target.value
     });
   };
- 
+
   submitForm = event => {
     event.preventDefault();
     this.setState({
@@ -73,7 +73,7 @@ class Create extends Component {
       date: new_date
     };
     superagent
-      .post("http://54.157.21.6:8089/events")
+      .post("http://yashasingh.tech:8089/events")
       .set("x-auth", this.getAuthenticationToken())
       .send(payload)
       .then(res => {

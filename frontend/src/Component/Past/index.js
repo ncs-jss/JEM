@@ -21,7 +21,7 @@ class Event extends Component {
 
   ExpandMore(id) {
     superagent
-      .get("http://54.157.21.6:8089/events/" + id)
+      .get("http://yashasingh.tech:8089/events/" + id)
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;
@@ -41,7 +41,7 @@ class Event extends Component {
   };
   componentDidMount() {
     superagent
-      .get("http://54.157.21.6:8089/past/events")
+      .get("http://yashasingh.tech:8089/past/events")
       .set("Content-Type", "application/json")
       .then(res => {
         console.log(res);
@@ -63,12 +63,12 @@ class Event extends Component {
   render() {
     const isExpand = this.state.expand;
     const isRedirect = this.state.Redirect;
-   
+
     return (
       <div>
         {isRedirect ? (
           <div className="bodyleft">
-          <SideBar head={this.state.head} />
+            <SideBar head={this.state.head} />
             <div
               className="d-flex justify-content-center align-items-center"
               style={{ height: "100vh" }}

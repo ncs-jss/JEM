@@ -40,7 +40,7 @@ class Create extends Component {
       name: this.state.username
     };
     superagent
-      .post("http://54.157.21.6:8089/user")
+      .post("http://yashasingh.tech:8089/user")
       .set("x-auth", this.getAuthenticationToken())
       .send(payload)
       .then(res => {
@@ -75,8 +75,8 @@ class Create extends Component {
                 style={{
                   backgroundColor: "rgb(6,115,184)",
                   flexDirection: "column",
-                  minHeight: '100vh',
-                  paddingTop: '15vh'
+                  minHeight: "100vh",
+                  paddingTop: "15vh"
                 }}
               >
                 <h2>Enter Username</h2>

@@ -5,7 +5,7 @@ import superagent from "superagent";
 import event from "../../event.png";
 import create from "../../create.png";
 import dashboard from "../../dashboard.png";
-import past from '../../past.png';
+import past from "../../past.png";
 import log from "../../log.png";
 import logo from "../../logo.png";
 import "../../App.css";
@@ -22,7 +22,7 @@ class NavbarMain extends Component {
 
   handleLogout = () => {
     superagent
-      .del("http://54.157.21.6:8089/logout")
+      .del("http://yashasingh.tech:8089/logout")
       .set("x-auth", this.getAuthenticationToken())
       .then(res => {
         localStorage.removeItem("token");

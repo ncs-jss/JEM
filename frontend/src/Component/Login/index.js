@@ -32,7 +32,7 @@ class Login extends Component {
       password: this.state.password
     };
     superagent
-      .post("http://54.157.21.6:8089/login")
+      .post("http://yashasingh.tech:8089/login")
       .set("Content-Type", "application/json")
       .send(payload)
       .then(res => {

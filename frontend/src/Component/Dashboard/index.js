@@ -31,7 +31,7 @@ class Event extends Component {
   }
   ExpandMore(id) {
     superagent
-      .get("http://54.157.21.6:8089/events/" + id)
+      .get("http://yashasingh.tech:8089/events/" + id)
       .set("Content-Type", "application/json")
       .then(res => {
         const name = res.body.event.name;
@@ -97,7 +97,7 @@ class Event extends Component {
       date: new_date
     };
     superagent
-      .patch("http://54.157.21.6:8089/events/" + id)
+      .patch("http://yashasingh.tech:8089/events/" + id)
       .set("x-auth", this.getAuthenticationToken())
       .send(payload)
       .then(res => {
@@ -129,15 +129,15 @@ class Event extends Component {
   }
   componentDidMount() {
     superagent
-      .get("http://54.157.21.6:8089/dashboard")
+      .get("http://yashasingh.tech:8089/dashboard")
       .set("x-auth", this.getAuthenticationToken())
       .set("Content-Type", "application/json")
       .then(res => {
-        console.log(res)
+        console.log(res);
         const event = res.body.UpcomingEvents;
         this.setState({ event: event });
         const array = res.body.UpcomingEvents[0];
-        const check="No Upcoming Events."
+        const check = "No Upcoming Events.";
         if (array === check) {
           this.setState({
             none: true
@@ -159,13 +159,15 @@ class Event extends Component {
     return (
       <div>
         {isNone ? (
-          <div className="bodyleft" style={{paddingTop: '10vh'}}>
+          <div className="bodyleft" style={{ paddingTop: "10vh" }}>
             <NavBar head={this.state.head} />
             <div
               className="d-flex align-items-center justify-content-center"
               style={{ height: "20vh", flexDirection: "column" }}
             >
-              <h1 className="text-white" style={{paddingBottom: '20px'}}>No Events </h1>
+              <h1 className="text-white" style={{ paddingBottom: "20px" }}>
+                No Events{" "}
+              </h1>
               <NavLink to="/create">
                 <button className="btn btn-success">Create</button>
               </NavLink>
@@ -276,14 +278,15 @@ class Event extends Component {
                     );
                   })}
                 </div>
-                <div>
-                  
-                </div>
+                <div />
               </div>
             ) : (
-              <div className="bodyleft" style={{ width: "100vw" , paddingTop: '10vh' }}>
+              <div
+                className="bodyleft"
+                style={{ width: "100vw", paddingTop: "10vh" }}
+              >
                 <button
-                  style={{ position: "absolute", right: "20px"}}
+                  style={{ position: "absolute", right: "20px" }}
                   className="close"
                   onClick={this.ExpandLess}
                 >
@@ -354,9 +357,9 @@ class Event extends Component {
             )}
           </div>
         )}
-        <div className="bodyleft" style={{paddingTop: '5vh'}}>
-         <h1 className="text-white text-center"> Past Events </h1>
-            <hr width="20%" style={{borderBottom: '2px solid #fff'}}/>
+        <div className="bodyleft" style={{ paddingTop: "5vh" }}>
+          <h1 className="text-white text-center"> Past Events </h1>
+          <hr width="20%" style={{ borderBottom: "2px solid #fff" }} />
         </div>
         <DashboardPast />
       </div>

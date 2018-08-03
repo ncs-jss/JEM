@@ -21,7 +21,7 @@ class Event extends Component {
 
   ExpandMore(id) {
     superagent
-      .get("http://54.157.21.6:8089/events/" + id)
+      .get("http://yashasingh.tech:8089/events/" + id)
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;
@@ -44,16 +44,16 @@ class Event extends Component {
   };
   componentDidMount() {
     superagent
-      .get("http://54.157.21.6:8089/dashboard")
+      .get("http://yashasingh.tech:8089/dashboard")
       .set("x-auth", this.getAuthenticationToken())
       .set("Content-Type", "application/json")
       .then(res => {
         console.log(res);
         const event = res.body.PastEvents;
         const array = res.body.PastEvents[0];
-        const check="No Past Events."
+        const check = "No Past Events.";
         if (array === check) {
-          console.log(true)
+          console.log(true);
           this.setState({
             Redirect: true
           });
@@ -74,7 +74,7 @@ class Event extends Component {
       <div>
         {isRedirect ? (
           <div className="bodyleft">
-          <NavBar head={this.state.head} />
+            <NavBar head={this.state.head} />
             <div
               className="d-flex justify-content-center align-items-center"
               style={{ height: "20vh" }}
@@ -158,9 +158,16 @@ class Event extends Component {
                 </div>
               </div>
             ) : (
-              <div className="bodyleft" style={{ paddingTop: "20px", width: "100vw" }}>
+              <div
+                className="bodyleft"
+                style={{ paddingTop: "20px", width: "100vw" }}
+              >
                 <button
-                  style={{ position: "absolute", right: "20px" , paddingTop:'20px' }}
+                  style={{
+                    position: "absolute",
+                    right: "20px",
+                    paddingTop: "20px"
+                  }}
                   className="close"
                   onClick={this.ExpandLess}
                 >
