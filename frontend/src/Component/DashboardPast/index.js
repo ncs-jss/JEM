@@ -21,7 +21,7 @@ class Event extends Component {
 
   ExpandMore(id) {
     superagent
-      .get("http://yashasingh.tech:8089/events/" + id)
+      .get("http://yashasingh.tech:8084/events/" + id)
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;
@@ -44,7 +44,7 @@ class Event extends Component {
   };
   componentDidMount() {
     superagent
-      .get("http://yashasingh.tech:8089/dashboard")
+      .get("http://yashasingh.tech:8084/dashboard")
       .set("x-auth", this.getAuthenticationToken())
       .set("Content-Type", "application/json")
       .then(res => {

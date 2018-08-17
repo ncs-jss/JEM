@@ -24,7 +24,7 @@ class Event extends Component {
 
   ExpandMore(id) {
     superagent
-      .get("http://yashasingh.tech:8089/events/" + id)
+      .get("http://yashasingh.tech:8084/events/" + id)
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;
@@ -52,7 +52,7 @@ class Event extends Component {
     };
     if (user_id !== "null" && event_id) {
       superagent
-        .post("http://yashasingh.tech:8089/")
+        .post("http://yashasingh.tech:8084/")
         .set("Content-Type", "application/json")
         .send(senddata)
         .then(res => {
@@ -77,7 +77,7 @@ class Event extends Component {
   componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 2000);
     superagent
-      .get("http://yashasingh.tech:8089/")
+      .get("http://yashasingh.tech:8084/")
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;

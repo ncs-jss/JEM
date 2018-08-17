@@ -40,7 +40,7 @@ class Create extends Component {
       name: this.state.username
     };
     superagent
-      .post("http://yashasingh.tech:8089/user")
+      .post("http://yashasingh.tech:8084/user")
       .set("x-auth", this.getAuthenticationToken())
       .send(payload)
       .then(res => {

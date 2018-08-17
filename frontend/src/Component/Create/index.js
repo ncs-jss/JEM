@@ -73,7 +73,7 @@ class Create extends Component {
       date: new_date
     };
     superagent
-      .post("http://yashasingh.tech:8089/events")
+      .post("http://yashasingh.tech:8084/events")
       .set("x-auth", this.getAuthenticationToken())
       .send(payload)
       .then(res => {
@@ -168,13 +168,6 @@ class Create extends Component {
             <br />
           </div>
         </form>
-
-        <img
-          src={footer}
-          className="d-block d-sm-none"
-          style={{ width: "100vw" }}
-          alt="footer"
-        />
         <img src={footerweb} className=" d-none d-md-block" alt="footer" />
       </div>
     );

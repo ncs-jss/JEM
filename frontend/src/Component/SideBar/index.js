@@ -21,7 +21,7 @@ class SideBar extends Component {
 
   handleLogout = () => {
     superagent
-      .del("http://yashasingh.tech:8089/logout")
+      .del("http://yashasingh.tech:8084/logout")
       .set("x-auth", this.getAuthenticationToken())
       .then(res => {
         localStorage.removeItem("token");

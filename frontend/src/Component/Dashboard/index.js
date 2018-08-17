@@ -31,7 +31,7 @@ class Event extends Component {
   }
   ExpandMore(id) {
     superagent
-      .get("http://yashasingh.tech:8089/events/" + id)
+      .get("http://yashasingh.tech:8084/events/" + id)
       .set("Content-Type", "application/json")
       .then(res => {
         const name = res.body.event.name;
@@ -97,17 +97,18 @@ class Event extends Component {
       date: new_date
     };
     superagent
-      .patch("http://yashasingh.tech:8089/events/" + id)
+      .patch("http://yashasingh.tech:8084/events/" + id)
       .set("x-auth", this.getAuthenticationToken())
       .send(payload)
       .then(res => {
         this.setState({
-          expand: false
+          edit: "edited"
         });
       })
       .catch(err => {
         console.log(err);
       });
+      setTimeout(() => this.setState({ edit: "edited" }), 3500);
   }
   ExpandLess = () => {
     this.setState({
@@ -120,7 +121,7 @@ class Event extends Component {
       event: remainingEvents
     });
     superagent
-      .del("http://54.157.21.6:8089/events/" + id)
+      .del("http://yashasingh.tech:8084/events/" + id)
       .set("x-auth", this.getAuthenticationToken())
       .then(res => {
         console.log(res);
@@ -129,7 +130,7 @@ class Event extends Component {
   }
   componentDidMount() {
     superagent
-      .get("http://yashasingh.tech:8089/dashboard")
+      .get("http://yashasingh.tech:8084/dashboard")
       .set("x-auth", this.getAuthenticationToken())
       .set("Content-Type", "application/json")
       .then(res => {

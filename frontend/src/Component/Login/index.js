@@ -32,7 +32,7 @@ class Login extends Component {
       password: this.state.password
     };
     superagent
-      .post("http://yashasingh.tech:8089/login")
+      .post("http://yashasingh.tech:8084/login")
       .set("Content-Type", "application/json")
       .send(payload)
       .then(res => {
@@ -95,12 +95,6 @@ class Login extends Component {
             <p>{this.state.error}</p>
           </div>
         </form>
-        <img
-          src={footer}
-          style={{ width: "100vw", bottom: "0", position: "absolute" }}
-          className="d-block d-sm-none"
-          alt="footer"
-        />
         <img
           src={footerweb}
           className="footerimage d-none d-md-block"
