@@ -10,6 +10,9 @@ import { NavLink } from "react-router-dom";
 import { DatetimePickerTrigger } from "rc-datetime-picker";
 import moment from "moment";
 import "rc-datetime-picker/dist/picker.min.css";
+
+const URL = process.env.REACT_APP_URL;
+
 class Event extends Component {
   constructor() {
     super();
@@ -31,7 +34,7 @@ class Event extends Component {
   }
   ExpandMore(id) {
     superagent
-      .get("http://yashasingh.tech:8084/events/" + id)
+      .get(URL + 'events/' + id)
       .set("Content-Type", "application/json")
       .then(res => {
         const name = res.body.event.name;
@@ -97,7 +100,7 @@ class Event extends Component {
       date: new_date
     };
     superagent
-      .patch("http://yashasingh.tech:8084/events/" + id)
+      .patch(URL + 'events/' + id)
       .set("x-auth", this.getAuthenticationToken())
       .send(payload)
       .then(res => {
@@ -121,7 +124,7 @@ class Event extends Component {
       event: remainingEvents
     });
     superagent
-      .del("http://yashasingh.tech:8084/events/" + id)
+      .del(URL + 'events/' + id)
       .set("x-auth", this.getAuthenticationToken())
       .then(res => {
         console.log(res);
@@ -130,7 +133,7 @@ class Event extends Component {
   }
   componentDidMount() {
     superagent
-      .get("http://yashasingh.tech:8084/dashboard")
+      .get(URL + 'dashboard')
       .set("x-auth", this.getAuthenticationToken())
       .set("Content-Type", "application/json")
       .then(res => {
@@ -159,9 +162,9 @@ class Event extends Component {
     const isNone = this.state.none;
     return (
       <div>
+            <NavBar head={this.state.head} />
         {isNone ? (
           <div className="bodyleft" style={{ paddingTop: "10vh" }}>
-            <NavBar head={this.state.head} />
             <div
               className="d-flex align-items-center justify-content-center"
               style={{ height: "20vh", flexDirection: "column" }}

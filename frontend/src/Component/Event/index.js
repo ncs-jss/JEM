@@ -10,6 +10,9 @@ import footer from "../../footer.png";
 import footerweb from "../../web_footer_new.svg";
 import tune from "../../tune.mp3";
 import DOMPurify from "dompurify";
+
+const URL = process.env.REACT_APP_URL;
+
 class Event extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +27,7 @@ class Event extends Component {
 
   ExpandMore(id) {
     superagent
-      .get("http://yashasingh.tech:8084/events/" + id)
+      .get(URL + 'events/' + id)
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;
@@ -52,7 +55,7 @@ class Event extends Component {
     };
     if (user_id !== "null" && event_id) {
       superagent
-        .post("http://yashasingh.tech:8084/")
+        .post(URL)
         .set("Content-Type", "application/json")
         .send(senddata)
         .then(res => {
@@ -77,7 +80,7 @@ class Event extends Component {
   componentDidMount() {
     setTimeout(() => this.setState({ loading: false }), 2000);
     superagent
-      .get("http://yashasingh.tech:8084/")
+      .get(URL)
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;

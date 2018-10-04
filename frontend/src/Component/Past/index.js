@@ -7,6 +7,9 @@ import cross from "../../cross.png";
 import footer from "../../footer.png";
 import footerweb from "../../web_footer.svg";
 import DOMPurify from "dompurify";
+
+const URL = process.env.REACT_APP_URL;
+
 class Event extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +24,7 @@ class Event extends Component {
 
   ExpandMore(id) {
     superagent
-      .get("http://yashasingh.tech:8084/events/" + id)
+      .get(URL + 'events/' + id)
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;
@@ -41,7 +44,7 @@ class Event extends Component {
   };
   componentDidMount() {
     superagent
-      .get("http://yashasingh.tech:8084/past/events")
+      .get(URL + 'past/events')
       .set("Content-Type", "application/json")
       .then(res => {
         console.log(res);

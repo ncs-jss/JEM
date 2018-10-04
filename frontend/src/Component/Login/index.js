@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import superagent from "superagent";
 import SideBar from "../SideBar";
-import footer from "../../footer.png";
 import footerweb from "../../web_footer.svg";
 import "../../App.css";
 import login from "../../login.gif";
+
+const URL = process.env.REACT_APP_URL;
+
 class Login extends Component {
   constructor() {
     super();
@@ -32,7 +34,7 @@ class Login extends Component {
       password: this.state.password
     };
     superagent
-      .post("http://yashasingh.tech:8084/login")
+      .post(URL + 'login')
       .set("Content-Type", "application/json")
       .send(payload)
       .then(res => {

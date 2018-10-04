@@ -6,6 +6,9 @@ import footerweb from "../../web_footer.svg";
 import { Redirect } from "react-router-dom";
 import "../../App.css";
 import login from "../../login.gif";
+
+const URL = process.env.REACT_APP_URL;
+
 class Create extends Component {
   constructor() {
     super();
@@ -40,7 +43,7 @@ class Create extends Component {
       name: this.state.username
     };
     superagent
-      .post("http://yashasingh.tech:8084/user")
+      .post(URL + 'user')
       .set("x-auth", this.getAuthenticationToken())
       .send(payload)
       .then(res => {

@@ -8,6 +8,9 @@ import log from "../../log.png";
 import logo from "../../logo.png";
 import past from "../../past.png";
 import "../../App.css";
+
+const URL = process.env.REACT_APP_URL;
+
 class SideBar extends Component {
   constructor() {
     super();
@@ -21,7 +24,7 @@ class SideBar extends Component {
 
   handleLogout = () => {
     superagent
-      .del("http://yashasingh.tech:8084/logout")
+      .del(URL + 'logout')
       .set("x-auth", this.getAuthenticationToken())
       .then(res => {
         localStorage.removeItem("token");
@@ -71,13 +74,13 @@ class SideBar extends Component {
             <ul className="navbar-nav">
               <li className="nav-item">
                 <img src={event} className="icon" width="35px" alt="event" />
-                <NavLink className="navlink" to="/">
+                <NavLink className="navlink" to="/" style={{marginLeft: '0.4rem'}}>
                   Home
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <img src={past} className="icon" width="25px" alt="past" />
-                <NavLink className="navlink" to="/past">
+              <li className="nav-item" style={{marginLeft: '0.3rem'}}>
+                <img src={past} className="icon" width="23px" alt="past"/>
+                <NavLink className="navlink" to="/past" style={{marginLeft: '0.8rem'}} >
                   PastEvents
                 </NavLink>
               </li>
@@ -87,7 +90,7 @@ class SideBar extends Component {
                     <img
                       src={dashboard}
                       className="icon"
-                      width="30px"
+                      width="35px"
                       alt="dashboard"
                     />
                     <NavLink
@@ -102,7 +105,7 @@ class SideBar extends Component {
                     <img
                       src={create}
                       className="icon"
-                      width="30px"
+                      width="35px"
                       alt="create"
                     />
                     <NavLink
@@ -114,7 +117,7 @@ class SideBar extends Component {
                     </NavLink>
                   </li>
                   <li className="nav-item">
-                    <img src={log} className="icon" width="30px" alt="logout" />
+                    <img src={log} className="icon" width="35px" alt="logout" />
                     <NavLink to="#">
                       <button className="logout" onClick={this.handleLogout}>
                         Logout

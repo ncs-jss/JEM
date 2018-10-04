@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import superagent from "superagent";
 import NavBar from "../NavBar";
-import footer from "../../footer.png";
 import CKEditor from "react-ckeditor-component";
 import footerweb from "../../web_footer.svg";
 import { DatetimePickerTrigger } from "rc-datetime-picker";
 import moment from "moment";
 import "rc-datetime-picker/dist/picker.min.css";
+
+const URL = process.env.REACT_APP_URL;
+
 class Create extends Component {
   constructor() {
     super();
@@ -73,7 +75,7 @@ class Create extends Component {
       date: new_date
     };
     superagent
-      .post("http://yashasingh.tech:8084/events")
+      .post(URL + 'events')
       .set("x-auth", this.getAuthenticationToken())
       .send(payload)
       .then(res => {

@@ -9,6 +9,9 @@ import past from "../../past.png";
 import log from "../../log.png";
 import logo from "../../logo.png";
 import "../../App.css";
+
+const URL = process.env.REACT_APP_URL;
+
 class NavbarMain extends Component {
   constructor() {
     super();
@@ -22,7 +25,7 @@ class NavbarMain extends Component {
 
   handleLogout = () => {
     superagent
-      .del("http://yashasingh.tech:8084/logout")
+      .del(URL + 'logout')
       .set("x-auth", this.getAuthenticationToken())
       .then(res => {
         localStorage.removeItem("token");
@@ -94,17 +97,17 @@ class NavbarMain extends Component {
                     Events
                   </NavLink>
                 </li>
-                <li className="nav-item">
-                  <img src={past} className="icon" width="25px" alt="past" />
-                  <NavLink className="navlink" to="/past">
+                <li className="nav-item" style={{marginLeft: '0.3rem'}}>
+                  <img src={past} className="icon" width="25px" alt="past"  />
+                  <NavLink className="navlink" to="/past" style={{marginLeft: '0.6rem'}}>
                     Past Events
                   </NavLink>
                 </li>
-                <li className="nav-item">
+                <li className="nav-item" style={{marginLeft: '0.3rem'}}>
                   <img
                     src={dashboard}
                     className="icon"
-                    width="35px"
+                    width="30px"
                     alt="dashboard"
                   />
                   <NavLink
@@ -132,7 +135,7 @@ class NavbarMain extends Component {
                   </NavLink>
                 </li>
                 <li className="nav-item">
-                  <img src={log} className="icon" width="30px" alt="logout" />
+                  <img src={log} className="icon" width="35px" alt="logout" />
                   <NavLink to="#">
                     <button className="logout" onClick={this.handleLogout}>
                       Logout
