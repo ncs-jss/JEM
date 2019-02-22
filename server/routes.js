@@ -186,7 +186,7 @@ module.exports = app => {
 
   app.patch('/events/:id', authenticate, async (req, res) => {
     const id = req.params.id
-    const body = _pick(req.body, ['name', 'description', 'date'])
+    const body = _pick(req.body, ['name', 'description', 'date',])
 
     if (!ObjectId.isValid(id)) {
       return res.status(400).send('Event Id is not valid')
@@ -273,6 +273,54 @@ module.exports = app => {
       }
     )
   })
+  //
+  // app.get('/in', (req, res) => {
+  //
+  //   var request = require('request')
+  //   var dict = []
+  //   request.get(
+  //     'http://backoffice.zealicon.in/api/society',
+  //     { json: true},
+  //     function (error, response, body) {
+  //       if (!error && response.statusCode === 200) {
+  //
+  //           for(var i in body["data"]){
+  //             var p = body["data"][i]
+  //             dict[p["id"]] = p["username"]
+  //
+  //         }
+  //       }
+  //     }
+  //   )
+  //
+  //   request.get(
+  //     'http://backoffice.zealicon.in/api/event',
+  //     { json: true},
+  //     function (error, response, body) {
+  //       if (!error && response.statusCode === 200) {
+  //         p = []
+  //           for(var i in body["data"]){
+  //             p = body["data"][i]
+  //             const event = new Event({
+  //               name: p["name"],
+  //               description: p["description"],
+  //               date: "Tue Mar 05 2019 10:30:49 GMT+0530 (IST)",
+  //               creatorname: dict[p["society_id"]],
+  //               creator: dict[p["society_id"]]
+  //             })
+  //
+  //
+  //               const doc = event.save()
+  //         }
+  //           res.status(200).send('ok done')
+  //       } else {
+  //         res.status(401).send('Invalid login credentials.')
+  //       }
+  //     }
+  //   )
+  // })
+  //
+  //
 
   app.delete('/logout', authenticate, async (req, res) => {
     try {
@@ -325,6 +373,73 @@ module.exports = app => {
       res.status(200).send(user)
     } catch (e) {
       res.status(400).send('Something went wrong')
+    }
+  })
+
+
+  app.get('/day1', async (req, res) => {
+    try {
+      let UpcomingEvents = []
+      let events = await Event.find({}).sort({isodate: 'asc'})
+      for (var i = 0; i < events.length; i++) {
+        var a = new Date(events[i].date)
+        if ( a.getDate() == 5 ) {
+          UpcomingEvents.push(events[i])
+        }
+      }
+
+      res.send(UpcomingEvents)
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  })
+
+  app.get('/day2', async (req, res) => {
+    try {
+      let UpcomingEvents = []
+      let events = await Event.find({}).sort({isodate: 'asc'})
+      for (var i = 0; i < events.length; i++) {
+        var a = new Date(events[i].date)
+        if ( a.getDate() == 6 ) {
+          UpcomingEvents.push(events[i])
+        }
+      }
+
+      res.send(UpcomingEvents)
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  })
+  app.get('/day3', async (req, res) => {
+    try {
+      let UpcomingEvents = []
+      let events = await Event.find({}).sort({isodate: 'asc'})
+      for (var i = 0; i < events.length; i++) {
+        var a = new Date(events[i].date)
+        if ( a.getDate() == 6 ) {
+          UpcomingEvents.push(events[i])
+        }
+      }
+
+      res.send(UpcomingEvents)
+    } catch (e) {
+      res.status(400).send(e)
+    }
+  })
+  app.get('/day4', async (req, res) => {
+    try {
+      let UpcomingEvents = []
+      let events = await Event.find({}).sort({isodate: 'asc'})
+      for (var i = 0; i < events.length; i++) {
+        var a = new Date(events[i].date)
+        if ( a.getDate() == 6 ) {
+          UpcomingEvents.push(events[i])
+        }
+      }
+
+      res.send(UpcomingEvents)
+    } catch (e) {
+      res.status(400).send(e)
     }
   })
 }
