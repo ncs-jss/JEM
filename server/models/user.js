@@ -14,7 +14,7 @@ var UserSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    default: 'User',
+    default: 'Update your Name',
     maxlength: 50
   },
   tokens: [{

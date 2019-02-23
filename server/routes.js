@@ -243,7 +243,7 @@ module.exports = app => {
     var request = require('request')
 
     request.post(
-      'http://yashasingh.tech:8085/api/profiles/login/',
+      'http://210.212.85.155/api/profiles/login/',
       { json: true,
         body: values },
       function (error, response, body) {
@@ -273,54 +273,53 @@ module.exports = app => {
       }
     )
   })
-  //
-  // app.get('/in', (req, res) => {
-  //
-  //   var request = require('request')
-  //   var dict = []
-  //   request.get(
-  //     'http://backoffice.zealicon.in/api/society',
-  //     { json: true},
-  //     function (error, response, body) {
-  //       if (!error && response.statusCode === 200) {
-  //
-  //           for(var i in body["data"]){
-  //             var p = body["data"][i]
-  //             dict[p["id"]] = p["username"]
-  //
-  //         }
-  //       }
-  //     }
-  //   )
-  //
-  //   request.get(
-  //     'http://backoffice.zealicon.in/api/event',
-  //     { json: true},
-  //     function (error, response, body) {
-  //       if (!error && response.statusCode === 200) {
-  //         p = []
-  //           for(var i in body["data"]){
-  //             p = body["data"][i]
-  //             const event = new Event({
-  //               name: p["name"],
-  //               description: p["description"],
-  //               date: "Tue Mar 05 2019 10:30:49 GMT+0530 (IST)",
-  //               creatorname: dict[p["society_id"]],
-  //               creator: dict[p["society_id"]]
-  //             })
-  //
-  //
-  //               const doc = event.save()
-  //         }
-  //           res.status(200).send('ok done')
-  //       } else {
-  //         res.status(401).send('Invalid login credentials.')
-  //       }
-  //     }
-  //   )
-  // })
-  //
-  //
+
+  app.get('/in', (req, res) => {
+
+    var request = require('request')
+    var dict = []
+    request.get(
+      'http://backoffice.zealicon.in/api/society',
+      { json: true},
+      function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+
+            for(var i in body["data"]){
+              var p = body["data"][i]
+              dict[p["id"]] = p["username"]
+
+          }
+        }
+      }
+    )
+
+    request.get(
+      'http://backoffice.zealicon.in/api/event',
+      { json: true},
+      function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+          p = []
+            for(var i in body["data"]){
+              p = body["data"][i]
+              const event = new Event({
+                name: p["name"],
+                description: p["description"],
+                date: "Tue Mar 05 2019 19:30:49 GMT+0530 (IST)",
+                creator: dict[p["society_id"]]
+              })
+
+
+                const doc = event.save()
+          }
+            res.status(200).send('ok done')
+        } else {
+          res.status(401).send('Invalid login credentials.')
+        }
+      }
+    )
+  })
+
+
 
   app.delete('/logout', authenticate, async (req, res) => {
     try {
@@ -370,6 +369,12 @@ module.exports = app => {
 
     try {
       const user = await User.findByIdAndUpdate({_id: req.user.id}, {$set: body}, {new: true})
+
+      Event.update({creator: user.username}, {creatorname: req.body.name}, {multi: true},
+    function(err, num) {
+        
+    }
+    )
       res.status(200).send(user)
     } catch (e) {
       res.status(400).send('Something went wrong')
@@ -405,7 +410,7 @@ module.exports = app => {
         }
       }
 
-      res.send(UpcomingEvents)
+      res.status(200).send(UpcomingEvents)
     } catch (e) {
       res.status(400).send(e)
     }
@@ -416,7 +421,7 @@ module.exports = app => {
       let events = await Event.find({}).sort({isodate: 'asc'})
       for (var i = 0; i < events.length; i++) {
         var a = new Date(events[i].date)
-        if ( a.getDate() == 6 ) {
+        if ( a.getDate() == 7 ) {
           UpcomingEvents.push(events[i])
         }
       }
@@ -432,7 +437,7 @@ module.exports = app => {
       let events = await Event.find({}).sort({isodate: 'asc'})
       for (var i = 0; i < events.length; i++) {
         var a = new Date(events[i].date)
-        if ( a.getDate() == 6 ) {
+        if ( a.getDate() == 8 ) {
           UpcomingEvents.push(events[i])
         }
       }

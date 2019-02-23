@@ -8,7 +8,7 @@ var EventSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    maxlength: 1200
+    maxlength: 2000
   },
   date: {
     type: String,
@@ -30,7 +30,7 @@ var EventSchema = new mongoose.Schema({
   },
   creatorname: {
     type: String,
-    required: true
+    default: 'Change your name'
   },
   created_at: {
     type: Date,
