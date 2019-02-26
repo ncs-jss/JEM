@@ -198,7 +198,7 @@ module.exports = app => {
     })
 
     if (req.user.username === event1.creator) {
-      if ((event1.date !== req.body.date) || (event1.venue !== req.body.venue)) {
+      if ((event1.date !== req.body.date) ) {
         for (var i = 0, len = event1.notification_id.length; i < len; i++) {
           if (event1.notification_id[i] !== null) {
             deleteNotification(event1.notification_id[i])
@@ -207,11 +207,36 @@ module.exports = app => {
 
         var EventDate = new Date(req.body.date)
 
-        var NotiDate = new Date(EventDate.getTime() - 20000 * 60)
+        var NotiDate = new Date(EventDate.getTime() - 30000 * 60)
 
         var message = {
           app_id: `${process.env.ONESIGNAL_APP_ID}`,
-          contents: {'en': `Your event ${body.name} is going to start in 20 minutes at ${body.venue}`},
+          contents: {'en': `Your event ${body.name} is going to start in 30 minutes at ${body.venue}`},
+          send_after: NotiDate,
+          include_player_ids: event1.player_id
+        }
+
+        sendNotification(message, (err, result) => {
+          if (err) {
+            res.status(400).send(err)
+          }
+        })
+      }
+
+      if (event1.venue !== req.body.venue) {
+        for (var i = 0, len = event1.notification_id.length; i < len; i++) {
+          if (event1.notification_id[i] !== null) {
+            deleteNotification(event1.notification_id[i])
+          }
+        }
+
+        var EventDate = new Date(req.body.date)
+
+        var NotiDate = new Date(EventDate.getTime() - 30000 * 60)
+
+        var message = {
+          app_id: `${process.env.ONESIGNAL_APP_ID}`,
+          contents: {'en': `Event ${body.name} has a new venue - ${body.venue}`},
           send_after: NotiDate,
           include_player_ids: event1.player_id
         }
