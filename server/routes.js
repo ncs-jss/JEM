@@ -42,7 +42,7 @@ module.exports = app => {
       var NotiDate = new Date(EventDate.getTime() - 60 * 60000)
       var message = {
         app_id: `${process.env.ONESIGNAL_APP_ID}`,
-        contents: {'en': `Your event ${event.name} is going to start in 1 hour`},
+        contents: {'en': `Your event ${event.name} is going to start in 1 hour at ${event.venue}`},
         send_after: NotiDate,
         include_player_ids: [req.body.user_id]
       }
@@ -58,7 +58,7 @@ module.exports = app => {
           var NotiDate = new Date(EventDate.getTime() - 30 * 60000)
           var message = {
             app_id: `${process.env.ONESIGNAL_APP_ID}`,
-            contents: {'en': `Your event ${event.name} is going to start in 30 minutes`},
+            contents: {'en': `Your event ${event.name} is going to start in 30 minutes at ${event.venue}`},
             send_after: NotiDate,
             include_player_ids: [req.body.user_id]
           }
@@ -87,6 +87,7 @@ module.exports = app => {
       const event = new Event({
         name: req.body.name,
         description: req.body.description,
+        venue: req.body.venue,
         date: req.body.date,
         creator: req.user.username,
         creatorname: req.user.name
@@ -186,7 +187,7 @@ module.exports = app => {
 
   app.patch('/events/:id', authenticate, async (req, res) => {
     const id = req.params.id
-    const body = _pick(req.body, ['name', 'description', 'date',])
+    const body = _pick(req.body, ['name', 'description', 'date', 'venue'])
 
     if (!ObjectId.isValid(id)) {
       return res.status(400).send('Event Id is not valid')
@@ -197,7 +198,7 @@ module.exports = app => {
     })
 
     if (req.user.username === event1.creator) {
-      if (event1.date !== req.body.date) {
+      if ((event1.date !== req.body.date) || (event1.venue !== req.body.venue)) {
         for (var i = 0, len = event1.notification_id.length; i < len; i++) {
           if (event1.notification_id[i] !== null) {
             deleteNotification(event1.notification_id[i])
@@ -210,7 +211,7 @@ module.exports = app => {
 
         var message = {
           app_id: `${process.env.ONESIGNAL_APP_ID}`,
-          contents: {'en': `Your event ${body.name} is going to start in 20 minutes`},
+          contents: {'en': `Your event ${body.name} is going to start in 20 minutes at ${body.venue}`},
           send_after: NotiDate,
           include_player_ids: event1.player_id
         }
@@ -372,7 +373,7 @@ module.exports = app => {
 
       Event.update({creator: user.username}, {creatorname: req.body.name}, {multi: true},
     function(err, num) {
-        
+
     }
     )
       res.status(200).send(user)

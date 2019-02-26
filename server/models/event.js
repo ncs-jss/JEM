@@ -4,11 +4,16 @@ var EventSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    maxlength: 50
+    maxlength: 100
   },
   description: {
     type: String,
     maxlength: 2000
+  },
+  venue: {
+    type: String,
+    maxlength: 500,
+    default: 'To be updated'
   },
   date: {
     type: String,
