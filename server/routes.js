@@ -221,6 +221,20 @@ module.exports = app => {
             res.status(400).send(err)
           }
         })
+
+        var NotiDate = new Date()
+        var message = {
+          app_id: `${process.env.ONESIGNAL_APP_ID}`,
+          contents: {'en': `Event ${body.name} is rescheduled at ${EventDate.getTime()}`},
+          send_after: NotiDate,
+          include_player_ids: event1.player_id
+        }
+
+        sendNotification(message, (err, result) => {
+          if (err) {
+            res.status(400).send(err)
+          }
+        })
       }
 
       if (event1.venue !== req.body.venue) {
@@ -232,7 +246,7 @@ module.exports = app => {
 
         var EventDate = new Date(req.body.date)
 
-        var NotiDate = new Date(EventDate.getTime() - 30000 * 60)
+        var NotiDate = new Date()
 
         var message = {
           app_id: `${process.env.ONESIGNAL_APP_ID}`,
