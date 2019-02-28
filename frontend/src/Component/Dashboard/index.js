@@ -170,7 +170,7 @@ class Event extends Component {
               style={{ height: "20vh", flexDirection: "column" }}
             >
               <h1 className="text-white" style={{ paddingBottom: "20px" }}>
-                No Events{" "}
+                No Events
               </h1>
               <NavLink to="/create">
                 <button className="btn btn-success">Create</button>
