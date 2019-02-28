@@ -35,7 +35,7 @@ var EventSchema = new mongoose.Schema({
   },
   creatorname: {
     type: String,
-    default: 'Change your name'
+    default: 'Society_name'
   },
   created_at: {
     type: Date,
