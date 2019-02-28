@@ -263,8 +263,24 @@ module.exports = app => {
       }
 
       try {
-        const event = await Event.findByIdAndUpdate(id, {$set: body}, {new: true})
-        res.status(200).send(event)
+        Event.findById(id, function(err, doc) {
+          doc.name = body.name
+          doc.description = body.description
+          doc.date = body.date
+          doc.venue = body.venue
+          doc.save(function(err, doc) {
+            if(err){
+              res.status(400).send(err)
+            } else{
+           res.status(200).send(doc)
+            }
+          })
+        })
+
+
+
+
+
       } catch (e) {
         res.status(400).send('Something went wrong.')
       }
@@ -313,51 +329,51 @@ module.exports = app => {
       }
     )
   })
-
-  app.get('/in', (req, res) => {
-
-    var request = require('request')
-    var dict = []
-    request.get(
-      'http://backoffice.zealicon.in/api/society',
-      { json: true},
-      function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-
-            for(var i in body["data"]){
-              var p = body["data"][i]
-              dict[p["id"]] = p["username"]
-
-          }
-        }
-      }
-    )
-
-    request.get(
-      'http://backoffice.zealicon.in/api/event',
-      { json: true},
-      function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-          p = []
-            for(var i in body["data"]){
-              p = body["data"][i]
-              const event = new Event({
-                name: p["name"],
-                description: p["description"],
-                date: "Tue Mar 05 2019 19:30:49 GMT+0530 (IST)",
-                creator: dict[p["society_id"]]
-              })
-
-
-                const doc = event.save()
-          }
-            res.status(200).send('ok done')
-        } else {
-          res.status(401).send('Invalid login credentials.')
-        }
-      }
-    )
-  })
+  //
+  // app.get('/in', (req, res) => {
+  //
+  //   var request = require('request')
+  //   var dict = []
+  //   request.get(
+  //     'http://backoffice.zealicon.in/api/society',
+  //     { json: true},
+  //     function (error, response, body) {
+  //       if (!error && response.statusCode === 200) {
+  //
+  //           for(var i in body["data"]){
+  //             var p = body["data"][i]
+  //             dict[p["id"]] = p["username"]
+  //
+  //         }
+  //       }
+  //     }
+  //   )
+  //
+  //   request.get(
+  //     'http://backoffice.zealicon.in/api/event',
+  //     { json: true},
+  //     function (error, response, body) {
+  //       if (!error && response.statusCode === 200) {
+  //         p = []
+  //           for(var i in body["data"]){
+  //             p = body["data"][i]
+  //             const event = new Event({
+  //               name: p["name"],
+  //               description: p["description"],
+  //               date: "Tue Mar 05 2019 19:30:49 GMT+0530 (IST)",
+  //               creator: dict[p["society_id"]]
+  //             })
+  //
+  //
+  //               const doc = event.save()
+  //         }
+  //           res.status(200).send('ok done')
+  //       } else {
+  //         res.status(401).send('Invalid login credentials.')
+  //       }
+  //     }
+  //   )
+  // })
 
 
 
