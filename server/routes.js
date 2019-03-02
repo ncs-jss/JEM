@@ -29,7 +29,7 @@ module.exports = app => {
   app.post('/', async (req, res) => {
     let id = req.body.event_id
 
-    if (req.body.user_id === 'null' || req.body.user_id === null || req.body.event_id === null) {
+    if (req.body.user_id == 'null' || req.body.user_id == null || req.body.event_id == null) {
       res.status(400).send('Subscribe to notifications first')
     }
 
@@ -37,7 +37,7 @@ module.exports = app => {
       _id: id
     })
 
-    if (event.player_id.length === 0 || event.player_id.indexOf(req.body.user_id) < 0) {
+    if (event.player_id.length == 0 || event.player_id.indexOf(req.body.user_id) < 0) {
       var EventDate = new Date(event.date)
       var NotiDate = new Date(EventDate.getTime() - 60 * 60000)
       var message = {
@@ -137,7 +137,7 @@ module.exports = app => {
           PastEvents.push(events[i])
         }
       }
-      if (PastEvents.length === 0) {
+      if (PastEvents.length == 0) {
         res.status(200).send('No Past Event')
       } else {
         res.status(200).send(PastEvents)
@@ -160,7 +160,7 @@ module.exports = app => {
         _id: id
       })
 
-      if ((event1.creator === req.user.username) || (req.user === 'admin')) {
+      if ((event1.creator == req.user.username) || (req.user == 'admin')) {
         if (event1.date > new Date()) {
           for (var i = 0, len = event1.notification_id.length; i < len; i++) {
             if (event1.notification_id[i] !== null) {
@@ -197,7 +197,7 @@ module.exports = app => {
       _id: id
     })
 
-    if (req.user.username === event1.creator) {
+    if (req.user.username == event1.creator) {
       if ((event1.date !== req.body.date) ) {
         for (var i = 0, len = event1.notification_id.length; i < len; i++) {
           if (event1.notification_id[i] !== null) {
@@ -303,7 +303,7 @@ module.exports = app => {
       { json: true,
         body: values },
       function (error, response, body) {
-        if (!error && response.statusCode === 200) {
+        if (!error && response.statusCode == 200) {
           var data = _pick(body, ['username', 'group'])
           if (data.group !== 'student') {
             User.findOne({username: data.username}).then((user) => {
@@ -338,7 +338,7 @@ module.exports = app => {
   //     'http://backoffice.zealicon.in/api/society',
   //     { json: true},
   //     function (error, response, body) {
-  //       if (!error && response.statusCode === 200) {
+  //       if (!error && response.statusCode == 200) {
   //
   //           for(var i in body["data"]){
   //             var p = body["data"][i]
@@ -353,7 +353,7 @@ module.exports = app => {
   //     'http://backoffice.zealicon.in/api/event',
   //     { json: true},
   //     function (error, response, body) {
-  //       if (!error && response.statusCode === 200) {
+  //       if (!error && response.statusCode == 200) {
   //         p = []
   //           for(var i in body["data"]){
   //             p = body["data"][i]
