@@ -83,7 +83,7 @@ module.exports = app => {
 
   // CREATE EVENT
   app.post('/events', authenticate, async (req, res) => {
-    if (req.user.name !== 'User') {
+    if (req.user.name != 'User') {
       const event = new Event({
         name: req.body.name,
         description: req.body.description,
@@ -198,7 +198,7 @@ module.exports = app => {
     })
 
     if (req.user.username == event1.creator) {
-      if ((event1.date !== req.body.date) ) {
+      if ((event1.date != req.body.date) ) {
         for (var i = 0, len = event1.notification_id.length; i < len; i++) {
           if (event1.notification_id[i] !== null) {
             deleteNotification(event1.notification_id[i])
@@ -223,7 +223,7 @@ module.exports = app => {
         })
 
         var NotiDate = new Date()
-      
+
         var message = {
           app_id: `${process.env.ONESIGNAL_APP_ID}`,
           contents: {'en': `Event ${body.name} is rescheduled`},
@@ -238,7 +238,7 @@ module.exports = app => {
         })
       }
 
-      if (event1.venue !== req.body.venue) {
+      if (event1.venue != req.body.venue) {
         for (var i = 0, len = event1.notification_id.length; i < len; i++) {
           if (event1.notification_id[i] !== null) {
             deleteNotification(event1.notification_id[i])
@@ -306,7 +306,7 @@ module.exports = app => {
       function (error, response, body) {
         if (!error && response.statusCode == 200) {
           var data = _pick(body, ['username', 'group'])
-          if (data.group !== 'student') {
+          if (data.group != 'student') {
             User.findOne({username: data.username}).then((user) => {
               if (!user) {
                 var newuser = new User(data)
