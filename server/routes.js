@@ -223,10 +223,10 @@ module.exports = app => {
         })
 
         var NotiDate = new Date()
-        var xy = new Date(body.date)
+      
         var message = {
           app_id: `${process.env.ONESIGNAL_APP_ID}`,
-          contents: {'en': `Event ${body.name} is rescheduled at ${xy}`},
+          contents: {'en': `Event ${body.name} is rescheduled`},
           send_after: NotiDate,
           include_player_ids: event1.player_id
         }
