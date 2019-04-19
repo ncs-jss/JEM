@@ -10,6 +10,10 @@ import footer from "../../footer.png";
 import footerweb from "../../web_footer_new.svg";
 import tune from "../../tune.mp3";
 import DOMPurify from "dompurify";
+import { NavLink } from "react-router-dom";
+import { setScroll, getScroll } from "./scroll";
+
+
 
 const URL = process.env.REACT_APP_URL;
 
@@ -25,26 +29,6 @@ class Event extends Component {
     };
   }
 
-  ExpandMore(id) {
-    superagent
-      .get(URL + 'events/' + id)
-      .set("Content-Type", "application/json")
-      .then(res => {
-        const event = res.body;
-        this.setState({
-          individualEvent: event,
-          expand: true
-        });
-      })
-      .catch(err => {
-        console.log("error", err);
-      });
-  }
-  ExpandLess = () => {
-    this.setState({
-      expand: false
-    });
-  };
   ImageChange(id) {
     var music = new Audio(tune);
     const user_id = localStorage.getItem("userId");
@@ -78,27 +62,30 @@ class Event extends Component {
     }
   }
   componentDidMount() {
-    setTimeout(() => this.setState({ loading: false }), 2000);
+    let scrollValue = getScroll();
     superagent
       .get(URL)
       .set("Content-Type", "application/json")
       .then(res => {
         const event = res.body;
         this.setState({ event: event });
+    window.scrollTo(0, scrollValue);
+
       })
       .catch(err => {
         console.log("error", err);
       });
+      
+  }
+
+  componentWillUnmount(){
+    setScroll(window.pageYOffset);
   }
 
   render() {
     const isExpand = this.state.expand;
     const { loading } = this.state;
 
-    if (loading) {
-      // if your component doesn't have to wait for an async action, remove this block
-      return null; // render null when app is not ready
-    }
     return (
       <div>
         {!isExpand ? (
@@ -135,12 +122,14 @@ class Event extends Component {
                             >
                               {data.name}
                             </h6>
-                            <button
-                              className="btn btn-link d-none d-md-block"
-                              onClick={this.ExpandMore.bind(this, data._id)}
-                            >
-                              READ MORE
-                            </button>
+                            
+                             <NavLink
+                             className="btn btn-link w-25 d-none d-md-block"
+                             onClick={this.expand}
+                
+                to={`/eventdetail/${data._id}`}
+              >Read More
+              </NavLink>
                           </div>
                           <div className="col-md-3">
                             <p
@@ -154,12 +143,13 @@ class Event extends Component {
                             <p className="eventdate d-none d-md-block">
                               <Moment format="DD MMM YYYY">{date}</Moment>
                             </p>
-                            <button
-                              className="btn btn-link d-block d-md-none"
-                              onClick={this.ExpandMore.bind(this, data._id)}
-                            >
-                              READ MORE
-                            </button>
+                             <NavLink
+                             className="btn btn-link w-50 d-block d-md-none"
+
+                                to={`/eventdetail/${data._id}`}
+                              >
+                              Read More
+                              </NavLink>
                           </div>
                         </div>
                       </div>
@@ -234,7 +224,7 @@ class Event extends Component {
               <hr style={{ borderBottom: "2px solid rgba(255,255,255,0.8)" }} />
             </section>
             <section className="lower">
-              <form className="scroll">
+              <form>
                 <div
                   className="text-center"
                   dangerouslySetInnerHTML={{

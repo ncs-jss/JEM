@@ -8,6 +8,8 @@ import Username from "./Component/Username";
 import LoginForm from "./Component/LoginForm";
 import Past from "./Component/Past";
 import DashboardPast from "./Component/DashboardPast";
+import EventDetail from "./Component/EventDetail";
+
 class App extends Component {
   render() {
     return (
@@ -15,13 +17,13 @@ class App extends Component {
         <React.Fragment>
           <Switch>
             <Route path="/" component={Event} exact />
-            <Route path="/past" component={Past} exact />
-            <Route path="/login" component={LoginForm} exact />
+            <Route path="/eventdetail/:eventId" component={EventDetail} exact />
+            <Route path="/past" component={Past} exact/>
+            <Route path="/login" component={LoginForm} />
             <Route path="/Create" component={Create} />
             <Route path="/dashboard" component={Dashboard} />
             <Route path="/pastevents" component={DashboardPast} />
             <Route path="/username" component={Username} />
-            <Route component={Error} />
           </Switch>
         </React.Fragment>
       </BrowserRouter>
