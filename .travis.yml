@@ -4,5 +4,6 @@ node_js:
   - "8.10.0"
 install:
   - npm install
+  - npm --prefix ./frontend install
 script:
   - npm run lint
