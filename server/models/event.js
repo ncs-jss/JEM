@@ -4,11 +4,16 @@ var EventSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    maxlength: 50
+    maxlength: 100
   },
   description: {
     type: String,
-    maxlength: 1200
+    maxlength: 2000
+  },
+  venue: {
+    type: String,
+    maxlength: 500,
+    default: 'To be updated'
   },
   date: {
     type: String,
@@ -30,7 +35,7 @@ var EventSchema = new mongoose.Schema({
   },
   creatorname: {
     type: String,
-    required: true
+    default: 'Society_name'
   },
   created_at: {
     type: Date,

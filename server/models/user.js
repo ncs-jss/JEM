@@ -14,8 +14,8 @@ var UserSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    default: 'User',
-    maxlength: 50
+    default: 'Society_name',
+    maxlength: 100
   },
   tokens: [{
     access: {
